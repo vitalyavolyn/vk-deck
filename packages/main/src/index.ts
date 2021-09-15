@@ -1,6 +1,7 @@
 import { join } from 'path'
 import { URL } from 'url'
 import { app, BrowserWindow, Menu, MenuItem } from 'electron'
+import windowStateKeeper from 'electron-window-state'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 
@@ -28,14 +29,20 @@ if (import.meta.env.MODE === 'development') {
 let mainWindow: BrowserWindow | null = null
 
 const createWindow = async () => {
+  // сохраняет позицию и размер окна
+  const windowState = windowStateKeeper({})
+
   mainWindow = new BrowserWindow({
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
       nativeWindowOpen: true,
       preload: join(__dirname, '../../preload/dist/index.cjs')
-    }
+    },
+    ...windowState
   })
+
+  windowState.manage(mainWindow)
 
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
