@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu, MenuItem } from 'electron'
 import { join } from 'path'
 import { URL } from 'url'
 
@@ -14,7 +14,10 @@ app.disableHardwareAcceleration()
 if (import.meta.env.MODE === 'development') {
   app.whenReady()
     .then(() => import('electron-devtools-installer'))
-    .then(({ default: installExtension, REACT_DEVELOPER_TOOLS }) => installExtension(REACT_DEVELOPER_TOOLS, {
+    .then(({
+      default: installExtension,
+      REACT_DEVELOPER_TOOLS
+    }) => installExtension(REACT_DEVELOPER_TOOLS, {
       loadExtensionOptions: {
         allowFileAccess: true
       }
@@ -48,20 +51,37 @@ const createWindow = async () => {
     }
   })
 
-  /**
-   * URL for main window.
-   * Vite dev server for development.
-   * `file://../renderer/index.html` for production and test
-   */
   const pageUrl = import.meta.env.MODE === 'development' && import.meta.env.VITE_DEV_SERVER_URL !== undefined
     ? import.meta.env.VITE_DEV_SERVER_URL
     : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString()
+
+  // подсказки исправлений слов
+  mainWindow.webContents.on('context-menu', (event, params) => {
+    const menu = new Menu()
+
+    for (const suggestion of params.dictionarySuggestions) {
+      menu.append(new MenuItem({
+        label: suggestion,
+        click: () => mainWindow?.webContents.replaceMisspelling(suggestion)
+      }))
+    }
+
+    if (params.misspelledWord) {
+      menu.append(
+        new MenuItem({
+          label: 'Добавить в словарь',
+          click: () => mainWindow?.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
+        })
+      )
+    }
+
+    menu.popup()
+  })
 
   await mainWindow.loadURL(pageUrl)
 }
 
 app.on('second-instance', () => {
-  // Someone tried to run a second instance, we should focus our window.
   if (mainWindow) {
     if (mainWindow.isMinimized()) mainWindow.restore()
     mainWindow.focus()
@@ -78,7 +98,6 @@ app.whenReady()
   .then(createWindow)
   .catch((e) => console.error('Failed create window:', e))
 
-// Auto-updates
 if (import.meta.env.PROD) {
   app.whenReady()
     .then(() => import('electron-updater'))

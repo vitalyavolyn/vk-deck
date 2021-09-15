@@ -12,9 +12,11 @@ import {
   ViewWidth
 } from '@mntm/vkui'
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 
 export function App (): JSX.Element {
   const { viewWidth } = useAdaptivity()
+  const { t } = useTranslation()
 
   return (
     <AppRoot>
@@ -27,7 +29,7 @@ export function App (): JSX.Element {
                 <SimpleCell>Hello</SimpleCell>
                 <SimpleCell>World</SimpleCell>
               </Group>
-              <h1 className="text-[#fd5510]">Hello tailwind</h1>
+              {t('test')}
             </Panel>
           </View>
         </SplitCol>

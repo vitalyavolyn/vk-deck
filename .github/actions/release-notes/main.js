@@ -251,6 +251,7 @@ function getCommitsList (commits, pad = '') {
   return changelog
 }
 
+// TODO: перевести на русский
 function replaceHeader (str) {
   switch (str) {
     case 'feat':

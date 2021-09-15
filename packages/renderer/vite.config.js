@@ -2,8 +2,7 @@
 
 import { builtinModules } from 'module'
 import reactRefresh from '@vitejs/plugin-react-refresh'
-
-const PACKAGE_ROOT = __dirname
+import yaml from '@rollup/plugin-yaml'
 
 /**
  * @type {import('vite').UserConfig}
@@ -11,8 +10,8 @@ const PACKAGE_ROOT = __dirname
  */
 const config = {
   mode: process.env.MODE,
-  root: PACKAGE_ROOT,
-  plugins: [reactRefresh()],
+  root: __dirname,
+  plugins: [reactRefresh(), yaml()],
   base: '',
   server: {
     fs: {
