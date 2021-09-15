@@ -27,6 +27,7 @@ export function App (): JSX.Element {
                 <SimpleCell>Hello</SimpleCell>
                 <SimpleCell>World</SimpleCell>
               </Group>
+              <h1 className="text-[#fd5510]">Hello tailwind</h1>
             </Panel>
           </View>
         </SplitCol>
