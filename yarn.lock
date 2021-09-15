@@ -5073,11 +5073,6 @@ tosource@^1.0.0:
   resolved "https://registry.yarnpkg.com/tosource/-/tosource-1.0.0.tgz#42d88dd116618bcf00d6106dd5446f3427902ff1"
   integrity sha1-QtiN0RZhi88A1hBt1URvNCeQL/E=
 
-tosource@^2.0.0-alpha.2:
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/tosource/-/tosource-2.0.0-alpha.3.tgz#ef385dac9092e009bf25c018838ddaae436daeb6"
-  integrity sha512-KAB2lrSS48y91MzFPFuDg4hLbvDiyTjOVgaK7Erw+5AmZXNq4sFRVn8r6yxSLuNs15PaokrDRpS61ERY9uZOug==
-
 traverse@^0.6.6:
   version "0.6.6"
   resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.6.6.tgz#cbdf560fd7b9af632502fed40f918c157ea97137"
@@ -5290,14 +5285,6 @@ verror@^1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
-
-vite-plugin-yaml@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/vite-plugin-yaml/-/vite-plugin-yaml-1.0.5.tgz#c4e1572e8e4f05a99a9a8ee40afe490eeb8198d5"
-  integrity sha512-LeA1EalMmGnblEqbSvU0PZea38O7FPn0BnTab6vyBovZcJppzGnzK5sAocMknayu98Uxu9id6m4fC9//B9ZReQ==
-  dependencies:
-    js-yaml "^3.14.0"
-    tosource "^2.0.0-alpha.2"
 
 vite@^2.5.7:
   version "2.5.7"
