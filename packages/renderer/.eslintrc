@@ -1,0 +1,20 @@
+{
+  "env": {
+    "browser": true,
+    "node": false
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-tag-spacing": "error",
+    "react/jsx-indent": ["error", 2]
+  }
+}
