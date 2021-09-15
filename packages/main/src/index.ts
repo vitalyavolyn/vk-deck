@@ -1,6 +1,6 @@
-import { app, BrowserWindow, Menu, MenuItem } from 'electron'
 import { join } from 'path'
 import { URL } from 'url'
+import { app, BrowserWindow, Menu, MenuItem } from 'electron'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 

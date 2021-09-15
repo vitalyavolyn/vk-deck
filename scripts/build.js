@@ -1,6 +1,6 @@
 #!/usr/bin/node
-const { build } = require('vite')
 const { dirname } = require('path')
+const { build } = require('vite')
 
 /** @type 'production' | 'development' | 'test' */
 const mode = process.env.MODE = process.env.MODE || 'production'

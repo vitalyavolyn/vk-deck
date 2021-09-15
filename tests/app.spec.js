@@ -1,5 +1,5 @@
-const { _electron: electron } = require('playwright')
-const { strict: assert } = require('assert');
+const { strict: assert } = require('assert')
+const { _electron: electron } = require('playwright');
 
 (async () => {
   const electronApp = await electron.launch({ args: ['.'] })

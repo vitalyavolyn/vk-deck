@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "lib": ["ESNext", "dom", "dom.iterable"],
-    "jsx": "react"
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true
   },
 
   "include": [
