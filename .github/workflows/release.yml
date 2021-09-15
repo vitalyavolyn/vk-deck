@@ -38,6 +38,9 @@ jobs:
         with:
           node-version: 14
 
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
       - name: Get last git tag
         id: tag
         run: echo "::set-output name=last-tag::$(git describe --tags --abbrev=0 || git rev-list --max-parents=0 ${{github.ref}})"
@@ -51,10 +54,9 @@ jobs:
           include-commit-body: true
           include-abbreviated-commit: true
 
-      - name: Get version from current date
+      - name: Get next prelelease version
         id: version
         run: echo "::set-output name=build-version::$(node -e "try{console.log(require('./electron-builder.config.js').extraMetadata.version)}catch(e){console.error(e);process.exit(1)}")"
-
 
       - name: Waiting on All checks
         uses: lewagon/wait-on-check-action@v0.2
@@ -128,7 +130,6 @@ jobs:
           # Sometimes the build may fail due to a connection problem with Apple, GitHub, etc. servers.
           # This option will restart the build as many attempts as possible
           max_attempts: 3
-
 
           # Code Signing params
 
