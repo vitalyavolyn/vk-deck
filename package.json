@@ -61,11 +61,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
-    "@mntm/vkui": "^4.14.2",
     "@popperjs/core": "^2.10.1",
     "@vkontakte/icons": "^1.128.1",
     "@vkontakte/vk-bridge": "^2.4.8",
     "@vkontakte/vkjs": "^0.22.1",
+    "@vkontakte/vkui": "^4.15.0",
     "electron-updater": "^4.6.0",
     "electron-window-state": "^5.0.3",
     "i18next": "^20.6.1",

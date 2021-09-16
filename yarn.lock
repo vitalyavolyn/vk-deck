@@ -200,7 +200,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
 
-"@babel/runtime@^7.12.0", "@babel/runtime@^7.14.5", "@babel/runtime@^7.15.4":
+"@babel/runtime@^7.12.0", "@babel/runtime@^7.14.5", "@babel/runtime@^7.14.6", "@babel/runtime@^7.15.4":
   version "7.15.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
   integrity sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
@@ -346,7 +346,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popperjs/core@^2.10.1":
+"@popperjs/core@^2.10.1", "@popperjs/core@^2.9.2":
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.1.tgz#728ecd95ab207aab8a9a4e421f0422db329232be"
   integrity sha512-HnUhk1Sy9IuKrxEMdIRCxpIqPw6BFsbYSEUO9p/hNw5sMld/+3OLMWQP80F8/db9qsv3qUjs7ZR5bS/R+iinXw==
@@ -621,6 +621,16 @@
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/@vkontakte/vkjs/-/vkjs-0.22.1.tgz#ab740365626873fd7940c3b430d438d5bf33b110"
   integrity sha512-gDlJYAIIH4K0L8Qz2bE/cIdz5XWSwvEVytkK4mXC7lGTVTF/PuidUb8MZ792AaqTxdoASOoBD1Jy89q/GjaOSg==
+
+"@vkontakte/vkui@^4.15.0":
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/@vkontakte/vkui/-/vkui-4.15.0.tgz#723bcd2a11e0e5804ca7ce1f0312c8d3ee6a6004"
+  integrity sha512-AIo6VoT+0gmM2fCw5v1HiR7t6jXS9Hsh+Ir/AZL8tRolF3+NOV+i8h3b4Iq1sb6SawheBlkbI89xgA0fNGiLGw==
+  dependencies:
+    "@babel/runtime" "^7.14.6"
+    "@popperjs/core" "^2.9.2"
+    "@vkontakte/vkjs" "^0.22.1"
+    react-popper "^2.2.5"
 
 acorn-jsx@^5.3.1:
   version "5.3.2"

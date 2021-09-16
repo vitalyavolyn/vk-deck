@@ -1,5 +1,4 @@
-/*@import '@mntm/vkui/dist/styles/themes.css';*/
-/*@import '@mntm/vkui/dist/styles/components.css';*/
+@import '@vkontakte/vkui/dist/vkui.css';
 
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';

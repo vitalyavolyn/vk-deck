@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   AppRoot,
   Group,
@@ -10,8 +11,7 @@ import {
   useAdaptivity,
   View,
   ViewWidth
-} from '@mntm/vkui'
-import * as React from 'react'
+} from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 
 export function App (): JSX.Element {
@@ -30,6 +30,7 @@ export function App (): JSX.Element {
                 <SimpleCell>World</SimpleCell>
               </Group>
               {t('test')}
+              <input type="text" />
             </Panel>
           </View>
         </SplitCol>
