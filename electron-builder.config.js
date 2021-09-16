@@ -1,4 +1,4 @@
-if (process.env.VITE_APP_VERSION === undefined) {
+if (!process.env.VITE_APP_VERSION) {
   const semver = require('semver')
   const { version } = require('./package.json')
   process.env.VITE_APP_VERSION = semver.inc(version, 'prerelease')

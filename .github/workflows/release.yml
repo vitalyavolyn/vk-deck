@@ -15,11 +15,9 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
 
-
 defaults:
   run:
     shell: 'bash'
-
 
 jobs:
 
@@ -37,13 +35,14 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Get last git tag
         id: tag
-        run: echo "::set-output name=last-tag::$(git describe --tags --abbrev=0 || git rev-list --max-parents=0 ${{github.ref}})"
+        run: echo "::set-output name=last-tag::$(git describe --tags --abbrev=0 HEAD~1 || git rev-list --max-parents=0 ${{github.ref}})"
 
       - name: Generate release notes
         uses: ./.github/actions/release-notes
@@ -51,8 +50,11 @@ jobs:
         with:
           from: ${{ steps.tag.outputs.last-tag }}
           to: ${{ github.ref }}
-          include-commit-body: true
+          include-commit-body: false
           include-abbreviated-commit: true
+
+      - name: Set VITE_APP_VERSION
+        run: echo "VITE_APP_VERSION=$(git tag --points-at HEAD | cut -c2-)" >> $GITHUB_ENV
 
       - name: Get next prelelease version
         id: version
@@ -86,9 +88,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ windows-latest ]
-    #    To compile the application for different platforms, hooks:
-    #    os: [ macos-latest, ubuntu-latest, windows-latest ]
+        os: [ windows-latest, ubuntu-latest ] # macos-latest
 
     runs-on: ${{ matrix.os }}
 
@@ -103,6 +103,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      # TODO: надо ли это мне?
       # The easiest way to transfer release notes to a compiled application is create `release-notes.md` in the build resources.
       # See https://github.com/electron-userland/electron-builder/issues/1511#issuecomment-310160119
       - name: Prepare release notes
