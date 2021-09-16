@@ -108,7 +108,7 @@ jobs:
       - name: Prepare release notes
         env:
           RELEASE_NOTE: ${{ needs.draft.outputs.release-note }}
-        run: echo "$RELEASE_NOTE" >> ./buildResources/release-notes.md
+        run: echo "$RELEASE_NOTE" >> ./build-resources/release-notes.md
 
       # Compile app and upload artifacts
       - name: Compile & release Electron app

@@ -82,7 +82,7 @@ const createWindow = async () => {
       )
     }
 
-    menu.popup()
+    if (menu.items.length) menu.popup()
   })
 
   await mainWindow.loadURL(pageUrl)
