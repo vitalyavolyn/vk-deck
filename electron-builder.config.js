@@ -9,6 +9,7 @@ if (!process.env.VITE_APP_VERSION) {
  * @see https://www.electron.build/configuration/configuration
  */
 const config = {
+  appId: 'me.vitalya.vkDeck',
   directories: {
     output: 'dist',
     buildResources: 'build-resources'
@@ -18,6 +19,9 @@ const config = {
   ],
   extraMetadata: {
     version: process.env.VITE_APP_VERSION
+  },
+  win: {
+    target: 'portable'
   }
 }
 
