@@ -3,9 +3,10 @@ import { render } from 'react-dom'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import ru from '../locales/ru.yml'
-import { App } from './App'
+import { App } from './app'
+import { ApiStore } from './api-store'
 import './styles.css'
-import { AppWrapper } from './AppWrapper'
+import { storeContext } from './store-context'
 
 i18n
   .use(initReactI18next)
@@ -16,9 +17,9 @@ i18n
 
 render(
   <StrictMode>
-    <AppWrapper>
+    <storeContext.Provider value={new ApiStore()}>
       <App />
-    </AppWrapper>
+    </storeContext.Provider>
   </StrictMode>,
   document.querySelector('#app')
 )

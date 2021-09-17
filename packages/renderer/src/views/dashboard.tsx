@@ -1,44 +1,36 @@
-import { FC, MouseEvent, useEffect, useState } from 'react'
+import { FC, MouseEvent, useContext, useState } from 'react'
 import {
+  Avatar,
   Cell,
   Group,
   Panel,
+  PanelSpinner, Placeholder,
+  Root,
   SplitCol,
   SplitLayout,
   useAdaptivity,
   View,
-  ViewWidth,
-  Placeholder,
-  PanelSpinner,
-  Root
+  ViewWidth
 } from '@vkontakte/vkui'
 import {
   Icon28ClipOutline,
   Icon28MessageOutline,
   Icon28NewsfeedOutline,
   Icon28ServicesOutline,
-  Icon28UserCircleOutline,
-  Icon56NewsfeedOutline
+  Icon28UserCircleOutline, Icon56NewsfeedOutline
 } from '@vkontakte/icons'
-import { useElectron } from './hooks/useElectron'
-import './App.css'
+import './dashboard.css'
+import { storeContext } from '../store-context'
 
-export const App: FC = () => {
+export const Dashboard: FC = () => {
   const { viewWidth } = useAdaptivity()
+  const { user } = useContext(storeContext)
   const [activeStory, setActiveStory] = useState('profile')
-  const [authData, setAuthData] = useState<AuthResponse>()
 
-  const { getTokenFromBrowserView } = useElectron()
-
-  useEffect(() => {
-    getTokenFromBrowserView().then(result => setAuthData(result))
-  }, [getTokenFromBrowserView])
-
-  if (!viewWidth || !authData) return <PanelSpinner />
+  if (!viewWidth) return <PanelSpinner />
   const onStoryChange = (e: MouseEvent<HTMLElement>) => setActiveStory(e.currentTarget.dataset.story!)
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
 
-  // TODO: вынести в другой файл после того, как будет авторизация
   return (
     <SplitLayout
       style={{ justifyContent: 'center' }}
@@ -46,6 +38,7 @@ export const App: FC = () => {
       <SplitCol fixed width="76px" maxWidth="76px">
         <Panel id="nav">
           <div className="navBar">
+            <Avatar src={user.photo_50} />
             <Cell
               data-story="feed"
               onClick={onStoryChange}

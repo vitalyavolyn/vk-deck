@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "lib": ["ESNext", "dom", "dom.iterable"],
     "jsx": "react-jsx",

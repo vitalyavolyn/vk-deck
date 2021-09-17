@@ -42,17 +42,19 @@ const createWindow = async () => {
   const view = new BrowserView({
     webPreferences: {
       nativeWindowOpen: true,
+      webSecurity: false,
       preload: join(__dirname, '../../preload/dist/index.cjs')
     }
   })
 
-  view.setBounds({ ...windowState, x: 0, y: 0 })
+  const contentBounds = mainWindow.getContentBounds()
+  view.setBounds({ x: 0, y: 0, width: contentBounds.width, height: contentBounds.height })
   view.setAutoResize({ vertical: true, horizontal: true })
 
   mainWindow.setBrowserView(view)
 
   windowState.manage(mainWindow)
-  initIpc(mainWindow)
+  initIpc(mainWindow, view)
 
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
@@ -73,6 +75,7 @@ const createWindow = async () => {
     : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString()
 
   // подсказки исправлений слов
+  // TODO: кажется, сломалось с приходом BrowserView
   view.webContents.on('context-menu', (event, params) => {
     const menu = new Menu()
 
