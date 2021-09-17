@@ -10,7 +10,7 @@ interface AuthResponseRaw {
 }
 /* eslint-enable camelcase */
 
-export function initIpc (win: BrowserWindow): void {
+export function initIpc (win: BrowserWindow, mainView: BrowserView): void {
   ipcMain.on('create-browser-view', (e) => {
     const view = new BrowserView({
       webPreferences: {
@@ -20,12 +20,7 @@ export function initIpc (win: BrowserWindow): void {
     })
 
     win.addBrowserView(view)
-    view.setBounds({
-      x: 100,
-      y: 100,
-      height: 500,
-      width: 500
-    })
+    view.setBounds(mainView.getBounds())
     view.setAutoResize({
       horizontal: true,
       vertical: true
@@ -50,10 +45,7 @@ export function initIpc (win: BrowserWindow): void {
         // TODO: kill me
         const result = qs.parse(new URL(url).hash.slice(1)) as unknown as AuthResponseRaw
 
-        e.reply('auth-info', {
-          userId: Number(result.user_id),
-          token: result.access_token
-        })
+        e.reply('auth-info', result.access_token)
       }
     })
   })

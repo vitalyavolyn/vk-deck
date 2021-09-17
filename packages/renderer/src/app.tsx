@@ -1,12 +1,18 @@
 import { AdaptivityProvider, AppRoot, ConfigProvider } from '@vkontakte/vkui'
-import { FC, useState } from 'react'
+import { FC, useContext, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { storeContext } from './store-context'
+import { Dashboard } from './views/dashboard'
+import { Login } from './views/login'
 
 enum AppScheme {
   light = 'bright_light',
   dark = 'space_gray'
 }
 
-export const AppWrapper: FC = ({ children }) => {
+export const App: FC = observer(() => {
+  const { isAuthorized } = useContext(storeContext)
+
   const darkThemeMatch = window.matchMedia('(prefers-color-scheme: dark)')
   const getThemeByMediaQuery = (mq: MediaQueryList | MediaQueryListEvent): AppScheme => (
     mq.matches ? AppScheme.dark : AppScheme.light
@@ -22,9 +28,9 @@ export const AppWrapper: FC = ({ children }) => {
     <ConfigProvider scheme={scheme}>
       <AdaptivityProvider>
         <AppRoot>
-          {children}
+          {isAuthorized ? <Dashboard /> : <Login />}
         </AppRoot>
       </AdaptivityProvider>
     </ConfigProvider>
   )
-}
+})
