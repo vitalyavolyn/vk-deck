@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 import {
   Cell,
   Group,
@@ -22,7 +22,7 @@ import {
 } from '@vkontakte/icons'
 import './App.css'
 
-export function App (): JSX.Element {
+export const App: FC = () => {
   const { viewWidth } = useAdaptivity()
   const [activeStory, setActiveStory] = useState('profile')
 
@@ -36,36 +36,36 @@ export function App (): JSX.Element {
       style={{ justifyContent: 'center' }}
     >
       <SplitCol fixed width="76px" maxWidth="76px">
-        <Panel id={'nav'}>
-          <div className={'navBar'}>
+        <Panel id="nav">
+          <div className="navBar">
             <Cell
               data-story="feed"
               onClick={onStoryChange}
-              >
+            >
               <Icon28NewsfeedOutline />
             </Cell>
             <Cell
               data-story="services"
               onClick={onStoryChange}
-              >
+            >
               <Icon28ServicesOutline />
             </Cell>
             <Cell
               data-story="messages"
               onClick={onStoryChange}
-              >
+            >
               <Icon28MessageOutline />
             </Cell>
             <Cell
               data-story="clips"
               onClick={onStoryChange}
-              >
+            >
               <Icon28ClipOutline />
             </Cell>
             <Cell
               data-story="profile"
               onClick={onStoryChange}
-              >
+            >
               <Icon28UserCircleOutline />
             </Cell>
           </div>
@@ -78,14 +78,14 @@ export function App (): JSX.Element {
         <Root activeView={activeStory}>
           <View id="feed" activePanel="feed">
             <Panel id="feed">
-              <Group separator={'hide'}>
+              <Group separator="hide">
                 <Placeholder icon={<Icon56NewsfeedOutline width={56} height={56} />} />
               </Group>
             </Panel>
           </View>
           <View id="services" activePanel="services">
             <Panel id="services">
-              <Group separator={'hide'}>
+              <Group separator="hide">
                 <Placeholder icon={<Icon28ServicesOutline width={56} height={56} />}>
                 </Placeholder>
               </Group>
@@ -93,7 +93,7 @@ export function App (): JSX.Element {
           </View>
           <View id="messages" activePanel="messages">
             <Panel id="messages">
-              <Group separator={'hide'}>
+              <Group separator="hide">
                 <Placeholder icon={<Icon28MessageOutline width={56} height={56} />}>
                 </Placeholder>
               </Group>
@@ -101,7 +101,7 @@ export function App (): JSX.Element {
           </View>
           <View id="clips" activePanel="clips">
             <Panel id="clips">
-              <Group separator={'hide'}>
+              <Group separator="hide">
                 <Placeholder icon={<Icon28ClipOutline width={56} height={56} />}>
                 </Placeholder>
               </Group>
@@ -109,7 +109,7 @@ export function App (): JSX.Element {
           </View>
           <View id="profile" activePanel="profile">
             <Panel id="profile">
-              <Group separator={'hide'}>
+              <Group separator="hide">
                 <Placeholder icon={<Icon28UserCircleOutline width={56} height={56} />}>
                 </Placeholder>
               </Group>

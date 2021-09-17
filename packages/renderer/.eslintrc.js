@@ -12,7 +12,18 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-tag-spacing': 'error',
     'react/jsx-indent': ['error', 2],
-    'react/jsx-indent-props': ['error', 2]
+    'react/jsx-indent-props': ['error', 2],
+    'react/jsx-curly-brace-presence': ['error', 'never'],
+    'react/function-component-definition': ['error', { namedComponents: 'arrow-function' }],
+    'react/no-array-index-key': 'error',
+    'react/no-multi-comp': 'error',
+    'react/jsx-closing-bracket-location': 'error',
+    'react/jsx-curly-newline': 'error',
+    'react/jsx-equals-spacing': 'error',
+    'react/jsx-curly-spacing': 'error',
+    'react/jsx-fragments': 'error',
+    'react/jsx-no-comment-textnodes': 'error',
+    'react/jsx-wrap-multilines': 'error'
   },
   settings: {
     react: {
