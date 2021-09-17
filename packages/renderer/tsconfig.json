@@ -3,10 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "lib": ["ESNext", "dom", "dom.iterable"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true
   },
-
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",

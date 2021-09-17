@@ -18,6 +18,9 @@ const config = {
       strict: true
     }
   },
+  esbuild: {
+    jsxInject: 'import React from \'react\''
+  },
   build: {
     sourcemap: true,
     target: 'chrome93',
