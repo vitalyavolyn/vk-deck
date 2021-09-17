@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useState } from 'react'
+import { FC, MouseEvent, useEffect, useState } from 'react'
 import {
   Cell,
   Group,
@@ -20,13 +20,21 @@ import {
   Icon28UserCircleOutline,
   Icon56NewsfeedOutline
 } from '@vkontakte/icons'
+import { useElectron } from './hooks/useElectron'
 import './App.css'
 
 export const App: FC = () => {
   const { viewWidth } = useAdaptivity()
   const [activeStory, setActiveStory] = useState('profile')
+  const [authData, setAuthData] = useState<AuthResponse>()
 
-  if (!viewWidth) return <PanelSpinner />
+  const { getTokenFromBrowserView } = useElectron()
+
+  useEffect(() => {
+    getTokenFromBrowserView().then(result => setAuthData(result))
+  }, [getTokenFromBrowserView])
+
+  if (!viewWidth || !authData) return <PanelSpinner />
   const onStoryChange = (e: MouseEvent<HTMLElement>) => setActiveStory(e.currentTarget.dataset.story!)
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
 

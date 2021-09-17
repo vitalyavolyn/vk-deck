@@ -1,7 +1,8 @@
 import { join } from 'path'
 import { URL } from 'url'
-import { app, BrowserWindow, Menu, MenuItem } from 'electron'
+import { app, BrowserView, BrowserWindow, Menu, MenuItem } from 'electron'
 import windowStateKeeper from 'electron-window-state'
+import { initIpc } from './ipc'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 
@@ -35,14 +36,23 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     show: false,
     autoHideMenuBar: true,
-    webPreferences: {
-      nativeWindowOpen: true,
-      preload: join(__dirname, '../../preload/dist/index.cjs')
-    },
     ...windowState
   })
 
+  const view = new BrowserView({
+    webPreferences: {
+      nativeWindowOpen: true,
+      preload: join(__dirname, '../../preload/dist/index.cjs')
+    }
+  })
+
+  view.setBounds({ ...windowState, x: 0, y: 0 })
+  view.setAutoResize({ vertical: true, horizontal: true })
+
+  mainWindow.setBrowserView(view)
+
   windowState.manage(mainWindow)
+  initIpc(mainWindow)
 
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
@@ -50,11 +60,11 @@ const createWindow = async () => {
    *
    * @see https://github.com/electron/electron/issues/25012
    */
-  mainWindow.on('ready-to-show', () => {
+  view.webContents.on('dom-ready', () => {
     mainWindow?.show()
 
     if (import.meta.env.MODE === 'development') {
-      mainWindow?.webContents.openDevTools()
+      view?.webContents.openDevTools()
     }
   })
 
@@ -63,7 +73,7 @@ const createWindow = async () => {
     : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString()
 
   // подсказки исправлений слов
-  mainWindow.webContents.on('context-menu', (event, params) => {
+  view.webContents.on('context-menu', (event, params) => {
     const menu = new Menu()
 
     for (const suggestion of params.dictionarySuggestions) {
@@ -85,7 +95,7 @@ const createWindow = async () => {
     if (menu.items.length) menu.popup()
   })
 
-  await mainWindow.loadURL(pageUrl)
+  await view.webContents.loadURL(pageUrl)
 }
 
 app.on('second-instance', () => {
