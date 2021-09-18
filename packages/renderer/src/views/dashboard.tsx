@@ -17,17 +17,21 @@ import {
   Icon28MessageOutline,
   Icon28NewsfeedOutline,
   Icon28ServicesOutline,
-  Icon28UserCircleOutline, Icon56NewsfeedOutline
+  Icon28UserCircleOutline,
+  Icon56NewsfeedOutline
 } from '@vkontakte/icons'
 import './dashboard.css'
+import { observer } from 'mobx-react-lite'
 import { useStore } from '../hooks/useStore'
 
-export const Dashboard: FC = () => {
+export const Dashboard: FC = observer(() => {
   const { viewWidth } = useAdaptivity()
-  const { user } = useStore()
+  const { api } = useStore()
+  const { user } = api
   const [activeStory, setActiveStory] = useState('profile')
 
   if (!viewWidth) return <PanelSpinner />
+
   const onStoryChange = (e: MouseEvent<HTMLElement>) => setActiveStory(e.currentTarget.dataset.story!)
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
 
@@ -87,32 +91,28 @@ export const Dashboard: FC = () => {
           <View id="services" activePanel="services">
             <Panel id="services">
               <Group separator="hide">
-                <Placeholder icon={<Icon28ServicesOutline width={56} height={56} />}>
-                </Placeholder>
+                <Placeholder icon={<Icon28ServicesOutline width={56} height={56} />} />
               </Group>
             </Panel>
           </View>
           <View id="messages" activePanel="messages">
             <Panel id="messages">
               <Group separator="hide">
-                <Placeholder icon={<Icon28MessageOutline width={56} height={56} />}>
-                </Placeholder>
+                <Placeholder icon={<Icon28MessageOutline width={56} height={56} />} />
               </Group>
             </Panel>
           </View>
           <View id="clips" activePanel="clips">
             <Panel id="clips">
               <Group separator="hide">
-                <Placeholder icon={<Icon28ClipOutline width={56} height={56} />}>
-                </Placeholder>
+                <Placeholder icon={<Icon28ClipOutline width={56} height={56} />} />
               </Group>
             </Panel>
           </View>
           <View id="profile" activePanel="profile">
             <Panel id="profile">
               <Group separator="hide">
-                <Placeholder icon={<Icon28UserCircleOutline width={56} height={56} />}>
-                </Placeholder>
+                <Placeholder icon={<Icon28UserCircleOutline width={56} height={56} />} />
               </Group>
             </Panel>
           </View>
@@ -120,4 +120,4 @@ export const Dashboard: FC = () => {
       </SplitCol>
     </SplitLayout>
   )
-}
+})

@@ -5,13 +5,12 @@ import { useElectron } from '../hooks/useElectron'
 import { useStore } from '../hooks/useStore'
 
 export const Login: FC = observer(() => {
-  const api = useStore()
+  const { api } = useStore()
   const { getTokenFromBrowserView } = useElectron()
 
   useEffect(() => {
     getTokenFromBrowserView().then(token => {
       api.setToken(token)
-      console.log(api, api.token, api.isAuthorized)
     })
   }, [api, getTokenFromBrowserView])
 

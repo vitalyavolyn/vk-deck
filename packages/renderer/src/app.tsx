@@ -11,7 +11,8 @@ enum AppScheme {
 }
 
 export const App: FC = observer(() => {
-  const { isAuthorized } = useStore()
+  const { api } = useStore()
+  const { isAuthorized } = api
 
   const darkThemeMatch = window.matchMedia('(prefers-color-scheme: dark)')
   const getThemeByMediaQuery = (mq: MediaQueryList | MediaQueryListEvent): AppScheme => (

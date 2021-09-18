@@ -1,10 +1,11 @@
 import { makeAutoObservable } from 'mobx'
 import { UsersGetParams, UsersGetResponse, UsersUserXtrCounters } from '@vkontakte/api-schema-typescript'
-import { Api } from './api'
+import { Api } from '../api'
+import { RootStore } from './root-store'
 
 export class ApiStore {
   token = ''
-  user: UsersUserXtrCounters = {} as UsersUserXtrCounters // все равно в местах, где используется, он будет
+  user: UsersUserXtrCounters = {} as UsersUserXtrCounters // в местах, где используется, он будет (честно)
   api = new Api()
 
   get isAuthorized (): boolean {
@@ -26,7 +27,7 @@ export class ApiStore {
     this.user = user
   }
 
-  constructor () {
+  constructor (public root: RootStore) {
     const token = localStorage.getItem('token')
     if (token) {
       this.setToken(token)
