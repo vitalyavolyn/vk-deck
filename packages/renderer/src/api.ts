@@ -3,7 +3,7 @@ import rateLimit from 'axios-rate-limit'
 
 const instance = rateLimit(
   axios.create({ baseURL: 'https://api.vk.com' }),
-  { maxRPS: 3 }
+  { maxRPS: 3 },
 )
 
 export class Api {
@@ -23,7 +23,7 @@ export class Api {
       v,
       lang,
       access_token: token,
-      ...params
+      ...params,
     }
 
     return instance

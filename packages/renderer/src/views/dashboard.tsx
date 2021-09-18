@@ -10,7 +10,7 @@ import {
   SplitLayout,
   useAdaptivity,
   View,
-  ViewWidth
+  ViewWidth,
 } from '@vkontakte/vkui'
 import {
   Icon28ClipOutline,
@@ -18,11 +18,11 @@ import {
   Icon28NewsfeedOutline,
   Icon28ServicesOutline,
   Icon28UserCircleOutline,
-  Icon56NewsfeedOutline
+  Icon56NewsfeedOutline,
 } from '@vkontakte/icons'
 import './dashboard.css'
 import { observer } from 'mobx-react-lite'
-import { useStore } from '../hooks/useStore'
+import { useStore } from '../hooks/use-store'
 
 export const Dashboard: FC = observer(() => {
   const { viewWidth } = useAdaptivity()

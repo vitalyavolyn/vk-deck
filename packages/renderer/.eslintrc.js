@@ -2,11 +2,11 @@
 module.exports = {
   env: {
     browser: true,
-    node: false
+    node: false,
   },
   extends: [
     'plugin:react/recommended',
-    'plugin:react-hooks/recommended'
+    'plugin:react-hooks/recommended',
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
@@ -23,12 +23,12 @@ module.exports = {
     'react/jsx-curly-spacing': 'error',
     'react/jsx-fragments': 'error',
     'react/jsx-no-comment-textnodes': 'error',
-    'react/jsx-wrap-multilines': 'error'
+    'react/jsx-wrap-multilines': 'error',
   },
   settings: {
     react: {
-      version: 'detect'
-    }
-  }
+      version: 'detect',
+    },
+  },
 }
 

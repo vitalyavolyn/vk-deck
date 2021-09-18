@@ -21,7 +21,7 @@ export class ApiStore {
 
   async fetchUser (): Promise<void> {
     const [user] = await this.api.call<UsersGetResponse, UsersGetParams>('users.get', {
-      fields: 'photo_50'
+      fields: 'photo_50',
     })
 
     this.user = user

@@ -15,11 +15,11 @@ const config = {
   base: '',
   server: {
     fs: {
-      strict: true
-    }
+      strict: true,
+    },
   },
   esbuild: {
-    jsxInject: 'import React from \'react\''
+    jsxInject: 'import React from \'react\'',
   },
   build: {
     sourcemap: true,
@@ -29,18 +29,18 @@ const config = {
     terserOptions: {
       ecma: 2020,
       compress: {
-        passes: 2
+        passes: 2,
       },
-      safari10: false
+      safari10: false,
     },
     rollupOptions: {
       external: [
-        ...builtinModules
-      ]
+        ...builtinModules,
+      ],
     },
     emptyOutDir: true,
-    brotliSize: false
-  }
+    brotliSize: false,
+  },
 }
 
 export default config

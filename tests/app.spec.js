@@ -14,7 +14,7 @@ const { _electron: electron } = require('playwright');
     const getState = () => ({
       isVisible: mainWindow.isVisible(),
       isDevToolsOpened: mainWindow.webContents.isDevToolsOpened(),
-      isCrashed: mainWindow.webContents.isCrashed()
+      isCrashed: mainWindow.webContents.isCrashed(),
     })
 
     return new Promise((resolve) => {
@@ -37,7 +37,7 @@ const { _electron: electron } = require('playwright');
 
   // Check web-page content
   const element = await page.$('#app', { strict: true })
-  assert.notStrictEqual(element, null, 'Can\'t find root element')
+  assert.notStrictEqual(element, undefined, 'Can\'t find root element')
   assert.notStrictEqual((await element.innerHTML()).trim(), '', 'Window content is empty')
 
   // Check Preload script

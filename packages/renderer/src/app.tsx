@@ -3,7 +3,7 @@ import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Dashboard } from './views/dashboard'
 import { Login } from './views/login'
-import { useStore } from './hooks/useStore'
+import { useStore } from './hooks/use-store'
 
 enum AppScheme {
   light = 'bright_light',

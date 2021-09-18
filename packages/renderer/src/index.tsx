@@ -19,7 +19,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'ru',
-    resources: { ru }
+    resources: { ru },
   })
 
 render(
@@ -28,5 +28,5 @@ render(
       <App />
     </StoreContext.Provider>
   </StrictMode>,
-  document.querySelector('#app')
+  document.querySelector('#app'),
 )
