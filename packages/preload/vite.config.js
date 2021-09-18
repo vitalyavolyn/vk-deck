@@ -19,26 +19,26 @@ const config = {
     terserOptions: {
       ecma: 2020,
       compress: {
-        passes: 2
+        passes: 2,
       },
-      safari10: false
+      safari10: false,
     },
     lib: {
       entry: 'src/index.ts',
-      formats: ['cjs']
+      formats: ['cjs'],
     },
     rollupOptions: {
       external: [
         'electron',
-        ...builtinModules
+        ...builtinModules,
       ],
       output: {
-        entryFileNames: '[name].cjs'
-      }
+        entryFileNames: '[name].cjs',
+      },
     },
     emptyOutDir: true,
-    brotliSize: false
-  }
+    brotliSize: false,
+  },
 }
 
 export default config

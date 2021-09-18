@@ -12,7 +12,7 @@ const api: ElectronApi = {
         resolve(data)
       })
     })
-  }
+  },
 }
 
 contextBridge.exposeInMainWorld(apiKey, api)

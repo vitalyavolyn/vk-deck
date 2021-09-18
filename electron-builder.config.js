@@ -12,17 +12,17 @@ const config = {
   appId: 'me.vitalya.vk-deck',
   directories: {
     output: 'dist',
-    buildResources: 'build-resources'
+    buildResources: 'build-resources',
   },
   files: [
-    'packages/**/dist/**'
+    'packages/**/dist/**',
   ],
   extraMetadata: {
-    version: process.env.VITE_APP_VERSION
+    version: process.env.VITE_APP_VERSION,
   },
   linux: {
-    target: 'AppImage'
-  }
+    target: 'AppImage',
+  },
 }
 
 module.exports = config

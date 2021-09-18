@@ -1,5 +1,5 @@
-import { join } from 'path'
-import { URL } from 'url'
+import path from 'path'
+import { URL, fileURLToPath } from 'url'
 import { app, BrowserView, BrowserWindow, Menu, MenuItem } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 import { initIpc } from './ipc'
@@ -18,16 +18,16 @@ if (import.meta.env.MODE === 'development') {
     .then(() => import('electron-devtools-installer'))
     .then(({
       default: installExtension,
-      REACT_DEVELOPER_TOOLS
+      REACT_DEVELOPER_TOOLS,
     }) => installExtension(REACT_DEVELOPER_TOOLS, {
       loadExtensionOptions: {
-        allowFileAccess: true
-      }
+        allowFileAccess: true,
+      },
     }))
-    .catch(e => console.error('Failed install extension:', e))
+    .catch(error => console.error('Failed install extension:', error))
 }
 
-let mainWindow: BrowserWindow | null = null
+let mainWindow: BrowserWindow | undefined
 
 const createWindow = async () => {
   // сохраняет позицию и размер окна
@@ -36,15 +36,15 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     show: false,
     autoHideMenuBar: true,
-    ...windowState
+    ...windowState,
   })
 
   const view = new BrowserView({
     webPreferences: {
       nativeWindowOpen: true,
       webSecurity: false,
-      preload: join(__dirname, '../../preload/dist/index.cjs')
-    }
+      preload: path.join(path.dirname(fileURLToPath(import.meta.url)), '../../preload/dist/index.cjs'),
+    },
   })
 
   const contentBounds = mainWindow.getContentBounds()
@@ -72,7 +72,10 @@ const createWindow = async () => {
 
   const pageUrl = import.meta.env.MODE === 'development' && import.meta.env.VITE_DEV_SERVER_URL !== undefined
     ? import.meta.env.VITE_DEV_SERVER_URL
-    : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString()
+    : new URL(
+      '../renderer/dist/index.html',
+      'file://' + path.dirname(fileURLToPath(import.meta.url)),
+    ).toString()
 
   // подсказки исправлений слов
   // TODO: кажется, сломалось с приходом BrowserView
@@ -82,7 +85,7 @@ const createWindow = async () => {
     for (const suggestion of params.dictionarySuggestions) {
       menu.append(new MenuItem({
         label: suggestion,
-        click: () => mainWindow?.webContents.replaceMisspelling(suggestion)
+        click: () => mainWindow?.webContents.replaceMisspelling(suggestion),
       }))
     }
 
@@ -90,8 +93,8 @@ const createWindow = async () => {
       menu.append(
         new MenuItem({
           label: 'Добавить в словарь',
-          click: () => mainWindow?.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
-        })
+          click: () => mainWindow?.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord),
+        }),
       )
     }
 
@@ -116,11 +119,11 @@ app.on('window-all-closed', () => {
 
 app.whenReady()
   .then(createWindow)
-  .catch((e) => console.error('Failed create window:', e))
+  .catch((error) => console.error('Failed create window:', error))
 
 if (import.meta.env.PROD) {
   app.whenReady()
     .then(() => import('electron-updater'))
     .then(({ autoUpdater }) => autoUpdater.checkForUpdatesAndNotify())
-    .catch((e) => console.error('Failed check updates:', e))
+    .catch((error) => console.error('Failed check updates:', error))
 }

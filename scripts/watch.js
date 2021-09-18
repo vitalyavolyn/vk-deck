@@ -14,9 +14,9 @@ const LOG_LEVEL = 'warn'
 const sharedConfig = {
   mode,
   build: {
-    watch: {}
+    watch: {},
   },
-  logLevel: LOG_LEVEL
+  logLevel: LOG_LEVEL,
 }
 
 /**
@@ -29,7 +29,7 @@ const getWatcher = ({ name, configFile, writeBundle }) => {
   return build({
     ...sharedConfig,
     configFile,
-    plugins: [{ name, writeBundle }]
+    plugins: [{ name, writeBundle }],
   })
 }
 
@@ -49,26 +49,26 @@ const setupMainPackageWatcher = (viteDevServer) => {
   }
 
   const logger = createLogger(LOG_LEVEL, {
-    prefix: '[main]'
+    prefix: '[main]',
   })
 
   /** @type {ChildProcessWithoutNullStreams | null} */
-  let spawnProcess = null
+  let spawnProcess
 
   return getWatcher({
     name: 'reload-app-on-main-package-change',
     configFile: 'packages/main/vite.config.js',
     writeBundle () {
-      if (spawnProcess !== null) {
+      if (spawnProcess) {
         spawnProcess.kill('SIGINT')
-        spawnProcess = null
+        spawnProcess = undefined
       }
 
       spawnProcess = spawn(String(electronPath), ['.'])
 
       spawnProcess.stdout.on('data', d => d.toString().trim() && logger.warn(d.toString(), { timestamp: true }))
       spawnProcess.stderr.on('data', d => d.toString().trim() && logger.error(d.toString(), { timestamp: true }))
-    }
+    },
   })
 }
 
@@ -83,9 +83,9 @@ const setupPreloadPackageWatcher = (viteDevServer) => {
     configFile: 'packages/preload/vite.config.js',
     writeBundle () {
       viteDevServer.ws.send({
-        type: 'full-reload'
+        type: 'full-reload',
       })
-    }
+    },
   })
 };
 
@@ -93,15 +93,15 @@ const setupPreloadPackageWatcher = (viteDevServer) => {
   try {
     const viteDevServer = await createServer({
       ...sharedConfig,
-      configFile: 'packages/renderer/vite.config.js'
+      configFile: 'packages/renderer/vite.config.js',
     })
 
     await viteDevServer.listen()
 
     await setupPreloadPackageWatcher(viteDevServer)
     await setupMainPackageWatcher(viteDevServer)
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    console.error(error)
     process.exit(1)
   }
 })()

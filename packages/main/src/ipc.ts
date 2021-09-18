@@ -15,15 +15,15 @@ export function initIpc (win: BrowserWindow, mainView: BrowserView): void {
     const view = new BrowserView({
       webPreferences: {
         nativeWindowOpen: true,
-        nodeIntegration: false
-      }
+        nodeIntegration: false,
+      },
     })
 
     win.addBrowserView(view)
     view.setBounds(mainView.getBounds())
     view.setAutoResize({
       horizontal: true,
-      vertical: true
+      vertical: true,
     })
 
     const authURL = 'https://oauth.vk.com/authorize'
@@ -34,7 +34,7 @@ export function initIpc (win: BrowserWindow, mainView: BrowserView): void {
       response_type: 'token',
       scope: 'offline,wall,friends',
       revoke: '1',
-      display: 'mobile'
+      display: 'mobile',
     }
 
     view.webContents.loadURL(`${authURL}?${qs.stringify(params)}`)

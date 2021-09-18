@@ -8,7 +8,7 @@ const mode = process.env.MODE = process.env.MODE || 'production'
 const packagesConfigs = [
   'packages/main/vite.config.js',
   'packages/preload/vite.config.js',
-  'packages/renderer/vite.config.js'
+  'packages/renderer/vite.config.js',
 ]
 
 /**
@@ -34,8 +34,8 @@ const buildByConfig = (configFile) => build({ configFile, mode });
       console.log('\n') // Just for pretty print
     }
     console.timeEnd(totalTimeLabel)
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    console.error(error)
     process.exit(1)
   }
 })()
