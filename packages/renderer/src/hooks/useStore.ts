@@ -1,5 +1,5 @@
 import { useContext } from 'react'
 import { StoreContext } from '../store-context'
-import { ApiStore } from '../api-store'
+import { RootStore } from '../store'
 
-export const useStore = (): ApiStore => useContext(StoreContext)
+export const useStore = (): RootStore => useContext(StoreContext)
