@@ -1,9 +1,9 @@
 import { AdaptivityProvider, AppRoot, ConfigProvider } from '@vkontakte/vkui'
-import { FC, useContext, useState } from 'react'
+import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { storeContext } from './store-context'
 import { Dashboard } from './views/dashboard'
 import { Login } from './views/login'
+import { useStore } from './hooks/useStore'
 
 enum AppScheme {
   light = 'bright_light',
@@ -11,7 +11,7 @@ enum AppScheme {
 }
 
 export const App: FC = observer(() => {
-  const { isAuthorized } = useContext(storeContext)
+  const { isAuthorized } = useStore()
 
   const darkThemeMatch = window.matchMedia('(prefers-color-scheme: dark)')
   const getThemeByMediaQuery = (mq: MediaQueryList | MediaQueryListEvent): AppScheme => (

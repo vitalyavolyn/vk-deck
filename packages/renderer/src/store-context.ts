@@ -1,5 +1,6 @@
 import { createContext } from 'react'
 import { ApiStore } from './api-store'
 
+// TODO: export RootStore
 // thanks typescript
-export const storeContext = createContext<ApiStore>({} as ApiStore)
+export const StoreContext = createContext<ApiStore>({} as ApiStore)
