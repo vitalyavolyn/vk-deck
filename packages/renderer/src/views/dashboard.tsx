@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useContext, useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 import {
   Avatar,
   Cell,
@@ -20,11 +20,11 @@ import {
   Icon28UserCircleOutline, Icon56NewsfeedOutline
 } from '@vkontakte/icons'
 import './dashboard.css'
-import { storeContext } from '../store-context'
+import { useStore } from '../hooks/useStore'
 
 export const Dashboard: FC = () => {
   const { viewWidth } = useAdaptivity()
-  const { user } = useContext(storeContext)
+  const { user } = useStore()
   const [activeStory, setActiveStory] = useState('profile')
 
   if (!viewWidth) return <PanelSpinner />

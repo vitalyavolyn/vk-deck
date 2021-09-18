@@ -23,6 +23,7 @@ module.exports = {
   ],
   rules: {
     'no-undef': 'off',
+    'no-unused-vars': 'off',
     'no-use-before-define': 'off',
 
     'linebreak-style': ['error', 'unix'],
@@ -44,6 +45,7 @@ module.exports = {
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
         'no-undef': 'error',
+        'no-unused-vars': 'error',
         'no-use-before-define': 'error'
       }
     }

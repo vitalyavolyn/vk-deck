@@ -6,7 +6,7 @@ import ru from '../locales/ru.yml'
 import { App } from './app'
 import { ApiStore } from './api-store'
 import './styles.css'
-import { storeContext } from './store-context'
+import { StoreContext } from './store-context'
 
 i18n
   .use(initReactI18next)
@@ -17,9 +17,9 @@ i18n
 
 render(
   <StrictMode>
-    <storeContext.Provider value={new ApiStore()}>
+    <StoreContext.Provider value={new ApiStore()}>
       <App />
-    </storeContext.Provider>
+    </StoreContext.Provider>
   </StrictMode>,
   document.querySelector('#app')
 )
