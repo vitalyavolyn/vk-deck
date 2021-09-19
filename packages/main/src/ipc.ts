@@ -10,7 +10,7 @@ interface AuthResponseRaw {
 }
 /* eslint-enable camelcase */
 
-export function initIpc (win: BrowserWindow, mainView: BrowserView): void {
+export function initIpc (win: BrowserWindow): void {
   ipcMain.on('create-browser-view', (e) => {
     const view = new BrowserView({
       webPreferences: {
@@ -20,7 +20,11 @@ export function initIpc (win: BrowserWindow, mainView: BrowserView): void {
     })
 
     win.addBrowserView(view)
-    view.setBounds(mainView.getBounds())
+    view.setBounds({
+      ...win.getBounds(),
+      x: 0,
+      y: 0,
+    })
     view.setAutoResize({
       horizontal: true,
       vertical: true,

@@ -27,7 +27,6 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-use-before-define': 'off',
 
-    'linebreak-style': ['error', 'unix'],
     'no-multiple-empty-lines': ['error', { max: 1 }],
     'comma-dangle': ['error', 'always-multiline'],
 

@@ -1,6 +1,6 @@
 import path from 'path'
 import { URL, fileURLToPath } from 'url'
-import { app, BrowserView, BrowserWindow, Menu, MenuItem } from 'electron'
+import { app, BrowserWindow, Menu, MenuItem } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 import { initIpc } from './ipc'
 
@@ -36,25 +36,22 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     show: false,
     autoHideMenuBar: true,
-    ...windowState,
-  })
-
-  const view = new BrowserView({
     webPreferences: {
       nativeWindowOpen: true,
       webSecurity: false,
       preload: path.join(path.dirname(fileURLToPath(import.meta.url)), '../../preload/dist/index.cjs'),
     },
+    ...windowState,
   })
 
-  const contentBounds = mainWindow.getContentBounds()
-  view.setBounds({ x: 0, y: 0, width: contentBounds.width, height: contentBounds.height })
-  view.setAutoResize({ vertical: true, horizontal: true })
+  // const contentBounds = mainWindow.getContentBounds()
+  // view.setBounds({ x: 0, y: 0, width: contentBounds.width, height: contentBounds.height })
+  // view.setAutoResize({ vertical: true, horizontal: true })
 
-  mainWindow.setBrowserView(view)
+  // mainWindow.setBrowserView(view)
 
   windowState.manage(mainWindow)
-  initIpc(mainWindow, view)
+  initIpc(mainWindow)
 
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
@@ -62,11 +59,11 @@ const createWindow = async () => {
    *
    * @see https://github.com/electron/electron/issues/25012
    */
-  view.webContents.on('dom-ready', () => {
+  mainWindow.on('ready-to-show', () => {
     mainWindow?.show()
 
     if (import.meta.env.MODE === 'development') {
-      view?.webContents.openDevTools()
+      mainWindow?.webContents.openDevTools()
     }
   })
 
@@ -79,7 +76,7 @@ const createWindow = async () => {
 
   // подсказки исправлений слов
   // TODO: кажется, сломалось с приходом BrowserView
-  view.webContents.on('context-menu', (event, params) => {
+  mainWindow.webContents.on('context-menu', (event, params) => {
     const menu = new Menu()
 
     for (const suggestion of params.dictionarySuggestions) {
@@ -101,7 +98,7 @@ const createWindow = async () => {
     if (menu.items.length) menu.popup()
   })
 
-  await view.webContents.loadURL(pageUrl)
+  await mainWindow.webContents.loadURL(pageUrl)
 }
 
 app.on('second-instance', () => {
