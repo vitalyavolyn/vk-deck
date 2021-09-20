@@ -20,15 +20,8 @@ export function initIpc (win: BrowserWindow): void {
     })
 
     win.addBrowserView(view)
-    view.setBounds({
-      ...win.getBounds(),
-      x: 0,
-      y: 0,
-    })
-    view.setAutoResize({
-      horizontal: true,
-      vertical: true,
-    })
+    view.setBounds({ ...win.getBounds(), x: 0, y: 0 })
+    view.setAutoResize({ horizontal: true, vertical: true })
 
     const authURL = 'https://oauth.vk.com/authorize'
     const redirectURL = 'https://oauth.vk.com/blank.html'
