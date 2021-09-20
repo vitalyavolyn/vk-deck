@@ -10,4 +10,8 @@
   svg {
     color: var(--accent);
   }
+
+  .vkuiAvatar {
+    margin: 4px 0 8px;
+  }
 }

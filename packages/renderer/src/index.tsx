@@ -7,7 +7,7 @@ import ru from '../locales/ru.yml'
 import { App } from './app'
 import { RootStore } from './store'
 import { StoreContext } from './store-context'
-import './styles.css'
+import './global.css'
 
 /*
  * TODO: ¯\_(ツ)_/¯ либо makeAutoObservable не

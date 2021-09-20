@@ -1,7 +1,5 @@
 import { FC, MouseEvent, useState } from 'react'
 import {
-  Avatar,
-  Cell,
   Group,
   Panel,
   PanelSpinner, Placeholder,
@@ -15,24 +13,20 @@ import {
 import {
   Icon28ClipOutline,
   Icon28MessageOutline,
-  Icon28NewsfeedOutline,
   Icon28ServicesOutline,
   Icon28UserCircleOutline,
   Icon56NewsfeedOutline,
 } from '@vkontakte/icons'
-import './dashboard.css'
 import { observer } from 'mobx-react-lite'
-import { useStore } from '../hooks/use-store'
+import { Navbar } from '../components/navbar'
 
 export const Dashboard: FC = observer(() => {
   const { viewWidth } = useAdaptivity()
-  const { api } = useStore()
-  const { user } = api
   const [activeStory, setActiveStory] = useState('profile')
 
   if (!viewWidth) return <PanelSpinner />
 
-  const onStoryChange = (e: MouseEvent<HTMLElement>) => setActiveStory(e.currentTarget.dataset.story!)
+  const onColumnClick = (e: MouseEvent<HTMLElement>) => setActiveStory(e.currentTarget.dataset.story!)
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
 
   return (
@@ -40,41 +34,7 @@ export const Dashboard: FC = observer(() => {
       style={{ justifyContent: 'center' }}
     >
       <SplitCol fixed width="76px" maxWidth="76px">
-        <Panel id="nav">
-          <div className="navBar">
-            <Avatar src={user.photo_50} />
-            <Cell
-              data-story="feed"
-              onClick={onStoryChange}
-            >
-              <Icon28NewsfeedOutline />
-            </Cell>
-            <Cell
-              data-story="services"
-              onClick={onStoryChange}
-            >
-              <Icon28ServicesOutline />
-            </Cell>
-            <Cell
-              data-story="messages"
-              onClick={onStoryChange}
-            >
-              <Icon28MessageOutline />
-            </Cell>
-            <Cell
-              data-story="clips"
-              onClick={onStoryChange}
-            >
-              <Icon28ClipOutline />
-            </Cell>
-            <Cell
-              data-story="profile"
-              onClick={onStoryChange}
-            >
-              <Icon28UserCircleOutline />
-            </Cell>
-          </div>
-        </Panel>
+        <Navbar onColumnClick={onColumnClick} />
       </SplitCol>
 
       <SplitCol
