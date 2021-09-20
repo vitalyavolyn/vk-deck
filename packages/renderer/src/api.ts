@@ -16,10 +16,11 @@ export class Api {
     this.token = token
   }
 
-  async call <T, R = Record<string, string | number>> (method: string, params: R): Promise<T> {
+  async call <T, R = Record<string, string | number>> (method: string, params?: R): Promise<T> {
     const { v, lang, token } = this
     console.log('CALL', method, params)
-    params = {
+
+    const completeParams = {
       v,
       lang,
       access_token: token,
@@ -27,10 +28,9 @@ export class Api {
     }
 
     return instance
-      // TODO:
-      // @ts-ignore: я либо сдамся и params будет Record<string, string>, либо так
-      .post(`/method/${method}`, new URLSearchParams(params).toString())
+      .post(`/method/${method}`, new URLSearchParams(completeParams).toString())
       .then(({ data }) => {
+        console.log(data)
         if (data.response) {
           return data.response
         } else {

@@ -7,21 +7,23 @@ import {
   Icon28ServicesOutline,
   Icon28UserCircleOutline,
 } from '@vkontakte/icons'
+import { observer } from 'mobx-react-lite'
 import { useStore } from '../hooks/use-store'
+
 import './navbar.css'
 
 interface NavbarProps {
   onColumnClick(e: MouseEvent<HTMLElement>): void
 }
 
-export const Navbar: FC<NavbarProps> = ({ onColumnClick }) => {
+export const Navbar: FC<NavbarProps> = observer(({ onColumnClick }) => {
   const { api } = useStore()
   const { user } = api
 
   return (
     <Panel id="nav">
       <div className="navBar">
-        <Avatar src={user.photo_50} />
+        <Avatar size={40} src={user.photo_50} title={`${user.first_name} ${user.last_name}`} />
         <Cell
           data-story="feed"
           onClick={onColumnClick}
@@ -55,4 +57,4 @@ export const Navbar: FC<NavbarProps> = ({ onColumnClick }) => {
       </div>
     </Panel>
   )
-}
+})

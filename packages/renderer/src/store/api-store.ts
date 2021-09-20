@@ -20,6 +20,7 @@ export class ApiStore {
   }
 
   async fetchUser (): Promise<void> {
+    // TODO: catch error
     const [user] = await this.api.call<UsersGetResponse, UsersGetParams>('users.get', {
       fields: 'photo_50',
     })
