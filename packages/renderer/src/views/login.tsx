@@ -9,9 +9,11 @@ export const Login: FC = observer(() => {
   const { getTokenFromBrowserView } = useElectron()
 
   useEffect(() => {
-    getTokenFromBrowserView().then(token => {
-      api.setToken(token)
-    })
+    if (!api.token) {
+      getTokenFromBrowserView().then(token => {
+        api.setToken(token)
+      })
+    }
   }, [api, getTokenFromBrowserView])
 
   return <ScreenSpinner />

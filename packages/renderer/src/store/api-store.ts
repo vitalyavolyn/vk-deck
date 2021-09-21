@@ -9,7 +9,7 @@ export class ApiStore {
   api = new Api()
 
   get isAuthorized (): boolean {
-    return !!this.token
+    return !!this.token && !!this.user.id
   }
 
   setToken (token: string): void {
