@@ -1,3 +1,19 @@
 .columns {
+  display: flex;
   height: 100%;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  /* TODO: vertical gap? */
+
+  .column {
+    width: 310px;
+    height: 100%;
+    flex: 0 0 auto;
+    opacity: 0.3;
+  }
+}
+
+.vkuiSplitCol--spaced .columns {
+  gap: var(--spaced-columns-gap);
 }

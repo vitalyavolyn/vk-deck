@@ -7,5 +7,28 @@
 }
 
 .vkuiSplitCol--spaced {
-  margin: 0 8px;
+  --spaced-columns-gap: 8px;
+
+  margin: 0 var(--spaced-columns-gap);
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(179, 175, 179, 0.5);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b3afb3;
 }
