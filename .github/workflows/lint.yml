@@ -22,7 +22,7 @@ defaults:
     shell: 'bash'
 
 jobs:
-  eslint:
+  linters:
     runs-on: ubuntu-latest
 
     steps:
