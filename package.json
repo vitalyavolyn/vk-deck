@@ -29,7 +29,8 @@
     "pre-push": "yarn typecheck"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": "eslint --cache --fix"
+    "*.{js,ts,tsx}": "eslint --cache --fix",
+    "*.css": "stylelint --cache --fix"
   },
   "devDependencies": {
     "@rollup/plugin-yaml": "^3.1.0",
