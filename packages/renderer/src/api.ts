@@ -1,5 +1,6 @@
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
+import i18n from 'i18next'
 
 const instance = rateLimit(
   axios.create({ baseURL: 'https://api.vk.com' }),
@@ -9,8 +10,7 @@ const instance = rateLimit(
 export class Api {
   private token = ''
   v = '5.131'
-  // TODO: get from i18next
-  lang = navigator.language.split('-')[0]
+  lang = i18n.language.split('-')[0]
 
   setToken (token: string): void {
     this.token = token

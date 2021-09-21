@@ -4,8 +4,8 @@
   flex-direction: column;
   align-items: center;
   padding: 8px;
+  border-right: var(--thin-border) solid var(--input_border);
   background-color: var(--background_content);
-  box-shadow: inset 0 0 0 var(--thin-border) var(--input_border);
 
   svg {
     color: var(--accent);

@@ -75,7 +75,6 @@ const createWindow = async () => {
     ).toString()
 
   // подсказки исправлений слов
-  // TODO: кажется, сломалось с приходом BrowserView
   mainWindow.webContents.on('context-menu', (event, params) => {
     const menu = new Menu()
 
