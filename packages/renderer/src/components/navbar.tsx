@@ -1,5 +1,5 @@
 import { FC, MouseEvent } from 'react'
-import { Avatar, Cell, Panel, Tappable } from '@vkontakte/vkui'
+import { Avatar, Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
 import {
   Icon28ClipOutline,
   Icon28MessageOutline,
@@ -7,6 +7,7 @@ import {
   Icon28ServicesOutline,
   Icon28UserCircleOutline,
   Icon28WriteOutline,
+  Icon28CancelOutline,
 } from '@vkontakte/icons'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '../hooks/use-store'
@@ -16,17 +17,22 @@ import './navbar.css'
 interface NavbarProps {
   onColumnClick(e: MouseEvent<HTMLElement>): void
   onComposeButtonClick(): void
+  isComposerOpened: boolean
 }
 
-export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButtonClick }) => {
+export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButtonClick, isComposerOpened }) => {
   const { api } = useStore()
   const { user } = api
 
   return (
     <Panel id="nav">
       <div className="navbar">
-        <Tappable onClick={onComposeButtonClick} activeMode="opacity" className="composer-button">
-          <Icon28WriteOutline />
+        <Tappable
+          onClick={onComposeButtonClick}
+          activeMode="opacity"
+          className={classNames('composer-button', { active: isComposerOpened })}
+        >
+          {isComposerOpened ? <Icon28CancelOutline /> : <Icon28WriteOutline />}
         </Tappable>
 
         <div className="column-navigator">

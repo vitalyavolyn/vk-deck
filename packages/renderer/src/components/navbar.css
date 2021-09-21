@@ -33,5 +33,10 @@
     background-color: var(--button_primary_background);
     border-radius: 50%;
     color: var(--button_primary_foreground);
+
+    &.active {
+      background-color: var(--modal_card_background);
+      color: var(--text_primary);
+    }
   }
 }

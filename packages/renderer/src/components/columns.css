@@ -7,7 +7,7 @@
   /* TODO: vertical gap? */
 
   .column {
-    width: 310px;
+    width: var(--column-width);
     height: 100%;
     flex: 0 0 auto;
     opacity: 0.3;
