@@ -23,7 +23,9 @@ export const Navbar: FC<NavbarProps> = observer(({ onColumnClick }) => {
   return (
     <Panel id="nav">
       <div className="navBar">
-        <Avatar size={40} src={user.photo_50} title={`${user.first_name} ${user.last_name}`} />
+        <a target="_blank" href={`https://vk.com/id${user.id}`}>
+          <Avatar size={40} src={user.photo_50} title={`${user.first_name} ${user.last_name}`} />
+        </a>
         <Cell
           data-story="feed"
           onClick={onColumnClick}

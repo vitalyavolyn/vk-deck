@@ -1,6 +1,6 @@
 import path from 'path'
 import { URL, fileURLToPath } from 'url'
-import { app, BrowserWindow, Menu, MenuItem } from 'electron'
+import { app, BrowserWindow, Menu, MenuItem, shell } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 import { initIpc } from './ipc'
 
@@ -74,6 +74,12 @@ const createWindow = async () => {
       'file://' + path.dirname(fileURLToPath(import.meta.url)),
     ).toString()
 
+  // открытие сторонних ссылок в браузере
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url)
+    return { action: 'deny' }
+  })
+
   // подсказки исправлений слов
   mainWindow.webContents.on('context-menu', (event, params) => {
     const menu = new Menu()
@@ -117,6 +123,8 @@ app.whenReady()
   .then(createWindow)
   .catch((error) => console.error('Failed create window:', error))
 
+// TODO: проверить, работает ли вообще это
+// и хочу ли я обновления
 if (import.meta.env.PROD) {
   app.whenReady()
     .then(() => import('electron-updater'))
