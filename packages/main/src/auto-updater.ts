@@ -3,6 +3,7 @@ import { BrowserWindow } from 'electron'
 
 export async function checkForUpdatesAndNotify (win: BrowserWindow): Promise<void> {
   try {
+    autoUpdater.autoDownload = false
     autoUpdater.on('update-available', (info: UpdateInfo) => {
       win.webContents.send('update-available', info)
     })
