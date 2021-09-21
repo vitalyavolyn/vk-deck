@@ -60,5 +60,11 @@ module.exports = {
         'unicorn/prefer-module': 'off',
       },
     },
+    {
+      files: ['*.d.ts'],
+      rules: {
+        '@typescript-eslint/consistent-type-imports': 'off',
+      },
+    },
   ],
 }

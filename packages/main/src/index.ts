@@ -127,7 +127,6 @@ app.whenReady()
 // и хочу ли я обновления
 if (import.meta.env.PROD) {
   app.whenReady()
-    .then(() => import('electron-updater'))
-    .then(({ autoUpdater }) => autoUpdater.checkForUpdatesAndNotify())
-    .catch((error) => console.error('Failed check updates:', error))
+    .then(() => import('./auto-updater'))
+    .then(({ checkForUpdatesAndNotify }) => checkForUpdatesAndNotify(mainWindow!))
 }

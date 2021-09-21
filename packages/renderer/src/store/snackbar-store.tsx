@@ -2,17 +2,16 @@ import { Snackbar, SnackbarProps } from '@vkontakte/vkui'
 import { makeAutoObservable } from 'mobx'
 import { RootStore } from './root-store'
 
-const defaultProps = {
-  onClose () {
-    console.log('Snackbar closed (default onClose)')
-  },
-}
-
 export class SnackbarStore {
   // eslint-disable-next-line unicorn/no-null
   public element: JSX.Element | null = null
+  public defaultProps = { onClose: this.defaultOnClose }
 
-  show (content: string | JSX.Element, snackbarProps: SnackbarProps = defaultProps): void {
+  defaultOnClose (): void {
+    console.log('Snackbar closed (default onClose)')
+  }
+
+  show (content: string | JSX.Element, snackbarProps: SnackbarProps = this.defaultProps): void {
     this.element = typeof content === 'string'
       ? <Snackbar {...snackbarProps}>{content}</Snackbar>
       : content

@@ -13,6 +13,9 @@ const api: ElectronApi = {
       })
     })
   },
+  setUpdateAvailableHandler (func: UpdateAvailableHandler) {
+    ipcRenderer.on('update-available', (event, arg) => func(arg))
+  },
 }
 
 contextBridge.exposeInMainWorld(apiKey, api)

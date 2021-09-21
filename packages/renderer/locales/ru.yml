@@ -1,2 +1,4 @@
 translation:
-  test: Проверка локализации
+  update:
+    available: Доступно обновление до версии {{version}}
+    action: Открыть
