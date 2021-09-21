@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import {
   PanelSpinner,
   SplitCol,
@@ -23,6 +23,16 @@ export const Dashboard: FC = observer(() => {
     setActiveModal(name)
     setIsModalOpen(true)
   }
+
+  // глобальный шорткат для создания записи
+  useEffect(() => {
+    window.addEventListener('keypress', (e) => {
+      if (e.code === 'KeyN') {
+        setActiveModal('compose')
+        setIsModalOpen(true)
+      }
+    }, true)
+  }, [])
 
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
 
