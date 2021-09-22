@@ -1,0 +1,15 @@
+.modal-container {
+  position: absolute;
+  z-index: -1;
+  width: var(--modal-width);
+  height: 100%;
+  transform: translateX(calc(var(--modal-width) * -1 - var(--spaced-columns-gap)));
+
+  .modal {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 16px 15px 0;
+    background-color: var(--modal_card_background);
+  }
+}

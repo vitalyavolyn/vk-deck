@@ -2,10 +2,49 @@
 
 /* Global overrides */
 
+body {
+  --modal-width: 270px;
+  --column-width: 310px;
+
+  background-color: var(--background_page);
+}
+
 .vkuiPanel__in {
   height: 100%;
 }
 
-.vkuiSplitCol--spaced {
-  margin: 0 8px;
+.vkuiSplitCol {
+  /* stylelint-disable-next-line length-zero-no-unit */
+  --spaced-columns-gap: 0px; /* без "px" оно ломает calc() */
+
+  &--spaced {
+    --spaced-columns-gap: 8px;
+
+    margin: 0 var(--spaced-columns-gap);
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(179, 175, 179, 0.5);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(179, 175, 179);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgb(143, 141, 143);
 }

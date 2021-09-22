@@ -1,17 +1,43 @@
-.navBar {
+.navbar {
   display: flex;
   height: 100%;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: center;
   padding: 8px;
   border-right: var(--thin-border) solid var(--input_border);
   background-color: var(--background_content);
+  user-select: none;
 
-  svg {
-    color: var(--accent);
+  .column-navigator {
+    flex-grow: 1;
+    overflow-y: overlay;
+
+    svg {
+      color: var(--icon_secondary);
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
   }
 
   .vkuiAvatar {
-    margin: 4px 0 8px;
+    margin-top: 4px;
+    cursor: pointer;
+  }
+
+  .composer-button {
+    padding: 8px;
+    margin-bottom: 4px;
+    background-color: var(--button_primary_background);
+    border-radius: 50%;
+    color: var(--button_primary_foreground);
+
+    &.active {
+      background-color: var(--modal_card_background);
+      box-shadow: inset 0 0 0 1px var(--text_secondary);
+      color: var(--text_primary);
+    }
   }
 }

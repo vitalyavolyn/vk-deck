@@ -3,8 +3,7 @@ import { makeAutoObservable } from 'mobx'
 import { RootStore } from './root-store'
 
 export class SnackbarStore {
-  // eslint-disable-next-line unicorn/no-null
-  public element: JSX.Element | null = null
+  public element?: JSX.Element
   public defaultProps = { onClose: this.defaultOnClose }
 
   defaultOnClose (): void {

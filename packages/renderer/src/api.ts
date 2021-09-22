@@ -38,6 +38,5 @@ export class Api {
           throw data.error
         }
       })
-      // TODO: catch
   }
 }

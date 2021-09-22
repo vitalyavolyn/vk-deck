@@ -1,7 +1,10 @@
 import path from 'path'
 import { URL, fileURLToPath } from 'url'
-import { app, BrowserWindow, Menu, MenuItem, shell } from 'electron'
+import { app, BrowserWindow, shell } from 'electron'
 import windowStateKeeper from 'electron-window-state'
+import contextMenu from 'electron-context-menu'
+import i18n from 'i18next'
+import ru from '../locales/ru.yml'
 import { initIpc } from './ipc'
 
 const isSingleInstance = app.requestSingleInstanceLock()
@@ -12,6 +15,12 @@ if (!isSingleInstance) {
 }
 
 app.disableHardwareAcceleration()
+
+i18n
+  .init({
+    fallbackLng: 'ru',
+    resources: { ru },
+  })
 
 if (import.meta.env.MODE === 'development') {
   app.whenReady()
@@ -34,6 +43,8 @@ const createWindow = async () => {
   const windowState = windowStateKeeper({})
 
   mainWindow = new BrowserWindow({
+    minWidth: 400,
+    minHeight: 550,
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
@@ -44,21 +55,25 @@ const createWindow = async () => {
     ...windowState,
   })
 
-  // const contentBounds = mainWindow.getContentBounds()
-  // view.setBounds({ x: 0, y: 0, width: contentBounds.width, height: contentBounds.height })
-  // view.setAutoResize({ vertical: true, horizontal: true })
-
-  // mainWindow.setBrowserView(view)
+  // TODO: меню на макоси
+  if (process.platform !== 'darwin') {
+    mainWindow.removeMenu()
+  }
 
   windowState.manage(mainWindow)
   initIpc(mainWindow)
+  contextMenu({
+    labels: {
+      copy: i18n.t`contextmenu.copy`,
+      paste: i18n.t`contextmenu.paste`,
+      cut: i18n.t`contextmenu.cut`,
+      learnSpelling: i18n.t`contextmenu.learnSpelling`,
+      searchWithGoogle: i18n.t`contextmenu.searchWithGoogle`,
+      copyLink: i18n.t`contextmenu.copyLink`,
+      copyImage: i18n.t`contextmenu.copyImage`,
+    },
+  })
 
-  /**
-   * If you install `show: true` then it can cause issues when trying to close the window.
-   * Use `show: false` and listener events `ready-to-show` to fix these issues.
-   *
-   * @see https://github.com/electron/electron/issues/25012
-   */
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show()
 
@@ -78,29 +93,6 @@ const createWindow = async () => {
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)
     return { action: 'deny' }
-  })
-
-  // подсказки исправлений слов
-  mainWindow.webContents.on('context-menu', (event, params) => {
-    const menu = new Menu()
-
-    for (const suggestion of params.dictionarySuggestions) {
-      menu.append(new MenuItem({
-        label: suggestion,
-        click: () => mainWindow?.webContents.replaceMisspelling(suggestion),
-      }))
-    }
-
-    if (params.misspelledWord) {
-      menu.append(
-        new MenuItem({
-          label: 'Добавить в словарь',
-          click: () => mainWindow?.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord),
-        }),
-      )
-    }
-
-    if (menu.items.length) menu.popup()
   })
 
   await mainWindow.webContents.loadURL(pageUrl)
