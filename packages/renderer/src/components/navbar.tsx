@@ -21,8 +21,8 @@ interface NavbarProps {
 }
 
 export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButtonClick, isComposerOpened }) => {
-  const { api } = useStore()
-  const { user } = api.userData
+  const { userStore } = useStore()
+  const { user } = userStore.data
 
   return (
     <Panel id="nav">

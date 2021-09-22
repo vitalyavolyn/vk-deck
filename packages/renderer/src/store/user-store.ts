@@ -11,13 +11,13 @@ interface UserData {
   managedGroups: GroupsGroupFull[]
 }
 
-export class ApiStore {
+export class UserStore {
   token = ''
-  userData: UserData = {} as UserData // в местах, где используется, он будет (честно)
+  data: UserData = {} as UserData // в местах, где используется, он будет (честно)
   api = new Api()
 
   get isAuthorized (): boolean {
-    return !!this.token && !!this.userData.user?.id
+    return !!this.token && !!this.data.user?.id
   }
 
   setToken (token: string): void {
@@ -29,7 +29,7 @@ export class ApiStore {
 
   async fetchUser (): Promise<void> {
     // TODO: catch error
-    this.userData = await this.api.call<UserData>('execute.init')
+    this.data = await this.api.call<UserData>('execute.init')
   }
 
   constructor (public root: RootStore) {

@@ -1,8 +1,7 @@
-import { ApiStore } from './api-store'
+import { UserStore } from './user-store'
 import { SnackbarStore } from './snackbar-store'
 
 export class RootStore {
-  // TODO: rename `api` or `ApiStore`
-  public api: ApiStore = new ApiStore(this)
-  public snackbar: SnackbarStore = new SnackbarStore(this)
+  public userStore: UserStore = new UserStore(this)
+  public snackbarStore: SnackbarStore = new SnackbarStore(this)
 }

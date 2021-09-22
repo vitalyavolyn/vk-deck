@@ -5,16 +5,16 @@ import { useElectron } from '../hooks/use-electron'
 import { useStore } from '../hooks/use-store'
 
 export const Login: FC = observer(() => {
-  const { api } = useStore()
+  const { userStore } = useStore()
   const { getTokenFromBrowserView } = useElectron()
 
   useEffect(() => {
-    if (!api.token) {
+    if (!userStore.token) {
       getTokenFromBrowserView().then(token => {
-        api.setToken(token)
+        userStore.setToken(token)
       })
     }
-  }, [api, getTokenFromBrowserView])
+  }, [userStore, getTokenFromBrowserView])
 
   return <ScreenSpinner />
 })

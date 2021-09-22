@@ -10,8 +10,8 @@ import { ModalProps } from '../modal-container'
 import './compose-modal.css'
 
 export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
-  const { api } = useStore()
-  const { id } = api.userData.user
+  const { userStore } = useStore()
+  const { id } = userStore.data.user
 
   const { t } = useTranslation()
 
@@ -28,9 +28,9 @@ export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
     setErrorText('')
     setIsLoading(true)
     try {
-      await api.api.call<WallPostResponse, WallPostParams>('wall.post', {
+      await userStore.api.call<WallPostResponse, WallPostParams>('wall.post', {
         owner_id: selectedAccount,
-        // message: text,
+        message: text,
       })
     } catch (error) {
       // @ts-ignore: TODO: свой класс для ошибок

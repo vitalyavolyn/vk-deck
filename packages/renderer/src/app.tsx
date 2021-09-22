@@ -10,8 +10,8 @@ import { useAppScheme } from './hooks/use-app-scheme'
 import { useElectron } from './hooks/use-electron'
 
 export const App: FC = observer(() => {
-  const { api, snackbar } = useStore()
-  const { isAuthorized } = api
+  const { userStore, snackbarStore } = useStore()
+  const { isAuthorized } = userStore
   const { t } = useTranslation()
 
   const scheme = useAppScheme()
@@ -22,9 +22,9 @@ export const App: FC = observer(() => {
     setUpdateAvailableHandler(info => {
       const { version } = info
 
-      snackbar.show(
+      snackbarStore.show(
         <Snackbar
-          onClose={snackbar.defaultOnClose}
+          onClose={snackbarStore.defaultOnClose}
           action={t`update.action`}
           onActionClick={() => { window.open('https://github.com/vitalyavolyn/vk-deck/releases') }}
           before={(
@@ -38,7 +38,7 @@ export const App: FC = observer(() => {
         </Snackbar>,
       )
     })
-  }, [setUpdateAvailableHandler, snackbar, t])
+  }, [setUpdateAvailableHandler, snackbarStore, t])
 
   return (
     <ConfigProvider scheme={scheme}>

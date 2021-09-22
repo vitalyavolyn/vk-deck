@@ -17,7 +17,7 @@ import './dashboard.css'
 
 export const Dashboard: FC = observer(() => {
   const { viewWidth } = useAdaptivity()
-  const { snackbar } = useStore()
+  const { snackbarStore } = useStore()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeModal, setActiveModal] = useState<ModalName | undefined>()
   if (!viewWidth) return <PanelSpinner />
@@ -64,7 +64,7 @@ export const Dashboard: FC = observer(() => {
         <ModalContainer modal={activeModal} closeModal={closeModal} />
         <Columns />
       </SplitCol>
-      {snackbar.element}
+      {snackbarStore.element}
     </SplitLayout>
   )
 })

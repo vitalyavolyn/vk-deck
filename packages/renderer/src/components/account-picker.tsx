@@ -69,8 +69,8 @@ export const AccountPicker: FC<AccountPickerProps> = observer(({
   selectedAccount,
   onSelect,
 }) => {
-  const { api } = useStore()
-  const { user, managedGroups } = api.userData
+  const { userStore } = useStore()
+  const { user, managedGroups } = userStore.data
 
   return (
     <div className={classNames('account-picker', mode)}>
