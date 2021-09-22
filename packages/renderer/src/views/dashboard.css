@@ -1,0 +1,8 @@
+.columns-container {
+  transition-duration: 200ms;
+
+  &.modal-open {
+    margin-right: var(--modal-width);
+    transform: translateX(var(--modal-width));
+  }
+}

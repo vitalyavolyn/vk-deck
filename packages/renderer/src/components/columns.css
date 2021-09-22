@@ -11,6 +11,10 @@
     height: 100%;
     flex: 0 0 auto;
     opacity: 0.3;
+
+    &:last-of-type {
+      margin-right: var(--spaced-columns-gap);
+    }
   }
 }
 

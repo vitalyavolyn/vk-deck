@@ -10,10 +10,6 @@ import { StoreContext } from './store-context'
 
 import './global.css'
 
-/*
- * TODO: ¯\_(ツ)_/¯ либо makeAutoObservable не
- * работает, как надо, либо я глупый
-*/
 configure({ enforceActions: 'never' })
 
 i18n

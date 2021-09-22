@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import {
+  classNames,
   PanelSpinner,
   SplitCol,
   SplitLayout,
@@ -12,6 +13,8 @@ import { Columns } from '../components/columns'
 import { useStore } from '../hooks/use-store'
 import { ModalContainer, ModalName } from '../components/modal-container'
 
+import './dashboard.css'
+
 export const Dashboard: FC = observer(() => {
   const { viewWidth } = useAdaptivity()
   const { snackbar } = useStore()
@@ -22,6 +25,14 @@ export const Dashboard: FC = observer(() => {
   const openModal = (name: ModalName) => {
     setActiveModal(name)
     setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+
+    // тайпскрипт и еслинт меня троллят, один не разрешает без параметров, другой против `undefined`
+    // eslint-disable-next-line unicorn/no-useless-undefined
+    setTimeout(() => setActiveModal(undefined), 200)
   }
 
   // глобальный шорткат для создания записи
@@ -37,9 +48,7 @@ export const Dashboard: FC = observer(() => {
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
 
   return (
-    <SplitLayout
-      style={{ justifyContent: 'center' }}
-    >
+    <SplitLayout>
       <SplitCol fixed width="64px" maxWidth="64px" style={{ zIndex: 1 }}>
         <Navbar
           onColumnClick={() => { console.log('click!') }}
@@ -50,12 +59,9 @@ export const Dashboard: FC = observer(() => {
 
       <SplitCol
         spaced={isDesktop}
-        style={{
-          transform: `translateX(${isModalOpen ? 'var(--modal-width)' : 0})`,
-          transitionDuration: '200ms',
-        }}
+        className={classNames({ 'modal-open': isModalOpen }, 'columns-container')}
       >
-        <ModalContainer modal={activeModal} />
+        <ModalContainer modal={activeModal} closeModal={closeModal} />
         <Columns />
       </SplitCol>
       {snackbar.element}

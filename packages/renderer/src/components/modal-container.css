@@ -9,7 +9,7 @@
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    padding: 16px;
+    padding: 16px 15px 0;
     background-color: var(--modal_card_background);
   }
 }

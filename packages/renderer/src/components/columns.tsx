@@ -2,8 +2,6 @@ import { FC } from 'react'
 
 import './columns.css'
 
-// TODO: isModalOpen
-
 export const Columns: FC = () => {
   return (
     <div className="columns">

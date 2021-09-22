@@ -1,15 +1,23 @@
 import { makeAutoObservable } from 'mobx'
-import { UsersGetParams, UsersGetResponse, UsersUserXtrCounters } from '@vkontakte/api-schema-typescript'
+import {
+  GroupsGroupFull,
+  UsersUserXtrCounters,
+} from '@vkontakte/api-schema-typescript'
 import { Api } from '../api'
 import { RootStore } from './root-store'
 
+interface UserData {
+  user: UsersUserXtrCounters
+  managedGroups: GroupsGroupFull[]
+}
+
 export class ApiStore {
   token = ''
-  user: UsersUserXtrCounters = {} as UsersUserXtrCounters // в местах, где используется, он будет (честно)
+  userData: UserData = {} as UserData // в местах, где используется, он будет (честно)
   api = new Api()
 
   get isAuthorized (): boolean {
-    return !!this.token && !!this.user.id
+    return !!this.token && !!this.userData.user?.id
   }
 
   setToken (token: string): void {
@@ -21,11 +29,7 @@ export class ApiStore {
 
   async fetchUser (): Promise<void> {
     // TODO: catch error
-    const [user] = await this.api.call<UsersGetResponse, UsersGetParams>('users.get', {
-      fields: 'photo_50',
-    })
-
-    this.user = user
+    this.userData = await this.api.call<UserData>('execute.init')
   }
 
   constructor (public root: RootStore) {

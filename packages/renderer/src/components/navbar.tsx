@@ -22,7 +22,7 @@ interface NavbarProps {
 
 export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButtonClick, isComposerOpened }) => {
   const { api } = useStore()
-  const { user } = api
+  const { user } = api.userData
 
   return (
     <Panel id="nav">
@@ -59,12 +59,6 @@ export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButto
             onClick={onColumnClick}
           >
             <Icon28ClipOutline />
-          </Cell>
-          <Cell
-            data-story="profile"
-            onClick={onColumnClick}
-          >
-            <Icon28UserCircleOutline />
           </Cell>
           <Cell
             data-story="profile"
