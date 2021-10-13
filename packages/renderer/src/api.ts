@@ -7,6 +7,16 @@ const instance = rateLimit(
   { maxRPS: 3 },
 )
 
+type VKApiResponse<T> = {
+  response: T
+}
+
+type VKApiError = {
+  error: unknown
+}
+
+type VKApiData<T> = VKApiResponse<T> | VKApiError
+
 export class Api {
   private token = ''
   v = '5.131'
@@ -27,16 +37,15 @@ export class Api {
       ...params,
     }
 
-    return instance
-      .post(`/method/${method}`, new URLSearchParams(completeParams).toString())
-      .then(({ data }) => {
-        console.log(data)
-        if (data.response) {
-          return data.response
-        } else {
-          // TODO: execute??
-          throw data.error
-        }
-      })
+    const { data } = await instance.post<VKApiData<T>>(
+      `/method/${method}`, new URLSearchParams(completeParams).toString(),
+    )
+
+    if ('response' in data) {
+      return data.response
+    }
+
+    // TODO: execute??
+    throw data.error
   }
 }
