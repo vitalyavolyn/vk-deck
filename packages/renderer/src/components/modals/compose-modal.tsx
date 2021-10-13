@@ -70,7 +70,7 @@ export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
       {errorText && <FormStatus header={t`composer.error`} mode="error">
         {errorText}
       </FormStatus>}
-      <Textarea placeholder={t`composer.placeholder`} onChange={event => setText(event.currentTarget.value)} />
+      <Textarea placeholder={t`composer.placeholder`} onChange={(event) => setText(event.currentTarget.value)} />
       {/* TODO: Ctrl+Enter */}
       <Button
         className="post"

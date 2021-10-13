@@ -20,10 +20,10 @@ export class UserStore {
     return !!this.token && !!this.data.user?.id
   }
 
-  setToken (token: string): void {
+  async setToken (token: string): Promise<void> {
     this.token = token
     this.api.setToken(token)
-    this.fetchUser()
+    await this.fetchUser()
     localStorage.setItem('token', token)
   }
 

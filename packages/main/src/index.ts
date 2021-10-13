@@ -33,7 +33,7 @@ if (import.meta.env.MODE === 'development') {
         allowFileAccess: true,
       },
     }))
-    .catch(error => console.error('Failed install extension:', error))
+    .catch((error) => console.error('Failed install extension:', error))
 }
 
 let mainWindow: BrowserWindow | undefined

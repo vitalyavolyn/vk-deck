@@ -94,7 +94,7 @@ export const AccountPicker: FC<AccountPickerProps> = observer(({
       />
 
       {groups
-        .map(group => (
+        .map((group) => (
           <Account
             key={group.id}
             name={group.name}
@@ -117,7 +117,7 @@ export const AccountPicker: FC<AccountPickerProps> = observer(({
       )}
 
       {isExpanded && managedGroups.slice(10)
-        .map(group => (
+        .map((group) => (
           <Account
             key={group.id}
             name={group.name}

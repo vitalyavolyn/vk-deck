@@ -19,7 +19,7 @@ export const App: FC = observer(() => {
   const { setUpdateAvailableHandler } = useElectron()
 
   useEffect(() => {
-    setUpdateAvailableHandler(info => {
+    setUpdateAvailableHandler((info) => {
       const { version } = info
 
       snackbarStore.show(

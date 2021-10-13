@@ -10,8 +10,11 @@ export const Login: FC = observer(() => {
 
   useEffect(() => {
     if (!userStore.token) {
-      getTokenFromBrowserView().then(token => {
-        userStore.setToken(token)
+      getTokenFromBrowserView().then(async (token) => {
+        // TODO: отлавливание ошибок здесь
+        // может быть при ошибке соединения или
+        // отзыве ключа доступа
+        await userStore.setToken(token)
       })
     }
   }, [userStore, getTokenFromBrowserView])

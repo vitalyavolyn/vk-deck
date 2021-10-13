@@ -29,6 +29,7 @@ module.exports = {
 
     'no-multiple-empty-lines': ['error', { max: 1 }],
     'comma-dangle': ['error', 'always-multiline'],
+    'arrow-parens': ['error', 'always'],
 
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'no-type-imports' }],
