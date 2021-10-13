@@ -71,7 +71,7 @@ export const AccountPicker: FC<AccountPickerProps> = observer(({
 }) => {
   const { userStore } = useStore()
   const { user, managedGroups } = userStore.data
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const isList = mode === AccountPickerMode.list
 

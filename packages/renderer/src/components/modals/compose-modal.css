@@ -1,29 +1,6 @@
-.mode-selector {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 14px 0;
-
-  .picker {
-    display: flex;
-    float: right;
-    gap: 4px;
-
-    .vkuiIcon {
-      cursor: pointer;
-
-      &.active {
-        color: var(--accent);
-      }
-
-      &:not(.active) {
-        opacity: 0.7;
-      }
-    }
-  }
-}
-
 .compose-modal {
+  user-select: none;
+
   .vkuiTitle {
     margin-bottom: 12px;
   }
@@ -35,5 +12,30 @@
   .vkuiButton.post {
     margin: 8px 0;
     float: right;
+  }
+
+  .mode-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 14px 0;
+
+    .picker {
+      display: flex;
+      float: right;
+      gap: 4px;
+
+      .vkuiIcon {
+        cursor: pointer;
+
+        &.active {
+          color: var(--accent);
+        }
+
+        &:not(.active) {
+          opacity: 0.7;
+        }
+      }
+    }
   }
 }

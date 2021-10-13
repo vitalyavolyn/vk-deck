@@ -10,3 +10,5 @@ translation:
     publish: Опубликовать
     done: Готово!
     error: Ошибка при публикации
+  settings:
+    title: Настройки

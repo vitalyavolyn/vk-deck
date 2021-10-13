@@ -52,8 +52,9 @@ export const Dashboard: FC = observer(() => {
       <SplitCol fixed width="64px" maxWidth="64px" style={{ zIndex: 1 }}>
         <Navbar
           onColumnClick={() => { console.log('click!') }}
-          onComposeButtonClick={() => !isModalOpen ? openModal('compose') : setIsModalOpen(false)}
+          onComposeButtonClick={() => (!isModalOpen || activeModal !== 'compose') ? openModal('compose') : setIsModalOpen(false)}
           isComposerOpened={isModalOpen && activeModal === 'compose'}
+          onSettingsClick={() => (!isModalOpen || activeModal !== 'settings') ? openModal('settings') : setIsModalOpen(false)}
         />
       </SplitCol>
 

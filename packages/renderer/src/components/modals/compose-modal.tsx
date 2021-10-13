@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Button, classNames, FormStatus, Separator, Textarea, Title } from '@vkontakte/vkui'
+import { Button, classNames, FormStatus, Textarea } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { Icon20ArticleOutline, Icon20CheckBoxOff, Icon20Square4Outline } from '@vkontakte/icons'
 import { WallPostParams, WallPostResponse } from '@vkontakte/api-schema-typescript'
@@ -8,6 +8,7 @@ import { useStore } from '../../hooks/use-store'
 import { ModalProps } from '../modal-container'
 
 import './compose-modal.css'
+import { ModalHeader } from './modal-header'
 
 export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
   const { userStore } = useStore()
@@ -46,9 +47,7 @@ export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
 
   return (
     <div className="modal compose-modal">
-      {/* TODO: ModalHeader? */}
-      <Title level="2" weight="semibold">{t`composer.title`}</Title>
-      <Separator wide />
+      <ModalHeader>{t`composer.title`}</ModalHeader>
       <div className="mode-selector">
         <span>{t`composer.from`}</span>
         <div className="picker">

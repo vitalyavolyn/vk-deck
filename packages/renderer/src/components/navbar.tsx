@@ -8,6 +8,7 @@ import {
   Icon28UserCircleOutline,
   Icon28WriteOutline,
   Icon28CancelOutline,
+  Icon28SettingsOutline,
 } from '@vkontakte/icons'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '../hooks/use-store'
@@ -18,9 +19,10 @@ interface NavbarProps {
   onColumnClick(e: MouseEvent<HTMLElement>): void
   onComposeButtonClick(): void
   isComposerOpened: boolean
+  onSettingsClick(): void
 }
 
-export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButtonClick, isComposerOpened }) => {
+export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButtonClick, isComposerOpened, onSettingsClick }) => {
   const { userStore } = useStore()
   const { user } = userStore.data
 
@@ -67,7 +69,12 @@ export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButto
             <Icon28UserCircleOutline />
           </Cell>
         </div>
-        <div className="links">
+        <div className="bottom-links">
+          <Cell
+            onClick={onSettingsClick}
+          >
+            <Icon28SettingsOutline />
+          </Cell>
           <Avatar
             size={40}
             src={user.photo_50}
