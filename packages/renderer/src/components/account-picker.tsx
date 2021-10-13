@@ -1,7 +1,7 @@
 import { Avatar, classNames, RichCell } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
-import { FC } from 'react'
-import { Icon20CheckCircleFillGreen } from '@vkontakte/icons'
+import { FC, useState } from 'react'
+import { Icon20CheckCircleFillGreen, Icon24ChevronUp } from '@vkontakte/icons'
 import { useStore } from '../hooks/use-store'
 
 import './account-picker.css'
@@ -71,6 +71,16 @@ export const AccountPicker: FC<AccountPickerProps> = observer(({
 }) => {
   const { userStore } = useStore()
   const { user, managedGroups } = userStore.data
+  const [isExpanded, setIsExpanded] = useState(true)
+
+  const isList = mode === AccountPickerMode.list
+
+  const groups = isList
+    ? managedGroups
+    : managedGroups.slice(0, 10)
+
+  // TODO: если групп будет ровно 11, то будет некрасиво
+  const expandable = !isList && managedGroups.length > 10
 
   return (
     <div className={classNames('account-picker', mode)}>
@@ -83,8 +93,30 @@ export const AccountPicker: FC<AccountPickerProps> = observer(({
         onClick={() => { onSelect(user.id) }}
       />
 
-      {managedGroups
-        .slice(0, 4 * 3 - 1)
+      {groups
+        .map(group => (
+          <Account
+            key={group.id}
+            name={group.name}
+            screenName={group.screen_name}
+            photo={group.photo_50}
+            isSelected={selectedAccount === -group.id}
+            mode={mode}
+            onClick={() => { onSelect(-group.id) }}
+          />
+        ))}
+
+      {expandable && (
+        <Avatar
+          className="expand-button"
+          size={mode === AccountPickerMode.grid ? 48 : 32}
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? <Icon24ChevronUp /> : `+${managedGroups.length - 10}`}
+        </Avatar>
+      )}
+
+      {isExpanded && managedGroups.slice(10)
         .map(group => (
           <Account
             key={group.id}
