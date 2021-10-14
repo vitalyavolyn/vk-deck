@@ -22,7 +22,7 @@
     "typecheck": "yarn typecheck-main && yarn typecheck-preload && yarn typecheck-renderer"
   },
   "browserslist": [
-    "Chrome 93"
+    "Chrome 94"
   ],
   "simple-git-hooks": {
     "pre-commit": "yarn lint-staged",
