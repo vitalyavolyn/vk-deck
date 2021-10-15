@@ -1,10 +1,6 @@
 .compose-modal {
   user-select: none;
 
-  .vkuiTitle {
-    margin-bottom: 12px;
-  }
-
   .vkuiFormStatus {
     margin-bottom: 8px;
   }

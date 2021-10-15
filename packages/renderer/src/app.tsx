@@ -43,7 +43,7 @@ export const App: FC = observer(() => {
   return (
     <ConfigProvider scheme={scheme}>
       <AdaptivityProvider>
-        <AppRoot>
+        <AppRoot noLegacyClasses>
           {isAuthorized ? <Dashboard /> : <Login />}
         </AppRoot>
       </AdaptivityProvider>

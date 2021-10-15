@@ -12,7 +12,11 @@ type VKApiResponse<T> = {
 }
 
 type VKApiError = {
-  error: unknown
+  error: {
+    error_code: number
+    error_msg: string
+    request_params: Array<{ key: string, value: string }>
+  }
 }
 
 type VKApiData<T> = VKApiResponse<T> | VKApiError
@@ -40,6 +44,8 @@ export class Api {
     const { data } = await instance.post<VKApiData<T>>(
       `/method/${method}`, new URLSearchParams(completeParams).toString(),
     )
+
+    console.log(data)
 
     if ('response' in data) {
       return data.response
