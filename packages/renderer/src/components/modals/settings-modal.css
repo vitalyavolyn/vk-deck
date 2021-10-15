@@ -1,0 +1,5 @@
+.settings-modal {
+  .vkuiFormItem {
+    --formitem_padding: 0;
+  }
+}
