@@ -1,8 +1,15 @@
 .columns-container {
   transition-duration: 200ms;
 
+  .columns {
+    transition: margin-right 0.2s;
+  }
+
   &.modal-open {
-    margin-right: var(--modal-width);
     transform: translateX(var(--modal-width));
+
+    .columns {
+      margin-right: var(--modal-width);
+    }
   }
 }
