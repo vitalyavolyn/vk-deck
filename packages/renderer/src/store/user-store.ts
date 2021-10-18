@@ -3,8 +3,8 @@ import {
   GroupsGroupFull,
   UsersUserXtrCounters,
 } from '@vkontakte/api-schema-typescript'
-import { Api } from '../api'
 import { RootStore } from './root-store'
+import { Api } from '@/api'
 
 interface UserData {
   user: UsersUserXtrCounters

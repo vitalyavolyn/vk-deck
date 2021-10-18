@@ -1,4 +1,5 @@
 import { builtinModules } from 'module'
+import path from 'path'
 import yaml from '@rollup/plugin-yaml'
 
 const PACKAGE_ROOT = __dirname
@@ -12,6 +13,11 @@ const config = {
   root: PACKAGE_ROOT,
   envDir: process.cwd(),
   plugins: [yaml()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     sourcemap: 'inline',
     target: 'node14',

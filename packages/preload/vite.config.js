@@ -1,4 +1,5 @@
 import { builtinModules } from 'module'
+import path from 'path'
 
 const PACKAGE_ROOT = __dirname
 
@@ -10,6 +11,11 @@ const config = {
   mode: process.env.MODE,
   root: PACKAGE_ROOT,
   envDir: process.cwd(),
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     sourcemap: 'inline',
     target: 'chrome93',

@@ -5,7 +5,7 @@ import windowStateKeeper from 'electron-window-state'
 import contextMenu from 'electron-context-menu'
 import i18n from 'i18next'
 import ru from '../locales/ru.yml'
-import { initIpc } from './ipc'
+import { initIpc } from '@/ipc'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 

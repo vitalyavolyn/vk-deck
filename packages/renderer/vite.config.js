@@ -1,6 +1,7 @@
 /* eslint-env node */
 
 import { builtinModules } from 'module'
+import path from 'path'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 import yaml from '@rollup/plugin-yaml'
 
@@ -16,6 +17,11 @@ const config = {
   server: {
     fs: {
       strict: true,
+    },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
     },
   },
   esbuild: {

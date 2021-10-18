@@ -8,10 +8,10 @@ import {
   ViewWidth,
 } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
-import { Navbar } from '../components/navbar'
-import { Columns } from '../components/columns'
-import { useStore } from '../hooks/use-store'
-import { ModalContainer, ModalName } from '../components/modal-container'
+import { Navbar } from '@/components/navbar'
+import { Columns } from '@/components/columns'
+import { useStore } from '@/hooks/use-store'
+import { ModalContainer, ModalName } from '@/components/modal-container'
 
 import './dashboard.css'
 
