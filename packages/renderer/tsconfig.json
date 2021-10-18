@@ -5,7 +5,10 @@
     "baseUrl": ".",
     "lib": ["ESNext", "dom", "dom.iterable"],
     "jsx": "react-jsx",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "src/**/*.ts",
