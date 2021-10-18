@@ -1,7 +1,7 @@
 import { URL, URLSearchParams } from 'url'
 import { BrowserView, BrowserWindow, ipcMain } from 'electron'
 
-export function initIpc (win: BrowserWindow): void {
+export function initIpc(win: BrowserWindow): void {
   ipcMain.on('create-browser-view', (e) => {
     const view = new BrowserView({
       webPreferences: {

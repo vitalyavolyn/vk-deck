@@ -3,7 +3,7 @@ const { dirname } = require('path')
 const { build } = require('vite')
 
 /** @type 'production' | 'development' | 'test' */
-const mode = process.env.MODE = process.env.MODE || 'production'
+const mode = (process.env.MODE = process.env.MODE || 'production')
 
 const packagesConfigs = [
   'packages/main/vite.config.js',
@@ -14,8 +14,9 @@ const packagesConfigs = [
 /**
  * Run `vite build` for config file
  */
-const buildByConfig = (configFile) => build({ configFile, mode });
-(async () => {
+const buildByConfig = (configFile) => build({ configFile, mode })
+
+;(async () => {
   try {
     const totalTimeLabel = 'Total bundling time'
     console.time(totalTimeLabel)

@@ -9,7 +9,9 @@ interface ModalHeaderProps {
 export const ModalHeader: FC<ModalHeaderProps> = ({ children }) => {
   return (
     <div className="modal-header">
-      <Title level="2" weight="semibold">{children}</Title>
+      <Title level="2" weight="semibold">
+        {children}
+      </Title>
       <Separator wide />
     </div>
   )

@@ -1,7 +1,7 @@
 const { strict: assert } = require('assert')
-const { _electron: electron } = require('playwright');
+const { _electron: electron } = require('playwright')
 
-(async () => {
+;(async () => {
   const electronApp = await electron.launch({ args: ['.'] })
 
   /**
@@ -20,7 +20,11 @@ const { _electron: electron } = require('playwright');
     return new Promise((resolve) => {
       if (mainWindow.isVisible()) {
         resolve(getState())
-      } else { mainWindow.once('ready-to-show', () => setTimeout(() => resolve(getState()), 0)) }
+      } else {
+        mainWindow.once('ready-to-show', () =>
+          setTimeout(() => resolve(getState()), 0),
+        )
+      }
     })
   })
 
@@ -37,15 +41,26 @@ const { _electron: electron } = require('playwright');
 
   // Check web-page content
   const element = await page.$('#app', { strict: true })
-  assert.notStrictEqual(element, undefined, 'Can\'t find root element')
-  assert.notStrictEqual((await element.innerHTML()).trim(), '', 'Window content is empty')
+  assert.notStrictEqual(element, undefined, "Can't find root element")
+  assert.notStrictEqual(
+    (await element.innerHTML()).trim(),
+    '',
+    'Window content is empty',
+  )
 
   // Check Preload script
   const renderedExposedApi = await page.evaluate(() => globalThis.electron)
   const realVersions = await electronApp.evaluate(() => process.versions)
 
-  assert.notStrictEqual(renderedExposedApi, undefined, 'In renderer `globalThis.electron` is undefined')
-  assert.strictEqual(renderedExposedApi?.versions?.electron, realVersions.electron)
+  assert.notStrictEqual(
+    renderedExposedApi,
+    undefined,
+    'In renderer `globalThis.electron` is undefined',
+  )
+  assert.strictEqual(
+    renderedExposedApi?.versions?.electron,
+    realVersions.electron,
+  )
 
   // Close app
   await electronApp.close()

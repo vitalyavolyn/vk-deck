@@ -12,12 +12,10 @@ import './global.css'
 
 configure({ enforceActions: 'never' })
 
-i18n
-  .use(initReactI18next)
-  .init({
-    fallbackLng: 'ru',
-    resources: { ru },
-  })
+i18n.use(initReactI18next).init({
+  fallbackLng: 'ru',
+  resources: { ru },
+})
 
 render(
   <StrictMode>
