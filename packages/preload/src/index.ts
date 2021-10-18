@@ -4,7 +4,7 @@ const apiKey = 'electron'
 
 const api: ElectronApi = {
   versions: process.versions,
-  getTokenFromBrowserView () {
+  getTokenFromBrowserView() {
     return new Promise((resolve) => {
       ipcRenderer.send('create-browser-view')
 
@@ -13,7 +13,7 @@ const api: ElectronApi = {
       })
     })
   },
-  setUpdateAvailableHandler (func: UpdateAvailableHandler) {
+  setUpdateAvailableHandler(func: UpdateAvailableHandler) {
     ipcRenderer.on('update-available', (event, arg) => func(arg))
   },
 }

@@ -25,7 +25,7 @@ const config = {
     },
   },
   esbuild: {
-    jsxInject: 'import React from \'react\'',
+    jsxInject: "import React from 'react'",
   },
   build: {
     sourcemap: true,
@@ -40,9 +40,7 @@ const config = {
       safari10: false,
     },
     rollupOptions: {
-      external: [
-        ...builtinModules,
-      ],
+      external: [...builtinModules],
     },
     emptyOutDir: true,
     brotliSize: false,

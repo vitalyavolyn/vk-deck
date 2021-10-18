@@ -5,7 +5,7 @@ const { createServer, build, createLogger } = require('vite')
 const electronPath = require('electron')
 
 /** @type 'production' | 'development' | 'test' */
-const mode = process.env.MODE = process.env.MODE || 'development'
+const mode = (process.env.MODE = process.env.MODE || 'development')
 
 /** @type {import('vite').LogLevel} */
 const LOG_LEVEL = 'warn'
@@ -58,7 +58,7 @@ const setupMainPackageWatcher = (viteDevServer) => {
   return getWatcher({
     name: 'reload-app-on-main-package-change',
     configFile: 'packages/main/vite.config.js',
-    writeBundle () {
+    writeBundle() {
       if (spawnProcess) {
         spawnProcess.kill('SIGINT')
         spawnProcess = undefined
@@ -66,8 +66,17 @@ const setupMainPackageWatcher = (viteDevServer) => {
 
       spawnProcess = spawn(String(electronPath), ['.'])
 
-      spawnProcess.stdout.on('data', (d) => d.toString().trim() && logger.warn(d.toString(), { timestamp: true }))
-      spawnProcess.stderr.on('data', (d) => d.toString().trim() && logger.error(d.toString(), { timestamp: true }))
+      spawnProcess.stdout.on(
+        'data',
+        (d) =>
+          d.toString().trim() && logger.warn(d.toString(), { timestamp: true }),
+      )
+      spawnProcess.stderr.on(
+        'data',
+        (d) =>
+          d.toString().trim() &&
+          logger.error(d.toString(), { timestamp: true }),
+      )
     },
   })
 }
@@ -81,15 +90,15 @@ const setupPreloadPackageWatcher = (viteDevServer) => {
   return getWatcher({
     name: 'reload-page-on-preload-package-change',
     configFile: 'packages/preload/vite.config.js',
-    writeBundle () {
+    writeBundle() {
       viteDevServer.ws.send({
         type: 'full-reload',
       })
     },
   })
-};
+}
 
-(async () => {
+;(async () => {
   try {
     const viteDevServer = await createServer({
       ...sharedConfig,

@@ -22,67 +22,63 @@ interface NavbarProps {
   onSettingsClick(): void
 }
 
-export const Navbar: FC<NavbarProps> = observer(({ onColumnClick, onComposeButtonClick, isComposerOpened, onSettingsClick }) => {
-  const { userStore } = useStore()
-  const { user } = userStore.data
+export const Navbar: FC<NavbarProps> = observer(
+  ({
+    onColumnClick,
+    onComposeButtonClick,
+    isComposerOpened,
+    onSettingsClick,
+  }) => {
+    const { userStore } = useStore()
+    const { user } = userStore.data
 
-  return (
-    <Panel id="nav">
-      <div className="navbar">
-        <Tappable
-          onClick={onComposeButtonClick}
-          activeMode="opacity"
-          className={classNames('composer-button', { active: isComposerOpened })}
-        >
-          {isComposerOpened ? <Icon28CancelOutline /> : <Icon28WriteOutline />}
-        </Tappable>
+    return (
+      <Panel id="nav">
+        <div className="navbar">
+          <Tappable
+            onClick={onComposeButtonClick}
+            activeMode="opacity"
+            className={classNames('composer-button', {
+              active: isComposerOpened,
+            })}
+          >
+            {isComposerOpened ? (
+              <Icon28CancelOutline />
+            ) : (
+              <Icon28WriteOutline />
+            )}
+          </Tappable>
 
-        <div className="column-navigator">
-          <Cell
-            data-story="feed"
-            onClick={onColumnClick}
-          >
-            <Icon28NewsfeedOutline />
-          </Cell>
-          <Cell
-            data-story="services"
-            onClick={onColumnClick}
-          >
-            <Icon28ServicesOutline />
-          </Cell>
-          <Cell
-            data-story="messages"
-            onClick={onColumnClick}
-          >
-            <Icon28MessageOutline />
-          </Cell>
-          <Cell
-            data-story="clips"
-            onClick={onColumnClick}
-          >
-            <Icon28ClipOutline />
-          </Cell>
-          <Cell
-            data-story="profile"
-            onClick={onColumnClick}
-          >
-            <Icon28UserCircleOutline />
-          </Cell>
+          <div className="column-navigator">
+            <Cell data-story="feed" onClick={onColumnClick}>
+              <Icon28NewsfeedOutline />
+            </Cell>
+            <Cell data-story="services" onClick={onColumnClick}>
+              <Icon28ServicesOutline />
+            </Cell>
+            <Cell data-story="messages" onClick={onColumnClick}>
+              <Icon28MessageOutline />
+            </Cell>
+            <Cell data-story="clips" onClick={onColumnClick}>
+              <Icon28ClipOutline />
+            </Cell>
+            <Cell data-story="profile" onClick={onColumnClick}>
+              <Icon28UserCircleOutline />
+            </Cell>
+          </div>
+          <div className="bottom-links">
+            <Cell onClick={onSettingsClick}>
+              <Icon28SettingsOutline />
+            </Cell>
+            <Avatar
+              size={40}
+              src={user.photo_50}
+              title={`${user.first_name} ${user.last_name}`}
+              onClick={() => window.open(`https://vk.com/id${user.id}`)}
+            />
+          </div>
         </div>
-        <div className="bottom-links">
-          <Cell
-            onClick={onSettingsClick}
-          >
-            <Icon28SettingsOutline />
-          </Cell>
-          <Avatar
-            size={40}
-            src={user.photo_50}
-            title={`${user.first_name} ${user.last_name}`}
-            onClick={() => window.open(`https://vk.com/id${user.id}`)}
-          />
-        </div>
-      </div>
-    </Panel>
-  )
-})
+      </Panel>
+    )
+  },
+)

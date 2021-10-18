@@ -19,7 +19,10 @@ export interface ModalProps {
   closeModal(): void
 }
 
-export const ModalContainer: FC<ModalContainerProps> = ({ modal, closeModal }) => {
+export const ModalContainer: FC<ModalContainerProps> = ({
+  modal,
+  closeModal,
+}) => {
   const Component = modal ? modals[modal] : undefined
 
   return (

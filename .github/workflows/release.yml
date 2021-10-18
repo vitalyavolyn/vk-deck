@@ -20,7 +20,6 @@ defaults:
     shell: 'bash'
 
 jobs:
-
   draft:
     runs-on: ubuntu-latest
     outputs:
@@ -84,11 +83,11 @@ jobs:
           body: ${{ steps.release-note.outputs.release-note }}
 
   upload_artifacts:
-    needs: [ draft ]
+    needs: [draft]
 
     strategy:
       matrix:
-        os: [ windows-latest, ubuntu-latest ] # macos-latest
+        os: [windows-latest, ubuntu-latest] # macos-latest
 
     runs-on: ${{ matrix.os }}
 
