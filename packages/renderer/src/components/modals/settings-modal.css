@@ -1,0 +1,13 @@
+.settings-modal {
+  display: flex;
+  flex-direction: column;
+
+  .vkuiFormItem {
+    --formitem_padding: 0;
+  }
+
+  .logout-button-container {
+    padding-bottom: 10px;
+    margin-top: auto;
+  }
+}
