@@ -1,6 +1,6 @@
 import { ChangeEvent, FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FormItem, Select } from '@vkontakte/vkui'
+import { Button, FormItem, Select } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { ModalProps } from '../modal-container'
 import { ModalHeader } from './modal-header'
@@ -8,6 +8,11 @@ import { useStore } from '@/hooks/use-store'
 import { ColorScheme } from '@/store/settings-store'
 
 import './settings-modal.css'
+
+const logout = () => {
+  localStorage.clear()
+  location.reload()
+}
 
 export const SettingsModal: FC<ModalProps> = observer(() => {
   const { t } = useTranslation()
@@ -20,7 +25,7 @@ export const SettingsModal: FC<ModalProps> = observer(() => {
   return (
     <div className="modal settings-modal">
       <ModalHeader>{t`settings.title`}</ModalHeader>
-      <FormItem top="Тема оформления">
+      <FormItem top={t`settings.colorScheme.title`}>
         <Select
           onChange={onColorThemeChange}
           value={settingsStore.colorScheme}
@@ -31,6 +36,12 @@ export const SettingsModal: FC<ModalProps> = observer(() => {
           ]}
         />
       </FormItem>
+
+      <div className="logout-button-container">
+        <Button stretched mode="secondary" size="m" onClick={logout}>
+          {t`settings.logout`}
+        </Button>
+      </div>
     </div>
   )
 })

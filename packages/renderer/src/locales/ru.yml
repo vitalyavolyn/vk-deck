@@ -13,6 +13,8 @@ translation:
   settings:
     title: Настройки
     colorScheme:
+      title: Тема оформления
       auto: Системная
       light: Светлая
       dark: Тёмная
+    logout: Выйти
