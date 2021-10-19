@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { Separator, Title } from '@vkontakte/vkui'
+
 import './modal-header.css'
 
 interface ModalHeaderProps {

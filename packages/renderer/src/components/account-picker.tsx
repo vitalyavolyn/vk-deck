@@ -2,7 +2,7 @@ import { Avatar, classNames, RichCell } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { FC, useState } from 'react'
 import { Icon20CheckCircleFillGreen, Icon24ChevronUp } from '@vkontakte/icons'
-import { useStore } from '../hooks/use-store'
+import { useStore } from '@/hooks/use-store'
 
 import './account-picker.css'
 

@@ -11,11 +11,11 @@ import {
   WallPostResponse,
 } from '@vkontakte/api-schema-typescript'
 import { AccountPicker, AccountPickerMode } from '../account-picker'
-import { useStore } from '../../hooks/use-store'
 import { ModalProps } from '../modal-container'
+import { ModalHeader } from './modal-header'
+import { useStore } from '@/hooks/use-store'
 
 import './compose-modal.css'
-import { ModalHeader } from './modal-header'
 
 export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
   const { userStore } = useStore()

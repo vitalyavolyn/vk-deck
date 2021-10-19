@@ -11,7 +11,7 @@ import {
   Icon28SettingsOutline,
 } from '@vkontakte/icons'
 import { observer } from 'mobx-react-lite'
-import { useStore } from '../hooks/use-store'
+import { useStore } from '@/hooks/use-store'
 
 import './navbar.css'
 
