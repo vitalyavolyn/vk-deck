@@ -12,3 +12,7 @@ translation:
     error: Ошибка при публикации
   settings:
     title: Настройки
+    colorScheme:
+      auto: Системная
+      light: Светлая
+      dark: Тёмная
