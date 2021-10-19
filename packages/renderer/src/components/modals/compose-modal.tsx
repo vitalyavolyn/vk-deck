@@ -1,14 +1,21 @@
 import { FC, useState } from 'react'
 import { Button, classNames, FormStatus, Textarea } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
-import { Icon20ArticleOutline, Icon20CheckBoxOff, Icon20Square4Outline } from '@vkontakte/icons'
-import { WallPostParams, WallPostResponse } from '@vkontakte/api-schema-typescript'
+import {
+  Icon20ArticleOutline,
+  Icon20CheckBoxOff,
+  Icon20Square4Outline,
+} from '@vkontakte/icons'
+import {
+  WallPostParams,
+  WallPostResponse,
+} from '@vkontakte/api-schema-typescript'
 import { AccountPicker, AccountPickerMode } from '../account-picker'
-import { useStore } from '../../hooks/use-store'
 import { ModalProps } from '../modal-container'
+import { ModalHeader } from './modal-header'
+import { useStore } from '@/hooks/use-store'
 
 import './compose-modal.css'
-import { ModalHeader } from './modal-header'
 
 export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
   const { userStore } = useStore()
@@ -16,7 +23,9 @@ export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
 
   const { t } = useTranslation()
 
-  const [pickerMode, setPickerMode] = useState<AccountPickerMode>(AccountPickerMode.minigrid)
+  const [pickerMode, setPickerMode] = useState<AccountPickerMode>(
+    AccountPickerMode.minigrid,
+  )
   const [selectedAccount, setSelectedAccount] = useState(id)
   const [text, setText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -52,24 +61,39 @@ export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
         <span>{t`composer.from`}</span>
         <div className="picker">
           <Icon20CheckBoxOff
-            className={classNames({ active: pickerMode === AccountPickerMode.grid })}
+            className={classNames({
+              active: pickerMode === AccountPickerMode.grid,
+            })}
             onClick={() => setPickerMode(AccountPickerMode.grid)}
           />
           <Icon20Square4Outline
-            className={classNames({ active: pickerMode === AccountPickerMode.minigrid })}
+            className={classNames({
+              active: pickerMode === AccountPickerMode.minigrid,
+            })}
             onClick={() => setPickerMode(AccountPickerMode.minigrid)}
           />
           <Icon20ArticleOutline
-            className={classNames({ active: pickerMode === AccountPickerMode.list })}
+            className={classNames({
+              active: pickerMode === AccountPickerMode.list,
+            })}
             onClick={() => setPickerMode(AccountPickerMode.list)}
           />
         </div>
       </div>
-      <AccountPicker mode={pickerMode} onSelect={setSelectedAccount} selectedAccount={selectedAccount} />
-      {errorText && <FormStatus header={t`composer.error`} mode="error">
-        {errorText}
-      </FormStatus>}
-      <Textarea placeholder={t`composer.placeholder`} onChange={(event) => setText(event.currentTarget.value)} />
+      <AccountPicker
+        mode={pickerMode}
+        onSelect={setSelectedAccount}
+        selectedAccount={selectedAccount}
+      />
+      {errorText && (
+        <FormStatus header={t`composer.error`} mode="error">
+          {errorText}
+        </FormStatus>
+      )}
+      <Textarea
+        placeholder={t`composer.placeholder`}
+        onChange={(event) => setText(event.currentTarget.value)}
+      />
       {/* TODO: Ctrl+Enter */}
       <Button
         className="post"

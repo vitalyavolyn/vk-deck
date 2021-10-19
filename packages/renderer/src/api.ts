@@ -2,10 +2,9 @@ import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
 import i18n from 'i18next'
 
-const instance = rateLimit(
-  axios.create({ baseURL: 'https://api.vk.com' }),
-  { maxRPS: 3 },
-)
+const instance = rateLimit(axios.create({ baseURL: 'https://api.vk.com' }), {
+  maxRPS: 3,
+})
 
 type VKApiResponse<T> = {
   response: T
@@ -15,7 +14,7 @@ type VKApiError = {
   error: {
     error_code: number
     error_msg: string
-    request_params: Array<{ key: string, value: string }>
+    request_params: Array<{ key: string; value: string }>
   }
 }
 
@@ -26,11 +25,14 @@ export class Api {
   v = '5.131'
   lang = i18n.language.split('-')[0]
 
-  setToken (token: string): void {
+  setToken(token: string): void {
     this.token = token
   }
 
-  async call <T, R = Record<string, string | number>> (method: string, params?: R): Promise<T> {
+  async call<T, R = Record<string, string | number>>(
+    method: string,
+    params?: R,
+  ): Promise<T> {
     const { v, lang, token } = this
     console.log('CALL', method, params)
 
@@ -42,7 +44,8 @@ export class Api {
     }
 
     const { data } = await instance.post<VKApiData<T>>(
-      `/method/${method}`, new URLSearchParams(completeParams).toString(),
+      `/method/${method}`,
+      new URLSearchParams(completeParams).toString(),
     )
 
     console.log(data)

@@ -12,29 +12,29 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:unicorn/recommended',
     'standard',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  ignorePatterns: [
-    'node_modules/**',
-    '**/dist/**',
-  ],
+  ignorePatterns: ['node_modules/**', '**/dist/**'],
   rules: {
     'no-undef': 'off',
     'no-unused-vars': 'off',
     'no-use-before-define': 'off',
 
-    'no-multiple-empty-lines': ['error', { max: 1 }],
-    'comma-dangle': ['error', 'always-multiline'],
-    'arrow-parens': ['error', 'always'],
-
     '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'no-type-imports' }],
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      { prefer: 'no-type-imports' },
+    ],
     '@typescript-eslint/no-use-before-define': 'error',
-    '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      { 'ts-ignore': 'allow-with-description' },
+    ],
 
     // TODO: remove this
     '@typescript-eslint/no-non-null-assertion': 'off',
@@ -68,4 +68,11 @@ module.exports = {
       },
     },
   ],
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project: 'packages/*/tsconfig.json',
+      },
+    },
+  },
 }

@@ -1,6 +1,7 @@
 /* eslint-env node */
 
 import { builtinModules } from 'module'
+import path from 'path'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 import yaml from '@rollup/plugin-yaml'
 
@@ -18,8 +19,13 @@ const config = {
       strict: true,
     },
   },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   esbuild: {
-    jsxInject: 'import React from \'react\'',
+    jsxInject: "import React from 'react'",
   },
   build: {
     sourcemap: true,
@@ -34,9 +40,7 @@ const config = {
       safari10: false,
     },
     rollupOptions: {
-      external: [
-        ...builtinModules,
-      ],
+      external: [...builtinModules],
     },
     emptyOutDir: true,
     brotliSize: false,

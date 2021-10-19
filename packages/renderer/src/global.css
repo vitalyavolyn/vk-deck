@@ -14,8 +14,7 @@ body {
 }
 
 .vkuiSplitCol {
-  /* stylelint-disable-next-line length-zero-no-unit */
-  --spaced-columns-gap: 0px; /* без "px" оно ломает calc() */
+  --spaced-columns-gap: 0px;
 
   &--spaced {
     --spaced-columns-gap: 8px;

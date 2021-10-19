@@ -1,4 +1,6 @@
-type UpdateAvailableHandler = (info: import('electron-updater').UpdateInfo) => void
+type UpdateAvailableHandler = (
+  info: import('electron-updater').UpdateInfo,
+) => void
 
 interface ElectronApi {
   readonly versions: Readonly<NodeJS.ProcessVersions>

@@ -4,8 +4,8 @@ import { app, BrowserWindow, shell } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 import contextMenu from 'electron-context-menu'
 import i18n from 'i18next'
-import ru from '../locales/ru.yml'
-import { initIpc } from './ipc'
+import ru from '@/locales/ru.yml'
+import { initIpc } from '@/ipc'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 
@@ -16,23 +16,22 @@ if (!isSingleInstance) {
 
 app.disableHardwareAcceleration()
 
-i18n
-  .init({
-    fallbackLng: 'ru',
-    resources: { ru },
-  })
+i18n.init({
+  fallbackLng: 'ru',
+  resources: { ru },
+})
 
 if (import.meta.env.MODE === 'development') {
-  app.whenReady()
+  app
+    .whenReady()
     .then(() => import('electron-devtools-installer'))
-    .then(({
-      default: installExtension,
-      REACT_DEVELOPER_TOOLS,
-    }) => installExtension(REACT_DEVELOPER_TOOLS, {
-      loadExtensionOptions: {
-        allowFileAccess: true,
-      },
-    }))
+    .then(({ default: installExtension, REACT_DEVELOPER_TOOLS }) =>
+      installExtension(REACT_DEVELOPER_TOOLS, {
+        loadExtensionOptions: {
+          allowFileAccess: true,
+        },
+      }),
+    )
     .catch((error) => console.error('Failed install extension:', error))
 }
 
@@ -50,7 +49,10 @@ const createWindow = async () => {
     webPreferences: {
       nativeWindowOpen: true,
       webSecurity: false,
-      preload: path.join(path.dirname(fileURLToPath(import.meta.url)), '../../preload/dist/index.cjs'),
+      preload: path.join(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../../preload/dist/index.cjs',
+      ),
     },
     ...windowState,
   })
@@ -82,12 +84,14 @@ const createWindow = async () => {
     }
   })
 
-  const pageUrl = import.meta.env.MODE === 'development' && import.meta.env.VITE_DEV_SERVER_URL !== undefined
-    ? import.meta.env.VITE_DEV_SERVER_URL
-    : new URL(
-      '../renderer/dist/index.html',
-      'file://' + path.dirname(fileURLToPath(import.meta.url)),
-    ).toString()
+  const pageUrl =
+    import.meta.env.MODE === 'development' &&
+    import.meta.env.VITE_DEV_SERVER_URL !== undefined
+      ? import.meta.env.VITE_DEV_SERVER_URL
+      : new URL(
+          '../renderer/dist/index.html',
+          'file://' + path.dirname(fileURLToPath(import.meta.url)),
+        ).toString()
 
   // открытие сторонних ссылок в браузере
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -111,14 +115,18 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.whenReady()
+app
+  .whenReady()
   .then(createWindow)
   .catch((error) => console.error('Failed create window:', error))
 
 // TODO: проверить, работает ли вообще это
 // и хочу ли я обновления
 if (import.meta.env.PROD) {
-  app.whenReady()
+  app
+    .whenReady()
     .then(() => import('./auto-updater'))
-    .then(({ checkForUpdatesAndNotify }) => checkForUpdatesAndNotify(mainWindow!))
+    .then(({ checkForUpdatesAndNotify }) =>
+      checkForUpdatesAndNotify(mainWindow!),
+    )
 }

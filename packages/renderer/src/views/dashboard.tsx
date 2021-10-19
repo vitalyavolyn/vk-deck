@@ -8,10 +8,10 @@ import {
   ViewWidth,
 } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
-import { Navbar } from '../components/navbar'
-import { Columns } from '../components/columns'
-import { useStore } from '../hooks/use-store'
-import { ModalContainer, ModalName } from '../components/modal-container'
+import { Navbar } from '@/components/navbar'
+import { Columns } from '@/components/columns'
+import { useStore } from '@/hooks/use-store'
+import { ModalContainer, ModalName } from '@/components/modal-container'
 
 import './dashboard.css'
 
@@ -37,12 +37,16 @@ export const Dashboard: FC = observer(() => {
 
   // глобальный шорткат для создания записи
   useEffect(() => {
-    window.addEventListener('keypress', (e) => {
-      if (e.code === 'KeyN') {
-        setActiveModal('compose')
-        setIsModalOpen(true)
-      }
-    }, true)
+    window.addEventListener(
+      'keypress',
+      (e) => {
+        if (e.code === 'KeyN') {
+          setActiveModal('compose')
+          setIsModalOpen(true)
+        }
+      },
+      true,
+    )
   }, [])
 
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
@@ -51,16 +55,29 @@ export const Dashboard: FC = observer(() => {
     <SplitLayout>
       <SplitCol fixed width="64px" maxWidth="64px" style={{ zIndex: 1 }}>
         <Navbar
-          onColumnClick={() => { console.log('click!') }}
-          onComposeButtonClick={() => (!isModalOpen || activeModal !== 'compose') ? openModal('compose') : setIsModalOpen(false)}
+          onColumnClick={() => {
+            console.log('click!')
+          }}
+          onComposeButtonClick={() =>
+            !isModalOpen || activeModal !== 'compose'
+              ? openModal('compose')
+              : setIsModalOpen(false)
+          }
           isComposerOpened={isModalOpen && activeModal === 'compose'}
-          onSettingsClick={() => (!isModalOpen || activeModal !== 'settings') ? openModal('settings') : setIsModalOpen(false)}
+          onSettingsClick={() =>
+            !isModalOpen || activeModal !== 'settings'
+              ? openModal('settings')
+              : setIsModalOpen(false)
+          }
         />
       </SplitCol>
 
       <SplitCol
         spaced={isDesktop}
-        className={classNames({ 'modal-open': isModalOpen }, 'columns-container')}
+        className={classNames(
+          { 'modal-open': isModalOpen },
+          'columns-container',
+        )}
       >
         <ModalContainer modal={activeModal} closeModal={closeModal} />
         <Columns />
