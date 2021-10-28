@@ -53,8 +53,7 @@
   }
 
   &.list {
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-flow: column nowrap;
 
     .vkuiRichCell {
       min-height: 55px;
