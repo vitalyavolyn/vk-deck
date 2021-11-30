@@ -12,7 +12,7 @@ interface ColumnHeaderProps {
 export const ColumnHeader: FC<ColumnHeaderProps> = ({
   children,
   icon,
-  showSettingsButton = true,
+  showSettingsButton = false,
   subtitle,
 }) => {
   return (

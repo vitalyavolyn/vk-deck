@@ -1,5 +1,5 @@
 .column {
-  overflow: hidden;
   background-color: var(--background_content);
   font-size: 14px;
+  overflow-x: hidden;
 }

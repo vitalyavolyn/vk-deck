@@ -1,11 +1,13 @@
 import { FC } from 'react'
 import { TestColumn } from './columns/test-column'
+import { NewsfeedColumn } from './columns/newsfeed-column'
 import { useStore } from '@/hooks/use-store'
 import { Column } from '@/store/settings-store'
 import './column-container.css'
 
 const columnComponents = {
   test: TestColumn,
+  newsfeed: NewsfeedColumn,
 }
 
 interface ColumnContainerProps {

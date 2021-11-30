@@ -3,6 +3,7 @@ import { Icon24Fire } from '@vkontakte/icons'
 import {
   NewsfeedItemWallpost,
   GroupsGroupFull,
+  UsersUserFull,
 } from '@vkontakte/api-schema-typescript'
 import { ColumnProps } from '../column-container'
 import { ColumnHeader } from './column-header'
@@ -10,7 +11,7 @@ import { WallPost } from '@/components/wall-post'
 
 const post: NewsfeedItemWallpost = {
   source_id: -198361544,
-  date: 1638252005,
+  date: 1636653600,
   text: 'Путин вернулся из реанимации героем порно!',
   marked_as_ads: 0,
   comments: {
@@ -36,11 +37,46 @@ const post: NewsfeedItemWallpost = {
   type: 'post',
 }
 
+const friendPost: NewsfeedItemWallpost = {
+  source_id: 240762441,
+  date: 1638255074,
+  post_type: 'post',
+  text: 'Кот.',
+  attachments: [],
+  post_source: {
+    platform: 'android',
+    type: 'api',
+  },
+  comments: {
+    can_post: 0,
+    count: 0,
+    groups_can_post: true,
+  },
+  likes: {
+    can_like: 1,
+    count: 9,
+    user_likes: 0,
+    can_publish: 0,
+  },
+  reposts: {
+    count: 0,
+    user_reposted: 0,
+  },
+  views: {
+    count: 68,
+  },
+  is_favorite: false,
+  short_text_rate: 0.8,
+  carousel_offset: 0,
+  post_id: 878,
+  type: 'post',
+}
+
 const groups: GroupsGroupFull[] = [
   {
     id: 198361544,
     name: 'Neural Meduza',
-    screen_name: 'neural_meduzaaaaaaaaaaaaaaaaaaaa',
+    screen_name: 'neural_meduza',
     is_closed: 0,
     type: 'group',
     photo_50:
@@ -52,13 +88,42 @@ const groups: GroupsGroupFull[] = [
   },
 ]
 
+const profiles: UsersUserFull[] = [
+  {
+    first_name: 'Олег',
+    id: 240762441,
+    last_name: 'Мишланов',
+    can_access_closed: true,
+    is_closed: true,
+    sex: 2,
+    screen_name: 'thebakercat',
+    photo_50: 'https://sun2.data...2,412,412&ava=1',
+    photo_100: 'https://sun2.data...2,412,412&ava=1',
+    online_info: {
+      visible: true,
+      last_seen: 1638263942,
+      is_online: false,
+      app_id: 2274003,
+      is_mobile: true,
+    },
+    online: 0,
+  },
+]
+
 export const TestColumn: FC<ColumnProps> = () => {
   return (
     <>
       <ColumnHeader icon={<Icon24Fire />} subtitle="testing">
         Test Column
       </ColumnHeader>
-      <WallPost data={post} groups={groups} />
+      <WallPost data={friendPost} groups={groups} profiles={profiles} />
+      <WallPost
+        data={{ ...post, date: new Date(2021, 10, 30, 11).getTime() / 1000 }}
+        groups={groups}
+        profiles={profiles}
+      />
+      <WallPost data={friendPost} groups={groups} profiles={profiles} />
+      <WallPost data={post} groups={groups} profiles={profiles} />
     </>
   )
 }

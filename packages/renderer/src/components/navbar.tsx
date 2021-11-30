@@ -5,6 +5,7 @@ import {
   Icon28CancelOutline,
   Icon28SettingsOutline,
   Icon24Fire,
+  Icon24NewsfeedOutline,
 } from '@vkontakte/icons'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
@@ -20,6 +21,7 @@ interface NavbarProps {
 
 const columnIcons = {
   test: <Icon24Fire />,
+  newsfeed: <Icon24NewsfeedOutline />,
 }
 
 export const Navbar: FC<NavbarProps> = observer(

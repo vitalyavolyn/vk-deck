@@ -14,11 +14,16 @@
       .wall-post-header {
         display: flex;
         align-items: baseline;
+        justify-content: space-between;
 
         time,
         .screen-name {
           color: var(--text_secondary);
           font-size: 0.8rem;
+        }
+
+        time {
+          white-space: nowrap;
         }
 
         .wall-post-author {
@@ -39,6 +44,11 @@
             margin-left: 3px;
           }
         }
+      }
+
+      .wall-post-real-content {
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
       }
     }
   }

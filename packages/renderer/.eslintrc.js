@@ -8,6 +8,9 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-no-target-blank': 'off',
+    'react-hooks/exhaustive-deps': 'off', // TODO: wtf
+    'unicorn/no-null': 'off',
+
     'react/jsx-curly-brace-presence': ['error', 'never'],
     'react/function-component-definition': [
       'error',

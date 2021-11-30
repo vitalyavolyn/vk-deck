@@ -18,3 +18,9 @@ translation:
       light: Светлая
       dark: Тёмная
     logout: Выйти
+  time:
+    relativeDays: '{{d}}д'
+    relativeHours: '{{h}}ч'
+    relativeMinutes: '{{m}}м'
+    relativeSeconds: '{{s}}с'
+    relativeNow: 'сейчас'
