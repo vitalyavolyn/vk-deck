@@ -1,0 +1,45 @@
+.wall-post-wrap {
+  /** TODO: это можно выделить в высший класс для карточек всех типов */
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--image_border);
+
+  .wall-post {
+    display: flex;
+    column-gap: 8px;
+
+    .wall-post-content {
+      min-width: 0;
+      flex-grow: 2;
+
+      .wall-post-header {
+        display: flex;
+        align-items: baseline;
+
+        time,
+        .screen-name {
+          color: var(--text_secondary);
+          font-size: 0.8rem;
+        }
+
+        .wall-post-author {
+          align-items: baseline;
+
+          &,
+          & > * {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .full-name {
+            font-weight: bold;
+          }
+
+          .screen-name {
+            margin-left: 3px;
+          }
+        }
+      }
+    }
+  }
+}

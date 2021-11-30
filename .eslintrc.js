@@ -1,3 +1,5 @@
+process.chdir(__dirname)
+
 module.exports = {
   root: true,
   env: {

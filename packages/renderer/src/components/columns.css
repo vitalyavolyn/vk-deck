@@ -10,7 +10,7 @@
     width: var(--column-width);
     height: 100%;
     flex: 0 0 auto;
-    opacity: 30%;
+    border-right: 1px solid var(--image_border);
 
     &:last-of-type {
       margin-right: var(--spaced-columns-gap);
@@ -19,5 +19,9 @@
 }
 
 .vkuiSplitCol--spaced .columns {
-  gap: var(--spaced-columns-gap);
+  column-gap: var(--spaced-columns-gap);
+
+  .column {
+    border-left: 1px solid var(--image_border);
+  }
 }

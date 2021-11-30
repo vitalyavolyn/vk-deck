@@ -1,14 +1,10 @@
 import { FC, MouseEvent } from 'react'
 import { Avatar, Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
 import {
-  Icon28ClipOutline,
-  Icon28MessageOutline,
-  Icon28NewsfeedOutline,
-  Icon28ServicesOutline,
-  Icon28UserCircleOutline,
   Icon28WriteOutline,
   Icon28CancelOutline,
   Icon28SettingsOutline,
+  Icon24Fire,
 } from '@vkontakte/icons'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
@@ -22,6 +18,10 @@ interface NavbarProps {
   onSettingsClick(): void
 }
 
+const columnIcons = {
+  test: <Icon24Fire />,
+}
+
 export const Navbar: FC<NavbarProps> = observer(
   ({
     onColumnClick,
@@ -29,7 +29,7 @@ export const Navbar: FC<NavbarProps> = observer(
     isComposerOpened,
     onSettingsClick,
   }) => {
-    const { userStore } = useStore()
+    const { userStore, settingsStore } = useStore()
     const { user } = userStore.data
 
     return (
@@ -50,21 +50,11 @@ export const Navbar: FC<NavbarProps> = observer(
           </Tappable>
 
           <div className="column-navigator">
-            <Cell data-story="feed" onClick={onColumnClick}>
-              <Icon28NewsfeedOutline />
-            </Cell>
-            <Cell data-story="services" onClick={onColumnClick}>
-              <Icon28ServicesOutline />
-            </Cell>
-            <Cell data-story="messages" onClick={onColumnClick}>
-              <Icon28MessageOutline />
-            </Cell>
-            <Cell data-story="clips" onClick={onColumnClick}>
-              <Icon28ClipOutline />
-            </Cell>
-            <Cell data-story="profile" onClick={onColumnClick}>
-              <Icon28UserCircleOutline />
-            </Cell>
+            {settingsStore.columns.map((col) => (
+              <Cell key={col.id} data-column={col.id} onClick={onColumnClick}>
+                {columnIcons[col.type]}
+              </Cell>
+            ))}
           </div>
           <div className="bottom-links">
             <Cell onClick={onSettingsClick}>
