@@ -1,5 +1,5 @@
 import { FC, MouseEvent } from 'react'
-import { Avatar, Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
+import { Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
 import {
   Icon28WriteOutline,
   Icon28CancelOutline,
@@ -8,7 +8,9 @@ import {
   Icon24NewsfeedOutline,
 } from '@vkontakte/icons'
 import { observer } from 'mobx-react-lite'
+import { AsyncAvatar } from './async-avatar'
 import { useStore } from '@/hooks/use-store'
+import { getInitials } from '@/utils/get-initials'
 
 import './navbar.css'
 
@@ -62,7 +64,9 @@ export const Navbar: FC<NavbarProps> = observer(
             <Cell onClick={onSettingsClick}>
               <Icon28SettingsOutline />
             </Cell>
-            <Avatar
+            <AsyncAvatar
+              initials={getInitials(user)}
+              gradientColor={(user.id % 6) + 1}
               size={40}
               src={user.photo_50}
               title={`${user.first_name} ${user.last_name}`}
