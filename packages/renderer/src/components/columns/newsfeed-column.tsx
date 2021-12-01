@@ -45,6 +45,7 @@ export const NewsfeedColumn: FC = () => {
       >
         Новости
       </ColumnHeader>
+      {/* TODO: не нравится, что скроллбар на шапке */}
       {items &&
         groups &&
         profiles &&
