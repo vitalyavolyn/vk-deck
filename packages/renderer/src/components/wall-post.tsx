@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react'
+import { FC, HTMLAttributes, useEffect, useRef } from 'react'
 import {
   GroupsGroupFull,
   NewsfeedItemWallpost,
@@ -11,15 +11,23 @@ import {
   Icon20ShareOutline,
   Icon20View,
   Icon20Like,
+  Icon16RepostOutline,
+  Icon16LinkOutline,
+  Icon16Poll,
+  Icon20PictureOutline,
+  Icon20VideoOutline,
+  Icon20MusicOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
+import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from './async-avatar'
 import { shortRelativeTime } from '@/utils/short-relative-time'
 import { getInitials } from '@/utils/get-initials'
 import { numberFormatter } from '@/utils/number-formatter'
 import './wall-post.css'
+import { MediaBadge } from '@/components/media-badge'
 
-interface WallPostProps {
+interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
   data: NewsfeedItemWallpost
   groups: GroupsGroupFull[]
   profiles: UsersUserFull[]
@@ -28,8 +36,14 @@ interface WallPostProps {
 /**
  * Показывает запись из ленты, принимает информацию из newsfeed.get
  */
-export const WallPost: FC<WallPostProps> = ({ data, groups, profiles }) => {
+export const WallPost: FC<WallPostProps> = ({
+  data,
+  groups,
+  profiles,
+  ...rest
+}) => {
   const contentRef = useRef<HTMLDivElement>(null)
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (contentRef.current) {
@@ -55,10 +69,21 @@ export const WallPost: FC<WallPostProps> = ({ data, groups, profiles }) => {
       : `${owner.first_name} ${owner.last_name}`
   }
 
+  const hasRepost = data.copy_history?.length
+  const hasLink = data.attachments?.find((e) => e.type === 'link')
+  const hasPoll = data.attachments?.find((e) => e.type === 'poll')
+  // TODO: нормально отбражать картинки (и видео...)
+  const photosCount = data.attachments?.filter((e) => e.type === 'photo').length
+  const videos = data.attachments?.filter((e) => e.type === 'video')
+  const audiosCount = data.attachments?.filter((e) => e.type === 'audio').length
+
+  const date = new Date(data.date * 1000)
+
   return (
     <div
       className="wall-post-wrap"
       data-id={`${data.source_id}_${data.post_id}`}
+      {...rest}
     >
       <div className="wall-post">
         <div className="left">
@@ -69,6 +94,7 @@ export const WallPost: FC<WallPostProps> = ({ data, groups, profiles }) => {
               src={owner.photo_50}
               initials={getInitials(owner)}
             />
+            {/* TODO: попробовать новый `badge` в Avatar */}
             {!!data.marked_as_ads && (
               <Icon20RoubleCircleFillBlue
                 width={16}
@@ -92,19 +118,79 @@ export const WallPost: FC<WallPostProps> = ({ data, groups, profiles }) => {
               className="time"
               href={`https://vk.com/wall${data.source_id}_${data.post_id}`}
               target="_blank"
+              title={
+                date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
+              }
             >
-              {shortRelativeTime(new Date(data.date * 1000))}
+              {shortRelativeTime(date)}
             </a>
           </header>
-          {/* wtf */}
           <div className="wall-post-content" ref={contentRef}>
             {data.text}
-            {data.attachments?.map((e) => e.type).join(',')}
+            {/* Убираем "поддерживаемые" аттачи для дебага */}
+            {/* TODO: убрать это */}
+            {data.attachments
+              ?.filter(
+                (e) =>
+                  !['link', 'poll', 'photo', 'video', 'audio'].includes(e.type),
+              )
+              .map((e) => e.type)
+              .join(',')}
+          </div>
+          <div className="wall-post-badges">
+            {hasRepost && (
+              <MediaBadge>
+                <Icon16RepostOutline />
+                Репост {/* TODO: кого? */}
+              </MediaBadge>
+            )}
+            {!!photosCount && (
+              <MediaBadge>
+                <Icon20PictureOutline width={16} height={16} />
+                {t('wallPost.mediaBadge.photo', { count: photosCount })}
+              </MediaBadge>
+            )}
+            {!!videos?.length && (
+              <MediaBadge>
+                <Icon20VideoOutline width={16} height={16} />
+                {/* TODO: может, это все же можно решить через i18n?  */}
+                {videos.length > 1 ? (
+                  t('wallPost.mediaBadge.video', {
+                    count: videos.length,
+                  })
+                ) : (
+                  <>
+                    {t('wallPost.mediaBadge.video', { count: 1 })}
+                    <b>{videos[0].video!.title}</b>
+                  </>
+                )}
+              </MediaBadge>
+            )}
+            {!!audiosCount && (
+              <MediaBadge>
+                <Icon20MusicOutline width={16} height={16} />
+                {t('wallPost.mediaBadge.audio', { count: audiosCount })}
+              </MediaBadge>
+            )}
+            {hasLink && (
+              <MediaBadge>
+                {/* TODO: открывать сразу ссылку? */}
+                <Icon16LinkOutline />
+                Ссылка
+              </MediaBadge>
+            )}
+            {hasPoll && (
+              <MediaBadge>
+                {/* TODO: проверить клики, когда посты можно будет открывать */}
+                <Icon16Poll />
+                Опрос
+              </MediaBadge>
+            )}
           </div>
           <div className="wall-post-footer">
             <div className="wall-post-actions">
               <div
-                title="Нравится"
+                title={t('wallPost.actions.like')}
                 className={classNames('wall-post-action-item', 'action-like', {
                   'user-likes': !!data.likes?.user_likes,
                 })}
@@ -118,14 +204,14 @@ export const WallPost: FC<WallPostProps> = ({ data, groups, profiles }) => {
               </div>
               <div
                 className="wall-post-action-item action-comment"
-                title="Комментарии"
+                title={t('wallPost.actions.comment')}
               >
                 <Icon20CommentOutline width={18} height={18} />
                 {numberFormatter(data.comments?.count)}
               </div>
               <div
                 className="wall-post-action-item action-share"
-                title="Поделиться"
+                title={t('wallPost.actions.share')}
               >
                 <Icon20ShareOutline width={18} height={18} />
                 {numberFormatter(data.reposts?.count)}

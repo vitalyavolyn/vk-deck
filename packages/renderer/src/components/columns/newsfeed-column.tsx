@@ -14,7 +14,7 @@ import { WallPost } from '@/components/wall-post'
 import { useStore } from '@/hooks/use-store'
 
 export const NewsfeedColumn: FC = () => {
-  const { userStore } = useStore()
+  const { userStore, snackbarStore } = useStore()
   const [items, setItems] = useState<NewsfeedItemWallpost[]>()
   const [groups, setGroups] = useState<GroupsGroupFull[]>()
   const [profiles, setProfiles] = useState<UsersUserFull[]>()
@@ -22,17 +22,24 @@ export const NewsfeedColumn: FC = () => {
 
   useEffect(() => {
     const getPosts = async () => {
-      const response = await userStore.api.call<
-        NewsfeedGetResponse,
-        NewsfeedGetParams
-      >('newsfeed.get', {
-        filters: 'post',
-      })
+      try {
+        const response = await userStore.api.call<
+          NewsfeedGetResponse,
+          NewsfeedGetParams
+        >('newsfeed.get', {
+          filters: 'post',
+        })
 
-      const { items, groups, profiles } = response
-      setGroups(groups)
-      setProfiles(profiles)
-      setItems(items)
+        const { items, groups, profiles } = response
+        setGroups(groups)
+        setProfiles(profiles)
+        setItems(items)
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.toString())
+          snackbarStore.showError('error.toString()')
+        }
+      }
 
       setTimeout(getPosts, 10000)
     }
@@ -54,6 +61,7 @@ export const NewsfeedColumn: FC = () => {
       </ColumnHeader>
       <div className={classNames('column-settings', { hidden: !showSettings })}>
         <FormLayout>
+          {/* TODO: параметры */}
           <FormItem top="E-mail">
             <Input
               type="email"

@@ -88,6 +88,12 @@
         }
       }
 
+      .wall-post-badges {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 5px;
+      }
+
       .wall-post-footer {
         display: flex;
         justify-content: space-between;
