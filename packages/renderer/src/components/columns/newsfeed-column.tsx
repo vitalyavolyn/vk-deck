@@ -7,6 +7,8 @@ import {
   NewsfeedItemWallpost,
   UsersUserFull,
 } from '@vkontakte/api-schema-typescript'
+import { classNames } from '@vkontakte/vkjs'
+import { FormItem, FormLayout, Input } from '@vkontakte/vkui'
 import { ColumnHeader } from '@/components/columns/column-header'
 import { WallPost } from '@/components/wall-post'
 import { useStore } from '@/hooks/use-store'
@@ -16,6 +18,7 @@ export const NewsfeedColumn: FC = () => {
   const [items, setItems] = useState<NewsfeedItemWallpost[]>()
   const [groups, setGroups] = useState<GroupsGroupFull[]>()
   const [profiles, setProfiles] = useState<UsersUserFull[]>()
+  const [showSettings, setShowSettings] = useState(false)
 
   useEffect(() => {
     const getPosts = async () => {
@@ -42,21 +45,40 @@ export const NewsfeedColumn: FC = () => {
       <ColumnHeader
         icon={<Icon24NewsfeedOutline />}
         subtitle={`@${userStore.data.user.screen_name}`}
+        showSettingsButton
+        onSettingsClick={() => {
+          setShowSettings(!showSettings)
+        }}
       >
         Новости
       </ColumnHeader>
-      {/* TODO: не нравится, что скроллбар на шапке */}
-      {items &&
-        groups &&
-        profiles &&
-        items.map((e) => (
-          <WallPost
-            key={`${e.source_id}_${e.post_id}`}
-            data={e}
-            groups={groups}
-            profiles={profiles}
-          />
-        ))}
+      <div className={classNames('column-settings', { hidden: !showSettings })}>
+        <FormLayout>
+          <FormItem top="E-mail">
+            <Input
+              type="email"
+              name="email"
+              value=""
+              onChange={() => {
+                console.log()
+              }}
+            />
+          </FormItem>
+        </FormLayout>
+      </div>
+      <div className="column-list-content">
+        {items &&
+          groups &&
+          profiles &&
+          items.map((e) => (
+            <WallPost
+              key={`${e.source_id}_${e.post_id}`}
+              data={e}
+              groups={groups}
+              profiles={profiles}
+            />
+          ))}
+      </div>
     </>
   )
 }

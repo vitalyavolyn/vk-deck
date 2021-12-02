@@ -1,5 +1,22 @@
 .column {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
   background-color: var(--background_content);
   font-size: 14px;
-  overflow-x: hidden;
+
+  .column-settings {
+    transition: transform 0.2s, opacity 0.2s, max-height 0.2s;
+
+    &.hidden {
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-200%);
+    }
+  }
+
+  .column-list-content {
+    overflow-y: auto;
+  }
 }

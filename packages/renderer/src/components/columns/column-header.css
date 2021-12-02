@@ -1,11 +1,8 @@
 .column-header {
-  position: sticky;
-  z-index: 1;
-  top: 0;
   display: flex;
   width: 100%;
-  height: 50px;
   align-items: center;
+  padding: 0.5rem 0;
   border-bottom: 1px solid var(--image_border);
   background-color: var(--header_background);
 
@@ -39,7 +36,7 @@
     color: var(--tabbar_active_icon);
 
     &:not(:hover) {
-      opacity: 70%;
+      opacity: 0.7;
     }
   }
 }

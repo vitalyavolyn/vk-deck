@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, MouseEvent } from 'react'
 import './column-header.css'
 import { Icon24Filter } from '@vkontakte/icons'
 import { Subhead, Title } from '@vkontakte/vkui'
@@ -6,6 +6,7 @@ import { Subhead, Title } from '@vkontakte/vkui'
 interface ColumnHeaderProps {
   icon: ReactNode
   showSettingsButton?: boolean
+  onSettingsClick?(e: MouseEvent<HTMLDivElement>): void
   subtitle?: string
 }
 
@@ -13,6 +14,7 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
   children,
   icon,
   showSettingsButton = false,
+  onSettingsClick,
   subtitle,
 }) => {
   return (
@@ -27,8 +29,8 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
       {showSettingsButton && (
         <Icon24Filter
           className="column-settings-toggle"
-          onClick={() => {
-            console.log('TODO: handle this click')
+          onClick={(e) => {
+            if (onSettingsClick) onSettingsClick(e)
           }}
         />
       )}

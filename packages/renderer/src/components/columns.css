@@ -6,6 +6,7 @@
 
   /* TODO: vertical gap? */
 
+  /* TODO: объединить с column-container.css */
   .column {
     width: var(--column-width);
     height: 100%;

@@ -7,8 +7,21 @@
     display: flex;
     column-gap: 8px;
 
-    .wall-post-content {
+    .wall-post-avatar {
+      position: relative;
+
+      .ad-icon {
+        position: absolute;
+        right: -2px;
+        bottom: -2px;
+        filter: grayscale(1);
+      }
+    }
+
+    .wall-post-main {
+      display: flex;
       min-width: 0;
+      flex-direction: column;
       flex-grow: 2;
 
       .wall-post-header {
@@ -16,14 +29,20 @@
         align-items: baseline;
         justify-content: space-between;
 
-        time,
+        .time,
         .screen-name {
           color: var(--text_secondary);
           font-size: 0.8rem;
         }
 
-        time {
+        .time {
+          text-decoration: none;
           white-space: nowrap;
+
+          &:hover {
+            color: var(--text_link);
+            text-decoration: underline;
+          }
         }
 
         .wall-post-author {
@@ -46,9 +65,66 @@
         }
       }
 
-      .wall-post-real-content {
+      .wall-post-content {
+        position: relative;
+        overflow: hidden;
+        max-height: 10em;
         overflow-wrap: break-word;
         white-space: pre-wrap;
+
+        &.overflow::after {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            to bottom,
+            transparent 70%,
+            var(--background_content)
+          );
+          content: '';
+          pointer-events: none;
+        }
+      }
+
+      .wall-post-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 3px;
+        color: var(--text_secondary);
+        font-size: 12px;
+
+        .wall-post-actions {
+          display: flex;
+          gap: 8px;
+
+          .action-like {
+            &.user-likes,
+            &:hover {
+              color: var(--dynamic_red);
+            }
+          }
+
+          .action-comment:hover {
+            color: var(--dynamic_blue);
+          }
+
+          .action-share:hover {
+            color: var(--dynamic_green);
+          }
+        }
+
+        .wall-post-action-item {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          gap: 3px;
+
+          &.views {
+            cursor: unset;
+          }
+        }
       }
     }
   }

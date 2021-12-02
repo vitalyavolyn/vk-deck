@@ -7,7 +7,7 @@ import {
   format,
 } from 'date-fns'
 import * as locales from 'date-fns/locale'
-import i18n from 'i18next'
+import i18n, { t } from 'i18next'
 
 export const shortRelativeTime = (date: Date) => {
   const now = new Date()
@@ -22,20 +22,20 @@ export const shortRelativeTime = (date: Date) => {
   }
 
   if (diffHours >= 24) {
-    return i18n.t('time.relativeDays', { d: diffDays })
+    return t('time.relativeDays', { d: diffDays })
   }
 
   if (diffMinutes >= 60) {
-    return i18n.t('time.relativeHours', { h: diffHours })
+    return t('time.relativeHours', { h: diffHours })
   }
 
   if (diffSeconds >= 60) {
-    return i18n.t('time.relativeMinutes', { m: diffMinutes })
+    return t('time.relativeMinutes', { m: diffMinutes })
   }
 
   if (diffSeconds >= 5) {
-    return i18n.t('time.relativeSeconds', { s: diffSeconds })
+    return t('time.relativeSeconds', { s: diffSeconds })
   }
 
-  return i18n.t('time.relativeNow')
+  return t('time.relativeNow')
 }
