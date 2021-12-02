@@ -60,6 +60,12 @@ export const Navbar: FC<NavbarProps> = observer(
                 data-column={col.id}
                 onClick={() => onColumnClick(col.id)}
               >
+                {/*
+                 * TODO:
+                 * Аватарки кроме иконок?
+                 * К примеру, на колонке со стеной человека - его аватарку
+                 * или микс между иконкой и его аватаркой
+                 */}
                 {columnIcons[col.type]}
               </Cell>
             ))}
