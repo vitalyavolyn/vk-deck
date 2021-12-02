@@ -1,5 +1,6 @@
 import { autorun, makeAutoObservable } from 'mobx'
 import { RootStore } from './root-store'
+import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 
 export type ColorScheme = 'auto' | 'light' | 'dark'
 
@@ -8,12 +9,22 @@ export interface Settings {
   columns: Column[]
 }
 
-export type ColumnType = 'test'
-
-export interface Column {
-  type: ColumnType
+export interface BaseColumn {
   id: string
+  type: ColumnType
 }
+
+export interface INewsfeedColumn extends BaseColumn {
+  type: 'newsfeed'
+  settings: NewsfeedColumnSettings
+}
+
+export interface ITestColumn extends BaseColumn {
+  type: 'test'
+}
+
+export type Column = INewsfeedColumn | ITestColumn
+export type ColumnType = Column['type']
 
 export class SettingsStore implements Settings {
   colorScheme: ColorScheme = 'auto'
@@ -42,9 +53,9 @@ export class SettingsStore implements Settings {
     Object.assign(this, settings)
   }
 
-  getColumn(columnId: string): Column {
+  getColumn<C extends BaseColumn = BaseColumn>(columnId: string): C {
     const col = this.columns.find((e) => e.id === columnId)
     if (!col) throw new Error('Unknown column id - ' + columnId)
-    return col
+    return col as C
   }
 }

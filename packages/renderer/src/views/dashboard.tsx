@@ -15,9 +15,15 @@ import { ModalContainer, ModalName } from '@/components/modal-container'
 
 import './dashboard.css'
 
+const scrollToColumn = (id: string) => {
+  document
+    .querySelector(`.column[data-id="${id}"]`)
+    ?.scrollIntoView({ behavior: 'smooth' })
+}
+
 export const Dashboard: FC = observer(() => {
   const { viewWidth } = useAdaptivity()
-  const { snackbarStore } = useStore()
+  const { snackbarStore, settingsStore } = useStore()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeModal, setActiveModal] = useState<ModalName | undefined>()
   if (!viewWidth) return <PanelSpinner />
@@ -29,9 +35,6 @@ export const Dashboard: FC = observer(() => {
 
   const closeModal = () => {
     setIsModalOpen(false)
-
-    // тайпскрипт и еслинт меня троллят, один не разрешает без параметров, другой против `undefined`
-    // eslint-disable-next-line unicorn/no-useless-undefined
     setTimeout(() => setActiveModal(undefined), 200)
   }
 
@@ -43,6 +46,10 @@ export const Dashboard: FC = observer(() => {
         if (e.code === 'KeyN') {
           setActiveModal('compose')
           setIsModalOpen(true)
+        } else if (e.code.startsWith('Digit')) {
+          const index = Number(e.key) - 1
+          const id = settingsStore.columns[index]?.id
+          if (id) scrollToColumn(id)
         }
       },
       true,
@@ -55,9 +62,7 @@ export const Dashboard: FC = observer(() => {
     <SplitLayout>
       <SplitCol fixed width="64px" maxWidth="64px" style={{ zIndex: 1 }}>
         <Navbar
-          onColumnClick={() => {
-            console.log('click!')
-          }}
+          onColumnClick={scrollToColumn}
           onComposeButtonClick={() =>
             !isModalOpen || activeModal !== 'compose'
               ? openModal('compose')

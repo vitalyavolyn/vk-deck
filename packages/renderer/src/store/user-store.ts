@@ -3,12 +3,14 @@ import {
   GroupsGroupFull,
   UsersUserXtrCounters,
 } from '@vkontakte/api-schema-typescript'
+import { NewsfeedList } from '@vkontakte/api-schema-typescript/dist/objects/newsfeed/NewsfeedList'
 import { RootStore } from './root-store'
 import { Api } from '@/api'
 
 interface UserData {
   user: UsersUserXtrCounters
   managedGroups: GroupsGroupFull[]
+  newsfeedLists: NewsfeedList[]
 }
 
 export class UserStore {

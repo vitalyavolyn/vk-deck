@@ -5,7 +5,7 @@ import {
   UsersUserFull,
 } from '@vkontakte/api-schema-typescript'
 import useVirtual from 'react-cool-virtual'
-import { WallPost } from '@/components/wall-post'
+import { WallPost } from './wall-post'
 
 interface VirtualScrollWallProps extends HTMLAttributes<HTMLDivElement> {
   items: NewsfeedItemWallpost[]
@@ -25,6 +25,7 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
     items: scrollItems,
   } = useVirtual<HTMLDivElement, HTMLDivElement>({
     itemCount: items.length,
+    itemSize: 80,
   })
 
   return (

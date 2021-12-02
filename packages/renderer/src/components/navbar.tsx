@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from 'react'
+import { FC } from 'react'
 import { Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
 import {
   Icon28WriteOutline,
@@ -15,7 +15,7 @@ import { getInitials } from '@/utils/get-initials'
 import './navbar.css'
 
 interface NavbarProps {
-  onColumnClick(e: MouseEvent<HTMLElement>): void
+  onColumnClick(colId: string): void
   onComposeButtonClick(): void
   isComposerOpened: boolean
   onSettingsClick(): void
@@ -55,7 +55,11 @@ export const Navbar: FC<NavbarProps> = observer(
 
           <div className="column-navigator">
             {settingsStore.columns.map((col) => (
-              <Cell key={col.id} data-column={col.id} onClick={onColumnClick}>
+              <Cell
+                key={col.id}
+                data-column={col.id}
+                onClick={() => onColumnClick(col.id)}
+              >
                 {columnIcons[col.type]}
               </Cell>
             ))}

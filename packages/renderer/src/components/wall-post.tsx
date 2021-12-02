@@ -3,6 +3,8 @@ import {
   GroupsGroupFull,
   NewsfeedItemWallpost,
   UsersUserFull,
+  WallWallpostAttachment,
+  WallWallpostAttachmentType,
 } from '@vkontakte/api-schema-typescript'
 import {
   Icon20RoubleCircleFillBlue,
@@ -17,15 +19,17 @@ import {
   Icon20PictureOutline,
   Icon20VideoOutline,
   Icon20MusicOutline,
+  Icon20DocumentOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from './async-avatar'
+import { MediaBadge } from './media-badge'
 import { shortRelativeTime } from '@/utils/short-relative-time'
 import { getInitials } from '@/utils/get-initials'
 import { numberFormatter } from '@/utils/number-formatter'
+
 import './wall-post.css'
-import { MediaBadge } from '@/components/media-badge'
 
 interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
   data: NewsfeedItemWallpost
@@ -69,12 +73,19 @@ export const WallPost: FC<
   }
 
   const hasRepost = data.copy_history?.length
-  const hasLink = data.attachments?.find((e) => e.type === 'link')
-  const hasPoll = data.attachments?.find((e) => e.type === 'poll')
+
+  const getAttachments = (
+    type: WallWallpostAttachmentType,
+  ): WallWallpostAttachment[] | undefined =>
+    data.attachments?.filter((e) => e.type === type)
+
+  const hasLink = Boolean(getAttachments('link')?.length)
+  const hasPoll = Boolean(getAttachments('poll')?.length)
   // TODO: нормально отбражать картинки (и видео...)
-  const photosCount = data.attachments?.filter((e) => e.type === 'photo').length
-  const videos = data.attachments?.filter((e) => e.type === 'video')
-  const audiosCount = data.attachments?.filter((e) => e.type === 'audio').length
+  const photosCount = getAttachments('photo')?.length
+  const videos = getAttachments('video')
+  const audiosCount = getAttachments('audio')?.length
+  const docsCount = getAttachments('doc')?.length
 
   const date = new Date(data.date * 1000)
 
@@ -100,7 +111,7 @@ export const WallPost: FC<
                 width={16}
                 height={16}
                 className="ad-icon"
-                title="Реклама"
+                title={t`wallPost.ad`}
               />
             )}
           </div>
@@ -132,7 +143,9 @@ export const WallPost: FC<
             {data.attachments
               ?.filter(
                 (e) =>
-                  !['link', 'poll', 'photo', 'video', 'audio'].includes(e.type),
+                  !['link', 'poll', 'photo', 'video', 'audio', 'doc'].includes(
+                    e.type,
+                  ),
               )
               .map((e) => e.type)
               .join(',')}
@@ -141,7 +154,7 @@ export const WallPost: FC<
             {hasRepost && (
               <MediaBadge>
                 <Icon16RepostOutline />
-                Репост
+                {t`wallPost.mediaBadge.repost`}
                 <b>{getName(getOwner(data.copy_history![0]!.owner_id!)!)}</b>
               </MediaBadge>
             )}
@@ -173,18 +186,24 @@ export const WallPost: FC<
                 {t('wallPost.mediaBadge.audio', { count: audiosCount })}
               </MediaBadge>
             )}
+            {!!docsCount && (
+              <MediaBadge>
+                <Icon20DocumentOutline width={16} height={16} />
+                {t('wallPost.mediaBadge.doc', { count: docsCount })}
+              </MediaBadge>
+            )}
             {hasLink && (
               <MediaBadge>
                 {/* TODO: открывать сразу ссылку? */}
                 <Icon16LinkOutline />
-                Ссылка
+                {t`wallPost.mediaBadge.link`}
               </MediaBadge>
             )}
             {hasPoll && (
               <MediaBadge>
                 {/* TODO: проверить клики, когда посты можно будет открывать */}
                 <Icon16Poll />
-                Опрос
+                {t`wallPost.mediaBadge.poll`}
               </MediaBadge>
             )}
           </div>

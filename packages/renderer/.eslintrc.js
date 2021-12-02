@@ -10,6 +10,7 @@ module.exports = {
     'react/jsx-no-target-blank': 'off',
     'react-hooks/exhaustive-deps': 'off', // TODO: wtf
     'unicorn/no-null': 'off',
+    'unicorn/no-useless-undefined': 'off',
 
     'react/jsx-curly-brace-presence': ['error', 'never'],
     'react/function-component-definition': [
