@@ -6,7 +6,13 @@
 
   /* TODO: vertical gap? */
 
-  /* TODO: объединить с column-container.css */
+  /*
+   * TODO: объединить с column-container.css то,
+   * что относится к содержанию колонок в Dashboard
+   *
+   * Также они (возможно) могут быть внутри полноэкранных модалок!
+   */
+
   .column {
     width: var(--column-width);
     height: 100%;

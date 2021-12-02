@@ -54,7 +54,7 @@ export class Api {
       return data.response
     }
 
-    // TODO: execute??
+    // TODO: А что с ошибками execute?
     throw data.error
   }
 }

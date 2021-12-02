@@ -87,6 +87,17 @@ export const WallPost: FC<
   const audiosCount = getAttachments('audio')?.length
   const docsCount = getAttachments('doc')?.length
 
+  const unsupportedAttachments = data.attachments
+    ?.filter(
+      (e) =>
+        !['link', 'poll', 'photo', 'video', 'audio', 'doc'].includes(e.type),
+    )
+    .map((e) => e.type)
+
+  if (unsupportedAttachments?.length) {
+    console.warn('Unsupported attachments', unsupportedAttachments)
+  }
+
   const date = new Date(data.date * 1000)
 
   return (
@@ -138,17 +149,6 @@ export const WallPost: FC<
           </header>
           <div className="wall-post-content" ref={contentRef}>
             {data.text}
-            {/* Убираем "поддерживаемые" аттачи для дебага */}
-            {/* TODO: убрать это */}
-            {data.attachments
-              ?.filter(
-                (e) =>
-                  !['link', 'poll', 'photo', 'video', 'audio', 'doc'].includes(
-                    e.type,
-                  ),
-              )
-              .map((e) => e.type)
-              .join(',')}
           </div>
           <div className="wall-post-badges">
             {hasRepost && (
