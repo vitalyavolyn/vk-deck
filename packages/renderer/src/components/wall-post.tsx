@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useEffect, useRef } from 'react'
+import { FC, HTMLAttributes, Ref, useEffect, useRef } from 'react'
 import {
   GroupsGroupFull,
   NewsfeedItemWallpost,
@@ -36,12 +36,9 @@ interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
 /**
  * Показывает запись из ленты, принимает информацию из newsfeed.get
  */
-export const WallPost: FC<WallPostProps> = ({
-  data,
-  groups,
-  profiles,
-  ...rest
-}) => {
+export const WallPost: FC<
+  WallPostProps & { measureRef?: Ref<HTMLDivElement> }
+> = ({ data, groups, profiles, measureRef, ...rest }) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
 
@@ -54,19 +51,21 @@ export const WallPost: FC<WallPostProps> = ({
     }
   }, [contentRef])
 
-  const owner =
-    data.source_id > 0
-      ? profiles.find((e) => e.id === data.source_id)
-      : groups.find((value) => -value.id === data.source_id)
+  const getOwner = (id: number) =>
+    id > 0
+      ? profiles.find((e) => e.id === id)
+      : groups.find((value) => -value.id === id)
+
+  const owner = getOwner(data.source_id)
 
   if (!owner) {
     return null
   }
 
-  const getName = () => {
-    return 'name' in owner
-      ? owner.name
-      : `${owner.first_name} ${owner.last_name}`
+  const getName = (subject = owner) => {
+    return 'name' in subject
+      ? subject.name
+      : `${subject.first_name} ${subject.last_name}`
   }
 
   const hasRepost = data.copy_history?.length
@@ -83,6 +82,7 @@ export const WallPost: FC<WallPostProps> = ({
     <div
       className="wall-post-wrap"
       data-id={`${data.source_id}_${data.post_id}`}
+      ref={measureRef}
       {...rest}
     >
       <div className="wall-post">
@@ -141,7 +141,8 @@ export const WallPost: FC<WallPostProps> = ({
             {hasRepost && (
               <MediaBadge>
                 <Icon16RepostOutline />
-                Репост {/* TODO: кого? */}
+                Репост
+                <b>{getName(getOwner(data.copy_history![0]!.owner_id!)!)}</b>
               </MediaBadge>
             )}
             {!!photosCount && (

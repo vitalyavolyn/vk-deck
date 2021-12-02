@@ -8,10 +8,10 @@ import {
   UsersUserFull,
 } from '@vkontakte/api-schema-typescript'
 import { classNames } from '@vkontakte/vkjs'
-import { FormItem, FormLayout, Input } from '@vkontakte/vkui'
+import { FormItem, FormLayout, Input, PanelSpinner } from '@vkontakte/vkui'
 import { ColumnHeader } from '@/components/columns/column-header'
-import { WallPost } from '@/components/wall-post'
 import { useStore } from '@/hooks/use-store'
+import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 
 export const NewsfeedColumn: FC = () => {
   const { userStore, snackbarStore } = useStore()
@@ -36,6 +36,7 @@ export const NewsfeedColumn: FC = () => {
         setItems(items)
       } catch (error) {
         if (error instanceof Error) {
+          // TODO: а это вообще работает?
           console.error(error.toString())
           snackbarStore.showError('error.toString()')
         }
@@ -74,19 +75,16 @@ export const NewsfeedColumn: FC = () => {
           </FormItem>
         </FormLayout>
       </div>
-      <div className="column-list-content">
-        {items &&
-          groups &&
-          profiles &&
-          items.map((e) => (
-            <WallPost
-              key={`${e.source_id}_${e.post_id}`}
-              data={e}
-              groups={groups}
-              profiles={profiles}
-            />
-          ))}
-      </div>
+      {items && groups && profiles ? (
+        <VirtualScrollWall
+          profiles={profiles}
+          groups={groups}
+          items={items}
+          className="column-list-content"
+        />
+      ) : (
+        <PanelSpinner />
+      )}
     </>
   )
 }

@@ -221,7 +221,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.16.3":
+"@babel/runtime@^7.15.4", "@babel/runtime@^7.16.3":
   version "7.16.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
   integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
@@ -4647,6 +4647,13 @@ rc@^1.2.8:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-cool-virtual@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/react-cool-virtual/-/react-cool-virtual-0.5.5.tgz#e3d50c362140ed6bf51488639d0fb72df7ca8dd0"
+  integrity sha512-+s9LAs6nOTSN9erAwiemwA9a3rBh/8K9J7km1Cx4Xe6pO6Ux2B+0fgf8eL0y2Yw9JkjeM7cguTu3+VKkpqOVeg==
+  dependencies:
+    "@babel/runtime" "^7.15.4"
 
 react-dom@^17.0.2:
   version "17.0.2"
