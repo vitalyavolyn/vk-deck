@@ -11,6 +11,7 @@ import { observer } from 'mobx-react-lite'
 import { AsyncAvatar } from './async-avatar'
 import { useStore } from '@/hooks/use-store'
 import { getInitials } from '@/utils/get-initials'
+import { ColumnType } from '@/store/settings-store'
 
 import './navbar.css'
 
@@ -21,9 +22,9 @@ interface NavbarProps {
   onSettingsClick(): void
 }
 
-const columnIcons = {
-  test: <Icon24Fire />,
-  newsfeed: <Icon24NewsfeedOutline />,
+const columnIcons: Record<ColumnType, JSX.Element> = {
+  [ColumnType.test]: <Icon24Fire />,
+  [ColumnType.newsfeed]: <Icon24NewsfeedOutline />,
 }
 
 export const Navbar: FC<NavbarProps> = observer(

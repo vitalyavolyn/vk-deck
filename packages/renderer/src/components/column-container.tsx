@@ -2,12 +2,13 @@ import { FC } from 'react'
 import { TestColumn } from './columns/test-column'
 import { NewsfeedColumn } from './columns/newsfeed-column'
 import { useStore } from '@/hooks/use-store'
-import { BaseColumn } from '@/store/settings-store'
+import { BaseColumn, ColumnType } from '@/store/settings-store'
+
 import './column-container.css'
 
 const columnComponents = {
-  test: TestColumn,
-  newsfeed: NewsfeedColumn,
+  [ColumnType.test]: TestColumn,
+  [ColumnType.newsfeed]: NewsfeedColumn,
 }
 
 interface ColumnContainerProps {
@@ -16,6 +17,7 @@ interface ColumnContainerProps {
 
 export interface ColumnProps<Column extends BaseColumn = BaseColumn> {
   data: Column
+  scrollToTop(): void
 }
 
 export const ColumnContainer: FC<ColumnContainerProps> = ({ columnId }) => {

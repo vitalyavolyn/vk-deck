@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, Ref, useEffect, useRef } from 'react'
+import { FC, HTMLAttributes, Ref, useEffect, useRef, memo } from 'react'
 import {
   GroupsGroupFull,
   NewsfeedItemWallpost,
@@ -42,7 +42,7 @@ interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
  */
 export const WallPost: FC<
   WallPostProps & { measureRef?: Ref<HTMLDivElement> }
-> = ({ data, groups, profiles, measureRef, ...rest }) => {
+> = memo(({ data, groups, profiles, measureRef, ...rest }) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
 
@@ -79,7 +79,7 @@ export const WallPost: FC<
   ): WallWallpostAttachment[] | undefined =>
     data.attachments?.filter((e) => e.type === type)
 
-  const hasLink = Boolean(getAttachments('link')?.length)
+  const link = getAttachments('link')?.[0]?.link
   const hasPoll = Boolean(getAttachments('poll')?.length)
   // TODO: нормально отбражать картинки (и видео...)
   const photosCount = getAttachments('photo')?.length
@@ -175,7 +175,9 @@ export const WallPost: FC<
                 ) : (
                   <>
                     {t('wallPost.mediaBadge.video', { count: 1 })}
-                    <b>{videos[0].video!.title}</b>
+                    <b title={videos[0].video!.title}>
+                      {videos[0].video!.title}
+                    </b>
                   </>
                 )}
               </MediaBadge>
@@ -192,12 +194,14 @@ export const WallPost: FC<
                 {t('wallPost.mediaBadge.doc', { count: docsCount })}
               </MediaBadge>
             )}
-            {hasLink && (
-              <MediaBadge>
-                {/* TODO: открывать сразу ссылку? */}
-                <Icon16LinkOutline />
-                {t`wallPost.mediaBadge.link`}
-              </MediaBadge>
+            {link && (
+              <a href={link.url} target="_blank">
+                <MediaBadge>
+                  <Icon16LinkOutline />
+                  {t`wallPost.mediaBadge.link`}
+                  <b>{new URL(link.url).hostname}</b>
+                </MediaBadge>
+              </a>
             )}
             {hasPoll && (
               <MediaBadge>
@@ -237,13 +241,15 @@ export const WallPost: FC<
                 {numberFormatter(data.reposts?.count)}
               </div>
             </div>
-            <div className="wall-post-action-item views">
-              <Icon20View width={18} height={18} />
-              {numberFormatter(data.views?.count)}
-            </div>
+            {data.views && (
+              <div className="wall-post-action-item views">
+                <Icon20View width={18} height={18} />
+                {numberFormatter(data.views?.count)}
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   )
-}
+})

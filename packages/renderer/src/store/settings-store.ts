@@ -4,6 +4,11 @@ import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 
 export type ColorScheme = 'auto' | 'light' | 'dark'
 
+export enum ColumnType {
+  newsfeed = 'newsfeed',
+  test = 'test',
+}
+
 export interface Settings {
   colorScheme: ColorScheme
   columns: Column[]
@@ -15,16 +20,15 @@ export interface BaseColumn {
 }
 
 export interface INewsfeedColumn extends BaseColumn {
-  type: 'newsfeed'
+  type: ColumnType.newsfeed
   settings: NewsfeedColumnSettings
 }
 
-export interface ITestColumn extends BaseColumn {
-  type: 'test'
+export interface SerializedTestColumn extends BaseColumn {
+  type: ColumnType.test
 }
 
-export type Column = INewsfeedColumn | ITestColumn
-export type ColumnType = Column['type']
+export type Column = INewsfeedColumn | SerializedTestColumn
 
 export class SettingsStore implements Settings {
   colorScheme: ColorScheme = 'auto'

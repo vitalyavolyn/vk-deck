@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { Icon24NewsfeedOutline } from '@vkontakte/icons'
 import {
   GroupsGroupFull,
@@ -11,6 +11,7 @@ import { classNames } from '@vkontakte/vkjs'
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
+import { ScrollTo } from 'react-cool-virtual'
 import { ColumnHeader } from './column-header'
 import { useStore } from '@/hooks/use-store'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
@@ -32,9 +33,13 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
     const [groups, setGroups] = useState<GroupsGroupFull[]>()
     const [profiles, setProfiles] = useState<UsersUserFull[]>()
     const [showSettings, setShowSettings] = useState(false)
+    const [canScrollToTop, setCanScrollToTop] = useState(false)
     const [refreshTimeout, setRefreshTimeout] = useState<NodeJS.Timeout | null>(
       null,
     )
+
+    const scrollToRef = useRef<ScrollTo | null>(null)
+    const contentRef = useRef<HTMLDivElement | null>(null)
 
     const getPosts = async () => {
       const timeout = refreshTimeout
@@ -86,6 +91,21 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
       }
     }, [settings.source])
 
+    useEffect(() => {
+      if (contentRef.current) {
+        const onScroll = () => {
+          const canScroll = !!contentRef.current?.scrollTop
+          setCanScrollToTop(canScroll)
+        }
+
+        contentRef.current.addEventListener('scroll', onScroll)
+
+        return () => {
+          contentRef.current?.removeEventListener('scroll', onScroll)
+        }
+      }
+    }, [contentRef.current])
+
     const possibleSources = [
       { label: t`newsfeed.sources.feed`, value: '' },
       { label: t`newsfeed.sources.friends`, value: 'friends' },
@@ -103,6 +123,12 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         source
     }
 
+    const scrollToTop = () => {
+      if (scrollToRef.current) {
+        scrollToRef.current({ offset: 0, smooth: true })
+      }
+    }
+
     return (
       <>
         <ColumnHeader
@@ -112,6 +138,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
           onSettingsClick={() => {
             setShowSettings(!showSettings)
           }}
+          onClick={canScrollToTop ? scrollToTop : undefined}
         >
           {possibleSources.find((e) => e.value === settings.source)!.label}
         </ColumnHeader>
@@ -137,6 +164,8 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
             groups={groups}
             items={items}
             className="column-list-content"
+            scrollToRef={scrollToRef}
+            rootRef={contentRef}
           />
         ) : (
           <PanelSpinner />
