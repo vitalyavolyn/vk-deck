@@ -3,6 +3,7 @@ import {
   AppRoot,
   Avatar,
   ConfigProvider,
+  Platform,
   Snackbar,
 } from '@vkontakte/vkui'
 import { FC, useEffect } from 'react'
@@ -48,7 +49,7 @@ export const App: FC = observer(() => {
   }, [setUpdateAvailableHandler, snackbarStore, t])
 
   return (
-    <ConfigProvider scheme={scheme}>
+    <ConfigProvider scheme={scheme} platform={Platform.VKCOM}>
       <AdaptivityProvider>
         <AppRoot noLegacyClasses>
           {isAuthorized ? <Dashboard /> : <Login />}

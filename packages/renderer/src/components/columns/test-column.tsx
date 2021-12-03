@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { Icon24Fire } from '@vkontakte/icons'
 import {
   NewsfeedItemWallpost,
   GroupsGroupFull,
@@ -8,6 +7,8 @@ import {
 import { ColumnProps } from '../column-container'
 import { ColumnHeader } from './column-header'
 import { WallPost } from '@/components/wall-post'
+import { columnIcons } from '@/components/navbar'
+import { ColumnType } from '@/store/settings-store'
 
 const post: NewsfeedItemWallpost = {
   source_id: -198361544,
@@ -110,10 +111,12 @@ const profiles: UsersUserFull[] = [
   },
 ]
 
+const Icon = columnIcons[ColumnType.test]
+
 export const TestColumn: FC<ColumnProps> = () => {
   return (
     <>
-      <ColumnHeader icon={<Icon24Fire />} subtitle="testing">
+      <ColumnHeader icon={Icon} subtitle="testing">
         Test Column
       </ColumnHeader>
       <WallPost data={friendPost} groups={groups} profiles={profiles} />

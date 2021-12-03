@@ -4,9 +4,10 @@ import {
   Icon28WriteOutline,
   Icon28CancelOutline,
   Icon28SettingsOutline,
-  Icon24Fire,
-  Icon24NewsfeedOutline,
+  Icon28NewsfeedOutline,
+  Icon28SparkleOutline,
 } from '@vkontakte/icons'
+import { Icon28NewsfeedOutlineProps } from '@vkontakte/icons/dist/28/newsfeed_outline'
 import { observer } from 'mobx-react-lite'
 import { AsyncAvatar } from './async-avatar'
 import { useStore } from '@/hooks/use-store'
@@ -22,9 +23,13 @@ interface NavbarProps {
   onSettingsClick(): void
 }
 
-const columnIcons: Record<ColumnType, JSX.Element> = {
-  [ColumnType.test]: <Icon24Fire />,
-  [ColumnType.newsfeed]: <Icon24NewsfeedOutline />,
+// bruh
+// TODO: убрать в другое место
+export type IconProps = Icon28NewsfeedOutlineProps
+
+export const columnIcons: Record<ColumnType, FC<IconProps>> = {
+  [ColumnType.test]: Icon28SparkleOutline,
+  [ColumnType.newsfeed]: Icon28NewsfeedOutline,
 }
 
 export const Navbar: FC<NavbarProps> = observer(
@@ -55,21 +60,25 @@ export const Navbar: FC<NavbarProps> = observer(
           </Tappable>
 
           <div className="column-navigator">
-            {settingsStore.columns.map((col) => (
-              <Cell
-                key={col.id}
-                data-column={col.id}
-                onClick={() => onColumnClick(col.id)}
-              >
-                {/*
-                 * TODO:
-                 * Аватарки кроме иконок?
-                 * К примеру, на колонке со стеной человека - его аватарку
-                 * или микс между иконкой и его аватаркой
-                 */}
-                {columnIcons[col.type]}
-              </Cell>
-            ))}
+            {settingsStore.columns.map((col) => {
+              const Icon = columnIcons[col.type]
+
+              return (
+                <Cell
+                  key={col.id}
+                  data-column={col.id}
+                  onClick={() => onColumnClick(col.id)}
+                >
+                  {/*
+                   * TODO:
+                   * Аватарки кроме иконок?
+                   * К примеру, на колонке со стеной человека - его аватарку
+                   * или микс между иконкой и его аватаркой
+                   */}
+                  <Icon width={30} height={30} />
+                </Cell>
+              )
+            })}
           </div>
           <div className="bottom-links">
             <Cell onClick={onSettingsClick}>

@@ -36,6 +36,7 @@ import {
   Icon12User,
   Icon16MarketOutline,
   Icon24PhotosStackOutline,
+  Icon16Verified,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { useTranslation } from 'react-i18next'
@@ -208,6 +209,7 @@ export const WallPost: FC<
               title={`${getName()} @${owner.screen_name}`}
             >
               <span className="full-name">{getName()}</span>
+              {!!owner.verified && <Icon16Verified className="verified-icon" />}
               <span className="screen-name">@{owner.screen_name}</span>
             </a>
             <a

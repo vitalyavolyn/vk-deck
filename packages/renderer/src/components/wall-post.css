@@ -59,6 +59,18 @@
             font-weight: bold;
           }
 
+          .verified-icon {
+            display: inline-block;
+
+            /* wtf */
+            margin-right: -5px;
+            margin-left: 3px;
+            color: var(--accent);
+
+            /* wtf 2 */
+            vertical-align: -0.2em;
+          }
+
           .screen-name {
             margin-left: 3px;
           }

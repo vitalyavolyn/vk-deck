@@ -1,11 +1,13 @@
-import { FC, ReactNode, MouseEvent } from 'react'
-import './column-header.css'
+import { FC, MouseEvent } from 'react'
 import { Icon24Filter } from '@vkontakte/icons'
 import { Subhead, Title } from '@vkontakte/vkui'
 import { classNames } from '@vkontakte/vkjs'
+import { IconProps } from '@/components/navbar'
+
+import './column-header.css'
 
 interface ColumnHeaderProps {
-  icon: ReactNode
+  icon: FC<IconProps>
   showSettingsButton?: boolean
   onSettingsClick?(e: MouseEvent<HTMLDivElement>): void
   subtitle?: string
@@ -30,12 +32,14 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
     }
   }
 
+  const Icon = icon
+
   return (
     <header
       className={classNames('column-header', { clickable: !!onClick })}
       onClick={_onClick}
     >
-      {icon}
+      <Icon width={26} height={26} />
       <div className="column-title">
         <Title level="3" weight="semibold">
           {children}

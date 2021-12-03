@@ -1,5 +1,4 @@
 import { FC, useEffect, useRef, useState } from 'react'
-import { Icon24NewsfeedOutline } from '@vkontakte/icons'
 import {
   GroupsGroupFull,
   NewsfeedGetParams,
@@ -16,11 +15,14 @@ import { ColumnHeader } from './column-header'
 import { useStore } from '@/hooks/use-store'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { ColumnProps } from '@/components/column-container'
-import { INewsfeedColumn } from '@/store/settings-store'
+import { ColumnType, INewsfeedColumn } from '@/store/settings-store'
+import { columnIcons } from '@/components/navbar'
 
 export interface NewsfeedColumnSettings {
   source: string
 }
+
+const Icon = columnIcons[ColumnType.newsfeed]
 
 export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
   ({ data }) => {
@@ -54,6 +56,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         >('newsfeed.get', {
           count: 100,
           filters: 'post',
+          fields: 'verified',
           source_ids: settings.source,
         })
 
@@ -120,7 +123,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
     return (
       <>
         <ColumnHeader
-          icon={<Icon24NewsfeedOutline />}
+          icon={Icon}
           subtitle={`@${userStore.data.user.screen_name}`}
           showSettingsButton
           onSettingsClick={() => {

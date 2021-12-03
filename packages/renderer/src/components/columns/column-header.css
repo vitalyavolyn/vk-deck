@@ -36,7 +36,7 @@
   }
 }
 
-[scheme='space_gray'] .column-header {
+[scheme='vkcom_dark'] .column-header {
   .column-settings-toggle {
     color: var(--tabbar_active_icon);
 
