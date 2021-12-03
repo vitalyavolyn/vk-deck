@@ -20,6 +20,7 @@ import {
   Icon20VideoOutline,
   Icon20MusicOutline,
   Icon20DocumentOutline,
+  Icon28LocationMapOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { useTranslation } from 'react-i18next'
@@ -87,6 +88,8 @@ export const WallPost: FC<
   const audiosCount = getAttachments('audio')?.length
   const docsCount = getAttachments('doc')?.length
 
+  const hasMap = !!data?.geo
+
   const unsupportedAttachments = data.attachments
     ?.filter(
       (e) =>
@@ -151,13 +154,6 @@ export const WallPost: FC<
             {data.text}
           </div>
           <div className="wall-post-badges">
-            {hasRepost && (
-              <MediaBadge
-                icon={<Icon16RepostOutline />}
-                type={t`wallPost.mediaBadge.repost`}
-                subject={getName(getOwner(data.copy_history![0]!.owner_id!)!)}
-              />
-            )}
             {!!photosCount && (
               <MediaBadge
                 icon={<Icon20PictureOutline width={16} height={16} />}
@@ -200,6 +196,19 @@ export const WallPost: FC<
               <MediaBadge
                 icon={<Icon16Poll />}
                 type={t`wallPost.mediaBadge.poll`}
+              />
+            )}
+            {hasMap && (
+              <MediaBadge
+                icon={<Icon28LocationMapOutline width={16} height={16} />}
+                type={t`wallPost.mediaBadge.map`}
+              />
+            )}
+            {hasRepost && (
+              <MediaBadge
+                icon={<Icon16RepostOutline />}
+                type={t`wallPost.mediaBadge.repost`}
+                subject={getName(getOwner(data.copy_history![0]!.owner_id!)!)}
               />
             )}
           </div>
