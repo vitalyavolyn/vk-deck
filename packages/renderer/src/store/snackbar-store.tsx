@@ -5,10 +5,11 @@ import { RootStore } from './root-store'
 
 export class SnackbarStore {
   public element?: JSX.Element
-  public defaultProps = { onClose: this.defaultOnClose }
+  public defaultProps = { onClose: this.defaultOnClose.bind(this) }
 
   defaultOnClose(): void {
     console.log('Snackbar closed (default onClose)')
+    this.element = undefined
   }
 
   show(
