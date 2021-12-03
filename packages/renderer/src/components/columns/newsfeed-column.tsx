@@ -11,7 +11,7 @@ import { classNames } from '@vkontakte/vkjs'
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
-import { ScrollTo } from 'react-cool-virtual'
+import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { ColumnHeader } from './column-header'
 import { useStore } from '@/hooks/use-store'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
@@ -39,7 +39,6 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
     )
 
     const scrollToRef = useRef<ScrollTo | null>(null)
-    const contentRef = useRef<HTMLDivElement | null>(null)
 
     const getPosts = async () => {
       const timeout = refreshTimeout
@@ -91,20 +90,9 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
       }
     }, [settings.source])
 
-    useEffect(() => {
-      if (contentRef.current) {
-        const onScroll = () => {
-          const canScroll = !!contentRef.current?.scrollTop
-          setCanScrollToTop(canScroll)
-        }
-
-        contentRef.current.addEventListener('scroll', onScroll)
-
-        return () => {
-          contentRef.current?.removeEventListener('scroll', onScroll)
-        }
-      }
-    }, [contentRef.current])
+    const onScroll: OnScroll = ({ scrollOffset }) => {
+      setCanScrollToTop(scrollOffset > 0)
+    }
 
     const possibleSources = [
       { label: t`newsfeed.sources.feed`, value: '' },
@@ -165,7 +153,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
             items={items}
             className="column-list-content"
             scrollToRef={scrollToRef}
-            rootRef={contentRef}
+            onScroll={onScroll}
           />
         ) : (
           <PanelSpinner />

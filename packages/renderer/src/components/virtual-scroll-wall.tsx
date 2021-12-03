@@ -4,15 +4,16 @@ import {
   NewsfeedItemWallpost,
   UsersUserFull,
 } from '@vkontakte/api-schema-typescript'
-import useVirtual, { ScrollTo } from 'react-cool-virtual'
+import useVirtual, { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { WallPost } from './wall-post'
 
-interface VirtualScrollWallProps extends HTMLAttributes<HTMLDivElement> {
+interface VirtualScrollWallProps
+  extends Pick<HTMLAttributes<HTMLDivElement>, 'className'> {
   items: NewsfeedItemWallpost[]
   groups: GroupsGroupFull[]
   profiles: UsersUserFull[]
   scrollToRef?: MutableRefObject<ScrollTo | null>
-  rootRef?: MutableRefObject<HTMLDivElement | null>
+  onScroll?: OnScroll
 }
 
 export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
@@ -20,7 +21,7 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   profiles,
   groups,
   scrollToRef,
-  rootRef,
+  onScroll,
   ...rest
 }) => {
   const {
@@ -28,9 +29,10 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
     innerRef,
     items: scrollItems,
     scrollTo,
-  } = useVirtual<HTMLDivElement, HTMLDivElement>({
+  } = useVirtual<HTMLDivElement>({
     itemCount: items.length,
     itemSize: 80,
+    onScroll,
   })
 
   useEffect(() => {
@@ -40,13 +42,7 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   }, [])
 
   return (
-    <div
-      {...rest}
-      ref={(el) => {
-        if (outerRef) outerRef.current = el
-        if (rootRef) rootRef.current = el
-      }}
-    >
+    <div {...rest} ref={outerRef}>
       <div ref={innerRef}>
         {scrollItems.map(({ index, measureRef }) => {
           const data = items[index]
