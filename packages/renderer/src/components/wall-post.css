@@ -10,11 +10,23 @@
     .wall-post-avatar {
       position: relative;
 
-      .ad-icon {
+      .badge {
         position: absolute;
         right: -2px;
         bottom: -2px;
-        filter: grayscale(1);
+
+        &.ad-icon {
+          filter: grayscale(1);
+        }
+
+        &.verified-badge {
+          background-color: white;
+          box-shadow: 0 1px 0 2px #00000030;
+
+          .verified-icon {
+            color: var(--accent);
+          }
+        }
       }
     }
 
@@ -57,18 +69,6 @@
 
           .full-name {
             font-weight: bold;
-          }
-
-          .verified-icon {
-            display: inline-block;
-
-            /* wtf */
-            margin-right: -5px;
-            margin-left: 3px;
-            color: var(--accent);
-
-            /* wtf 2 */
-            vertical-align: -0.2em;
           }
 
           .screen-name {

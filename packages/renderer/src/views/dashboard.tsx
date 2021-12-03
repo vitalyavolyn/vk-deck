@@ -46,7 +46,7 @@ export const Dashboard: FC = observer(() => {
         if (e.code === 'KeyN') {
           setActiveModal('compose')
           setIsModalOpen(true)
-        } else if (e.code.startsWith('Digit')) {
+        } else if (/^(Digit)|(Numpad)/.test(e.code)) {
           const index = Number(e.key) - 1
           const id = settingsStore.columns[index]?.id
           if (id) scrollToColumn(id)

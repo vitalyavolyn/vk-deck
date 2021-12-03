@@ -36,11 +36,12 @@ import {
   Icon12User,
   Icon16MarketOutline,
   Icon24PhotosStackOutline,
-  Icon16Verified,
   Icon20More,
+  Icon16Done,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { useTranslation } from 'react-i18next'
+import { Avatar } from '@vkontakte/vkui'
 import { AsyncAvatar } from './async-avatar'
 import { MediaBadge } from './media-badge'
 import { DropdownMenu } from './dropdown-menu'
@@ -201,9 +202,18 @@ export const WallPost: FC<
               <Icon20RoubleCircleFillBlue
                 width={16}
                 height={16}
-                className="ad-icon"
+                className="ad-icon badge"
                 title={t`wallPost.ad`}
               />
+            )}
+            {!!owner.verified && (
+              <Avatar
+                title={t`wallPost.verified`}
+                size={16}
+                className="badge verified-badge"
+              >
+                <Icon16Done width={12} height={12} className="verified-icon" />
+              </Avatar>
             )}
           </div>
         </div>
@@ -214,7 +224,6 @@ export const WallPost: FC<
               title={`${getName()} @${owner.screen_name}`}
             >
               <span className="full-name">{getName()}</span>
-              {!!owner.verified && <Icon16Verified className="verified-icon" />}
               <span className="screen-name">@{owner.screen_name}</span>
             </a>
             <a
