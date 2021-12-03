@@ -1,6 +1,18 @@
-import { FC, HTMLAttributes, Ref, useEffect, useRef, memo } from 'react'
+import {
+  FC,
+  HTMLAttributes,
+  Ref,
+  useEffect,
+  useRef,
+  memo,
+  useState,
+} from 'react'
 import {
   GroupsGroupFull,
+  LikesAddParams,
+  LikesAddResponse,
+  LikesDeleteParams,
+  LikesDeleteResponse,
   NewsfeedItemWallpost,
   UsersUserFull,
   WallWallpostAttachment,
@@ -23,6 +35,7 @@ import {
   Icon28LocationMapOutline,
   Icon12User,
   Icon16MarketOutline,
+  Icon24PhotosStackOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { useTranslation } from 'react-i18next'
@@ -31,6 +44,7 @@ import { MediaBadge } from './media-badge'
 import { shortRelativeTime } from '@/utils/short-relative-time'
 import { getInitials } from '@/utils/get-initials'
 import { numberFormatter } from '@/utils/number-formatter'
+import { useStore } from '@/hooks/use-store'
 
 import './wall-post.css'
 
@@ -46,8 +60,13 @@ interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
 export const WallPost: FC<
   WallPostProps & { measureRef?: Ref<HTMLDivElement> }
 > = memo(({ data, groups, profiles, measureRef, ...rest }) => {
+  const { userStore, snackbarStore } = useStore()
+
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
+
+  const [likeState, setLikeState] = useState(!!data.likes?.user_likes)
+  const [likeCount, setLikeCount] = useState(data.likes?.count)
 
   useEffect(() => {
     if (contentRef.current) {
@@ -86,6 +105,7 @@ export const WallPost: FC<
   const hasPoll = Boolean(getAttachments('poll')?.length)
   // TODO: нормально отбражать картинки (и видео...)
   const photosCount = getAttachments('photo')?.length
+  const albumsCount = getAttachments('album')?.length
   const videos = getAttachments('video')
   const audiosCount = getAttachments('audio')?.length
   const docsCount = getAttachments('doc')?.length
@@ -96,9 +116,16 @@ export const WallPost: FC<
   const unsupportedAttachments = data.attachments
     ?.filter(
       (e) =>
-        !['link', 'poll', 'photo', 'video', 'audio', 'doc', 'market'].includes(
-          e.type,
-        ),
+        ![
+          'link',
+          'poll',
+          'photo',
+          'video',
+          'audio',
+          'doc',
+          'market',
+          'album',
+        ].includes(e.type),
     )
     .map((e) => e.type)
 
@@ -107,6 +134,45 @@ export const WallPost: FC<
   }
 
   const date = new Date(data.date * 1000)
+
+  const onLikeClick = async () => {
+    const { api } = userStore
+
+    const params = {
+      type: 'post',
+      owner_id: data.source_id!,
+      item_id: data.post_id!,
+    }
+
+    // следующие две ветки почти одинаковые, как-то тупо
+    if (!likeState) {
+      setLikeState(true)
+      try {
+        const { likes } = await api.call<LikesAddResponse, LikesAddParams>(
+          'likes.add',
+          params,
+        )
+        setLikeCount(likes)
+      } catch (error) {
+        console.error(error)
+        if (error instanceof Error) snackbarStore.showError(error.toString())
+        setLikeState(false)
+      }
+    } else {
+      setLikeState(false)
+      try {
+        const { likes } = await api.call<
+          LikesDeleteResponse,
+          LikesDeleteParams
+        >('likes.delete', params)
+        setLikeCount(likes)
+      } catch (error) {
+        console.error(error)
+        if (error instanceof Error) snackbarStore.showError(error.toString())
+        setLikeState(true)
+      }
+    }
+  }
 
   return (
     <div
@@ -155,6 +221,7 @@ export const WallPost: FC<
               {shortRelativeTime(date)}
             </a>
           </header>
+          {/* Обновление аватарки: post_source.data: "profile_photo" */}
           <div className="wall-post-content" ref={contentRef}>
             {data.text}
           </div>
@@ -186,6 +253,12 @@ export const WallPost: FC<
               <MediaBadge
                 icon={<Icon20DocumentOutline width={16} height={16} />}
                 type={t('wallPost.mediaBadge.doc', { count: docsCount })}
+              />
+            )}
+            {!!albumsCount && (
+              <MediaBadge
+                icon={<Icon24PhotosStackOutline width={16} height={16} />}
+                type={t('wallPost.mediaBadge.album', { count: albumsCount })}
               />
             )}
             {!!productsCount && (
@@ -238,15 +311,16 @@ export const WallPost: FC<
               <div
                 title={t('wallPost.actions.like')}
                 className={classNames('wall-post-action-item', 'action-like', {
-                  'user-likes': !!data.likes?.user_likes,
+                  'user-likes': likeState,
                 })}
+                onClick={onLikeClick}
               >
-                {data.likes?.user_likes ? (
+                {likeState ? (
                   <Icon20Like width={18} height={18} />
                 ) : (
                   <Icon20LikeOutline width={18} height={18} />
                 )}
-                {numberFormatter(data.likes?.count)}
+                {numberFormatter(likeCount)}
               </div>
               <div
                 className="wall-post-action-item action-comment"

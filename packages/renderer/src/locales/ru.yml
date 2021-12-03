@@ -40,7 +40,6 @@ translation:
     ad: Реклама
     mediaBadge:
       repost: Репост
-      # Thanks, Intl.PluralRules!
       photo_one: Фотография
       photo_few: '{{count}} фото'
       photo_many: '{{count}} фото'
@@ -58,6 +57,9 @@ translation:
       product: Товар
       product_few: '{{count}} товара'
       product_many: '{{count}} товаров'
+      album: Альбом
+      album_few: '{{count}} альбома'
+      album_many: '{{count}} альбомов'
       map: Карта
 
   newsfeed:
