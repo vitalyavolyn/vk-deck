@@ -37,11 +37,14 @@ import {
   Icon16MarketOutline,
   Icon24PhotosStackOutline,
   Icon16Verified,
+  Icon20More,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from './async-avatar'
 import { MediaBadge } from './media-badge'
+import { DropdownMenu } from './dropdown-menu'
+import { DropdownMenuItem } from './dropdown-menu-item'
 import { shortRelativeTime } from '@/utils/short-relative-time'
 import { getInitials } from '@/utils/get-initials'
 import { numberFormatter } from '@/utils/number-formatter'
@@ -175,6 +178,8 @@ export const WallPost: FC<
     }
   }
 
+  const postUrl = `https://vk.com/wall${data.source_id}_${data.post_id}`
+
   return (
     <div
       className="wall-post-wrap"
@@ -214,7 +219,7 @@ export const WallPost: FC<
             </a>
             <a
               className="time"
-              href={`https://vk.com/wall${data.source_id}_${data.post_id}`}
+              href={postUrl}
               target="_blank"
               title={
                 date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
@@ -338,6 +343,37 @@ export const WallPost: FC<
                 <Icon20ShareOutline width={18} height={18} />
                 {numberFormatter(data.reposts?.count)}
               </div>
+              <DropdownMenu
+                items={[
+                  <DropdownMenuItem
+                    key="copy"
+                    onClick={() => {
+                      navigator.clipboard.writeText(postUrl)
+                    }}
+                  >
+                    Скопировать ссылку
+                  </DropdownMenuItem>,
+                  !!data.can_delete && (
+                    <DropdownMenuItem
+                      key="delete"
+                      onClick={() => {
+                        // TODO
+                        navigator.clipboard.writeText(postUrl)
+                      }}
+                      style={{ color: 'var(--destructive)' }}
+                    >
+                      Удалить
+                    </DropdownMenuItem>
+                  ),
+                ]}
+              >
+                <div
+                  className="wall-post-action-item action-menu"
+                  title={t('wallPost.actions.menu')}
+                >
+                  <Icon20More width={18} height={18} />
+                </div>
+              </DropdownMenu>
             </div>
             {data.views && (
               <div className="wall-post-action-item views">

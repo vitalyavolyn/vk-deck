@@ -48,7 +48,6 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
           const data = items[index]
           return (
             <WallPost
-              // TODO: почему без index виртуальный скролл ведет себя странно(
               key={`${data.source_id}_${data.post_id}`}
               data={items[index]}
               groups={groups}

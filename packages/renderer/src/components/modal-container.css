@@ -12,6 +12,7 @@
     height: 100%;
     box-sizing: border-box;
     padding: 16px 15px 0;
+    border-right: 1px solid var(--image_border);
     background-color: var(--modal_card_background);
   }
 }

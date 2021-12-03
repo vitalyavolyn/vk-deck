@@ -18,6 +18,7 @@
     height: 100%;
     flex: 0 0 auto;
     border-right: 1px solid var(--image_border);
+    transition: width 0.1s;
 
     &:last-of-type {
       margin-right: var(--spaced-columns-gap);
