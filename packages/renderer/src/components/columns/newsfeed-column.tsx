@@ -56,7 +56,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         >('newsfeed.get', {
           count: 100,
           filters: 'post',
-          fields: 'verified',
+          fields: 'verified,screen_name',
           source_ids: settings.source,
         })
 
