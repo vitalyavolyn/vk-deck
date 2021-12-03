@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { ModalProps } from '../modal-container'
 import { ModalHeader } from './modal-header'
 import { useStore } from '@/hooks/use-store'
-import { ColorScheme } from '@/store/settings-store'
+import { ColorScheme, ColumnSize } from '@/store/settings-store'
 
 import './settings-modal.css'
 
@@ -22,6 +22,10 @@ export const SettingsModal: FC<ModalProps> = observer(() => {
     settingsStore.colorScheme = e.target.value as ColorScheme
   }
 
+  const onColumnSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    settingsStore.columnSize = Number(e.target.value) as ColumnSize
+  }
+
   return (
     <div className="modal settings-modal">
       <ModalHeader>{t`settings.title`}</ModalHeader>
@@ -33,6 +37,18 @@ export const SettingsModal: FC<ModalProps> = observer(() => {
             { value: 'auto', label: t`settings.colorScheme.auto` },
             { value: 'light', label: t`settings.colorScheme.light` },
             { value: 'dark', label: t`settings.colorScheme.dark` },
+          ]}
+        />
+      </FormItem>
+
+      <FormItem top={t`settings.columnSize.title`}>
+        <Select
+          onChange={onColumnSizeChange}
+          value={settingsStore.columnSize}
+          options={[
+            { value: ColumnSize.narrow, label: t`settings.columnSize.narrow` },
+            { value: ColumnSize.medium, label: t`settings.columnSize.medium` },
+            { value: ColumnSize.wide, label: t`settings.columnSize.wide` },
           ]}
         />
       </FormItem>

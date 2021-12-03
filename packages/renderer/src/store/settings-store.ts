@@ -30,9 +30,16 @@ export interface SerializedTestColumn extends BaseColumn {
 
 export type Column = INewsfeedColumn | SerializedTestColumn
 
+export enum ColumnSize {
+  narrow,
+  medium,
+  wide,
+}
+
 export class SettingsStore implements Settings {
   colorScheme: ColorScheme = 'auto'
   columns: Column[] = []
+  columnSize: ColumnSize = ColumnSize.medium
 
   constructor(public root: RootStore) {
     const json = localStorage.getItem('settings') || '{}'

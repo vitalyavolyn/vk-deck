@@ -18,6 +18,11 @@ translation:
       auto: Системная
       light: Светлая
       dark: Тёмная
+    columnSize:
+      title: Ширина колонок
+      narrow: Узкая
+      medium: Средняя
+      wide: Широкая
     logout: Выйти
 
   time:

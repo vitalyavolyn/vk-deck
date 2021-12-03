@@ -10,6 +10,14 @@ body {
   background-color: var(--background_page);
 }
 
+.narrow-columns {
+  --column-width: 270px;
+}
+
+.wide-columns {
+  --column-width: 350px;
+}
+
 .vkuiPanel__in {
   height: 100%;
 }

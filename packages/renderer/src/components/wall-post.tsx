@@ -170,7 +170,9 @@ export const WallPost: FC<
                 type={t('wallPost.mediaBadge.video', {
                   count: videos.length,
                 })}
-                subject={videos[0].video!.title}
+                subject={
+                  videos.length === 1 ? videos[0].video!.title : undefined
+                }
               />
             )}
             {!!audiosCount && (
