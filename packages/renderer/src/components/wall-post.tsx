@@ -351,7 +351,7 @@ export const WallPost: FC<
                       navigator.clipboard.writeText(postUrl)
                     }}
                   >
-                    Скопировать ссылку
+                    Копировать ссылку
                   </DropdownMenuItem>,
                   !!data.can_delete && (
                     <DropdownMenuItem
