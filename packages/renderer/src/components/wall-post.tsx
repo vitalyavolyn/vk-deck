@@ -152,63 +152,53 @@ export const WallPost: FC<
           </div>
           <div className="wall-post-badges">
             {hasRepost && (
-              <MediaBadge>
-                <Icon16RepostOutline />
-                {t`wallPost.mediaBadge.repost`}
-                <b>{getName(getOwner(data.copy_history![0]!.owner_id!)!)}</b>
-              </MediaBadge>
+              <MediaBadge
+                icon={<Icon16RepostOutline />}
+                type={t`wallPost.mediaBadge.repost`}
+                subject={getName(getOwner(data.copy_history![0]!.owner_id!)!)}
+              />
             )}
             {!!photosCount && (
-              <MediaBadge>
-                <Icon20PictureOutline width={16} height={16} />
-                {t('wallPost.mediaBadge.photo', { count: photosCount })}
-              </MediaBadge>
+              <MediaBadge
+                icon={<Icon20PictureOutline width={16} height={16} />}
+                type={t('wallPost.mediaBadge.photo', { count: photosCount })}
+              />
             )}
             {!!videos?.length && (
-              <MediaBadge>
-                <Icon20VideoOutline width={16} height={16} />
-                {/* TODO: может, это все же можно решить через i18n?  */}
-                {videos.length > 1 ? (
-                  t('wallPost.mediaBadge.video', {
-                    count: videos.length,
-                  })
-                ) : (
-                  <>
-                    {t('wallPost.mediaBadge.video', { count: 1 })}
-                    <b title={videos[0].video!.title}>
-                      {videos[0].video!.title}
-                    </b>
-                  </>
-                )}
-              </MediaBadge>
+              <MediaBadge
+                icon={<Icon20VideoOutline width={16} height={16} />}
+                type={t('wallPost.mediaBadge.video', {
+                  count: videos.length,
+                })}
+                subject={videos[0].video!.title}
+              />
             )}
             {!!audiosCount && (
-              <MediaBadge>
-                <Icon20MusicOutline width={16} height={16} />
-                {t('wallPost.mediaBadge.audio', { count: audiosCount })}
-              </MediaBadge>
+              <MediaBadge
+                icon={<Icon20MusicOutline width={16} height={16} />}
+                type={t('wallPost.mediaBadge.audio', { count: audiosCount })}
+              />
             )}
             {!!docsCount && (
-              <MediaBadge>
-                <Icon20DocumentOutline width={16} height={16} />
-                {t('wallPost.mediaBadge.doc', { count: docsCount })}
-              </MediaBadge>
+              <MediaBadge
+                icon={<Icon20DocumentOutline width={16} height={16} />}
+                type={t('wallPost.mediaBadge.doc', { count: docsCount })}
+              />
             )}
             {link && (
               <a href={link.url} target="_blank">
-                <MediaBadge>
-                  <Icon16LinkOutline />
-                  {t`wallPost.mediaBadge.link`}
-                  <b>{new URL(link.url).hostname}</b>
-                </MediaBadge>
+                <MediaBadge
+                  icon={<Icon16LinkOutline />}
+                  type={t`wallPost.mediaBadge.link`}
+                  subject={new URL(link.url).hostname}
+                />
               </a>
             )}
             {hasPoll && (
-              <MediaBadge>
-                {/* TODO: проверить клики, когда посты можно будет открывать */}
-                <Icon16Poll />
-                {t`wallPost.mediaBadge.poll`}
-              </MediaBadge>
+              <MediaBadge
+                icon={<Icon16Poll />}
+                type={t`wallPost.mediaBadge.poll`}
+              />
             )}
           </div>
           <div className="wall-post-footer">
