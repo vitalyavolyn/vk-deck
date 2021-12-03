@@ -6,6 +6,7 @@ import {
   Icon28SettingsOutline,
   Icon28NewsfeedOutline,
   Icon28SparkleOutline,
+  Icon28AddOutline,
 } from '@vkontakte/icons'
 import { Icon28NewsfeedOutlineProps } from '@vkontakte/icons/dist/28/newsfeed_outline'
 import { observer } from 'mobx-react-lite'
@@ -21,6 +22,7 @@ interface NavbarProps {
   onComposeButtonClick(): void
   isComposerOpened: boolean
   onSettingsClick(): void
+  onAddColumnClick(): void
 }
 
 // bruh
@@ -38,6 +40,7 @@ export const Navbar: FC<NavbarProps> = observer(
     onComposeButtonClick,
     isComposerOpened,
     onSettingsClick,
+    onAddColumnClick,
   }) => {
     const { userStore, settingsStore } = useStore()
     const { user } = userStore.data
@@ -81,6 +84,9 @@ export const Navbar: FC<NavbarProps> = observer(
             })}
           </div>
           <div className="bottom-links">
+            <Cell onClick={onAddColumnClick}>
+              <Icon28AddOutline />
+            </Cell>
             <Cell onClick={onSettingsClick}>
               <Icon28SettingsOutline />
             </Cell>

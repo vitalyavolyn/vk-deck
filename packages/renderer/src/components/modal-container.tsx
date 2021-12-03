@@ -1,12 +1,14 @@
 import { FC } from 'react'
 import { ComposeModal } from './modals/compose-modal'
 import { SettingsModal } from './modals/settings-modal'
+import { AddColumnModal } from './modals/add-column-modal'
 
 import './modal-container.css'
 
 const modals = {
   compose: ComposeModal,
   settings: SettingsModal,
+  'add-column': AddColumnModal,
 }
 
 export type ModalName = keyof typeof modals // lmao

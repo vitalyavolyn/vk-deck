@@ -8,6 +8,7 @@
   border-radius: 14px;
   color: var(--text_secondary);
   cursor: pointer;
+  font-size: 13px;
   gap: 5px;
 
   b {

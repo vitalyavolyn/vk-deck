@@ -74,6 +74,11 @@ export const Dashboard: FC = observer(() => {
               ? openModal('settings')
               : setIsModalOpen(false)
           }
+          onAddColumnClick={() =>
+            !isModalOpen || activeModal !== 'add-column'
+              ? openModal('add-column')
+              : setIsModalOpen(false)
+          }
         />
       </SplitCol>
 

@@ -25,6 +25,9 @@ translation:
       wide: Широкая
     logout: Выйти
 
+  addColumn:
+    title: Добавить колонку
+
   time:
     relativeDays: '{{d}}д'
     relativeHours: '{{h}}ч'
