@@ -98,6 +98,16 @@
         }
       }
 
+      .wall-post-signer {
+        display: flex;
+        align-items: center;
+        margin-top: 3px;
+        margin-bottom: 2px;
+        color: var(--text_tertiary);
+        font-size: 12px;
+        gap: 3px;
+      }
+
       .wall-post-footer {
         display: flex;
         justify-content: space-between;

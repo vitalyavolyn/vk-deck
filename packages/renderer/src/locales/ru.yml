@@ -55,6 +55,9 @@ translation:
       doc: Файл
       doc_few: '{{count}} файла'
       doc_many: '{{count}} файлов'
+      product: Товар
+      product_few: '{{count}} товара'
+      product_many: '{{count}} товаров'
       map: Карта
 
   newsfeed:

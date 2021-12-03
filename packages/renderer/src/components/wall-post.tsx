@@ -21,6 +21,8 @@ import {
   Icon20MusicOutline,
   Icon20DocumentOutline,
   Icon28LocationMapOutline,
+  Icon12User,
+  Icon16MarketOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { useTranslation } from 'react-i18next'
@@ -87,13 +89,16 @@ export const WallPost: FC<
   const videos = getAttachments('video')
   const audiosCount = getAttachments('audio')?.length
   const docsCount = getAttachments('doc')?.length
+  const productsCount = getAttachments('market')?.length
 
   const hasMap = !!data?.geo
 
   const unsupportedAttachments = data.attachments
     ?.filter(
       (e) =>
-        !['link', 'poll', 'photo', 'video', 'audio', 'doc'].includes(e.type),
+        !['link', 'poll', 'photo', 'video', 'audio', 'doc', 'market'].includes(
+          e.type,
+        ),
     )
     .map((e) => e.type)
 
@@ -183,12 +188,21 @@ export const WallPost: FC<
                 type={t('wallPost.mediaBadge.doc', { count: docsCount })}
               />
             )}
+            {!!productsCount && (
+              <MediaBadge
+                icon={<Icon16MarketOutline />}
+                type={t('wallPost.mediaBadge.product', {
+                  count: productsCount,
+                })}
+              />
+            )}
             {link && (
               <a href={link.url} target="_blank">
                 <MediaBadge
                   icon={<Icon16LinkOutline />}
                   type={t`wallPost.mediaBadge.link`}
                   subject={new URL(link.url).hostname}
+                  title={link.url}
                 />
               </a>
             )}
@@ -212,6 +226,13 @@ export const WallPost: FC<
               />
             )}
           </div>
+          {data.signer_id && (
+            // TODO: ссылка?
+            <div className="wall-post-signer">
+              <Icon12User />
+              {getName(getOwner(data.signer_id))}
+            </div>
+          )}
           <div className="wall-post-footer">
             <div className="wall-post-actions">
               <div
