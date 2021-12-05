@@ -35,7 +35,6 @@ export const SettingsModal: FC<ModalProps> = observer(() => {
       <ModalHeader>{t`settings.title`}</ModalHeader>
       <FormLayout>
         <FormItem top={t`settings.colorScheme.title`}>
-          {/* TODO: sliderSwitch */}
           <Select
             onChange={onColorThemeChange}
             value={settingsStore.colorScheme}
