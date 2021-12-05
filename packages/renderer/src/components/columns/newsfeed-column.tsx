@@ -36,17 +36,18 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
     const [profiles, setProfiles] = useState<UsersUserFull[]>()
     const [showSettings, setShowSettings] = useState(false)
     const [canScrollToTop, setCanScrollToTop] = useState(false)
-    const [refreshTimeout, setRefreshTimeout] = useState<NodeJS.Timeout | null>(
-      null,
-    )
+    // const [refreshTimeout, setRefreshTimeout] = useState<NodeJS.Timeout | null>(
+    //   null,
+    // )
 
     const scrollToRef = useRef<ScrollTo | null>(null)
+    const timerRef = useRef<NodeJS.Timeout | null>(null)
 
     const getPosts = async () => {
-      const timeout = refreshTimeout
-      if (refreshTimeout) {
-        clearTimeout(refreshTimeout)
-        setRefreshTimeout(null)
+      // const timeout = refreshTimeout
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+        timerRef.current = null
       }
 
       try {
@@ -60,12 +61,6 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
           source_ids: settings.source,
         })
 
-        if (refreshTimeout && refreshTimeout !== timeout) {
-          console.log(refreshTimeout, timeout)
-          console.warn('Таймер заведен??')
-          return
-        }
-
         const { items, groups, profiles } = response
         setGroups(groups)
         setProfiles(profiles)
@@ -76,18 +71,18 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         }
       }
 
-      setRefreshTimeout(setTimeout(getPosts, 10000))
+      timerRef.current = setTimeout(getPosts, 10000)
     }
 
     useEffect(() => {
       getPosts()
       return () => {
-        if (refreshTimeout) clearTimeout(refreshTimeout)
+        if (timerRef.current) clearTimeout(timerRef.current)
       }
     }, [])
 
     useEffect(() => {
-      if (refreshTimeout) {
+      if (timerRef.current) {
         getPosts()
         setItems(undefined)
       }
