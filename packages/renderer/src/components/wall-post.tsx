@@ -86,6 +86,8 @@ export const WallPost: FC<
   const owner = getOwner(data.from_id!)
 
   if (!owner) {
+    console.log('no owner')
+
     return null
   }
 

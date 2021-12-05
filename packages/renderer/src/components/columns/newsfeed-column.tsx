@@ -47,20 +47,17 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
     const { userStore, snackbarStore, settingsStore } = useStore()
     const { t } = useTranslation()
 
-    const [items, setItems] = useState<NewsfeedItemWallpost[]>()
+    const [feedItems, setFeedItems] = useState<NewsfeedItemWallpost[]>()
     const [groups, setGroups] = useState<GroupsGroupFull[]>()
     const [profiles, setProfiles] = useState<UsersUserFull[]>()
     const [showSettings, setShowSettings] = useState(false)
     const [canScrollToTop, setCanScrollToTop] = useState(false)
-    // const [refreshTimeout, setRefreshTimeout] = useState<NodeJS.Timeout | null>(
-    //   null,
-    // )
 
     const scrollToRef = useRef<ScrollTo | null>(null)
     const timerRef = useRef<NodeJS.Timeout | null>(null)
+    const startTimeRef = useRef<number>(0)
 
     const getPosts = async () => {
-      // const timeout = refreshTimeout
       if (timerRef.current) {
         clearTimeout(timerRef.current)
         timerRef.current = null
@@ -75,12 +72,26 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
           filters: 'post',
           fields: 'verified,screen_name',
           source_ids: settings.source,
+          start_time: startTimeRef.current,
         })
 
         const { items, groups, profiles } = response
-        setGroups(groups)
-        setProfiles(profiles)
-        setItems(items)
+
+        // TODO: will have duplicates EVERY UPDATE
+        // also this is ugly
+        setGroups((oldGroups) => [...(oldGroups || []), ...(groups || [])])
+        setProfiles((oldProfiles) => [
+          ...(oldProfiles || []),
+          ...(profiles || []),
+        ])
+        setFeedItems((oldItems) => {
+          return [
+            ...(items?.filter((e) => e.date !== startTimeRef.current) || []),
+            ...(oldItems || []),
+          ]
+        })
+
+        startTimeRef.current = items?.[0]?.date || 0
       } catch (error) {
         if (error instanceof Error) {
           snackbarStore.showError(error.toString())
@@ -100,7 +111,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
     useEffect(() => {
       if (timerRef.current) {
         getPosts()
-        setItems(undefined)
+        setFeedItems(undefined)
       }
     }, [settings.source])
 
@@ -160,11 +171,11 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
             </FormItem>
           </FormLayout>
         </div>
-        {items && groups && profiles ? (
+        {feedItems && groups && profiles ? (
           <VirtualScrollWall
             profiles={profiles}
             groups={groups}
-            items={items.map((post) => newsfeedPostToWallPost(post))}
+            items={feedItems.map((post) => newsfeedPostToWallPost(post))}
             className="column-list-content"
             scrollToRef={scrollToRef}
             onScroll={onScroll}
