@@ -40,6 +40,7 @@ export class SettingsStore implements Settings {
   colorScheme: ColorScheme = 'auto'
   columns: Column[] = []
   columnSize: ColumnSize = ColumnSize.medium
+  blurAds = false
 
   constructor(public root: RootStore) {
     const json = localStorage.getItem('settings') || '{}'

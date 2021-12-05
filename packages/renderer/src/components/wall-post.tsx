@@ -1,22 +1,14 @@
-import {
-  FC,
-  HTMLAttributes,
-  Ref,
-  useEffect,
-  useRef,
-  memo,
-  useState,
-} from 'react'
+import { FC, HTMLAttributes, Ref, useEffect, useRef, useState } from 'react'
 import {
   GroupsGroupFull,
   LikesAddParams,
   LikesAddResponse,
   LikesDeleteParams,
   LikesDeleteResponse,
-  NewsfeedItemWallpost,
   UsersUserFull,
   WallWallpostAttachment,
   WallWallpostAttachmentType,
+  WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import {
   Icon20RoubleCircleFillBlue,
@@ -42,6 +34,7 @@ import {
 import { classNames } from '@vkontakte/vkjs'
 import { useTranslation } from 'react-i18next'
 import { Avatar } from '@vkontakte/vkui'
+import { observer } from 'mobx-react-lite'
 import { AsyncAvatar } from './async-avatar'
 import { MediaBadge } from './media-badge'
 import { DropdownMenu } from './dropdown-menu'
@@ -54,18 +47,21 @@ import { useStore } from '@/hooks/use-store'
 import './wall-post.css'
 
 interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
-  data: NewsfeedItemWallpost
+  data: WallWallpostFull
   groups: GroupsGroupFull[]
   profiles: UsersUserFull[]
 }
 
 /**
  * Показывает запись из ленты, принимает информацию из newsfeed.get
+ *
+ * Возможно, было бы лучшей идеей как-то конвертировать `NewsfeedItemWallpost`
+ * в `WallWallpostFull` и принимать его. Все равно они похожи. TODO, в общем
  */
 export const WallPost: FC<
   WallPostProps & { measureRef?: Ref<HTMLDivElement> }
-> = memo(({ data, groups, profiles, measureRef, ...rest }) => {
-  const { userStore, snackbarStore } = useStore()
+> = observer(({ data, groups, profiles, measureRef, ...rest }) => {
+  const { userStore, snackbarStore, settingsStore } = useStore()
 
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
@@ -87,7 +83,7 @@ export const WallPost: FC<
       ? profiles.find((e) => e.id === id)
       : groups.find((value) => -value.id === id)
 
-  const owner = getOwner(data.source_id)
+  const owner = getOwner(data.from_id!)
 
   if (!owner) {
     return null
@@ -138,15 +134,15 @@ export const WallPost: FC<
     console.warn('Unsupported attachments', unsupportedAttachments)
   }
 
-  const date = new Date(data.date * 1000)
+  const date = new Date(data.date! * 1000)
 
   const onLikeClick = async () => {
     const { api } = userStore
 
     const params = {
       type: 'post',
-      owner_id: data.source_id!,
-      item_id: data.post_id!,
+      owner_id: data.owner_id,
+      item_id: data.id!,
     }
 
     // следующие две ветки почти одинаковые, как-то тупо
@@ -179,16 +175,22 @@ export const WallPost: FC<
     }
   }
 
-  const postUrl = `https://vk.com/wall${data.source_id}_${data.post_id}`
+  const postUrl = `https://vk.com/wall${data.owner_id}_${data.id}`
+
+  const isAd = !!data.marked_as_ads
 
   return (
     <div
       className="wall-post-wrap"
-      data-id={`${data.source_id}_${data.post_id}`}
+      data-id={`${data.owner_id}_${data.id}`}
       ref={measureRef}
       {...rest}
     >
-      <div className="wall-post">
+      <div
+        className={classNames('wall-post', {
+          'blurred-ad': isAd && settingsStore.blurAds,
+        })}
+      >
         <div className="left">
           <div className="wall-post-avatar">
             <AsyncAvatar
@@ -198,7 +200,7 @@ export const WallPost: FC<
               initials={getInitials(owner)}
             />
             {/* TODO: попробовать новый `badge` в Avatar */}
-            {!!data.marked_as_ads && (
+            {isAd && (
               <Icon20RoubleCircleFillBlue
                 width={16}
                 height={16}

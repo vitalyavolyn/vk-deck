@@ -6,6 +6,11 @@
     --formitem_padding: 0;
   }
 
+  .vkuiCheckbox--vkcom {
+    /* Как-то странно */
+    padding: 0 10px;
+  }
+
   .logout-button-container {
     padding-bottom: 10px;
     margin-top: auto;

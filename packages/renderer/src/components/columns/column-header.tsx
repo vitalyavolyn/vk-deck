@@ -46,6 +46,7 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
         </Title>
         <Subhead weight="medium">{subtitle}</Subhead>
       </div>
+      {/* TODO: индикатор обновления контента? */}
       {showSettingsButton && (
         <Icon24Filter
           className="column-settings-toggle"

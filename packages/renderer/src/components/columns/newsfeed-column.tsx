@@ -5,6 +5,7 @@ import {
   NewsfeedGetResponse,
   NewsfeedItemWallpost,
   UsersUserFull,
+  WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { classNames } from '@vkontakte/vkjs'
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
@@ -23,6 +24,21 @@ export interface NewsfeedColumnSettings {
 }
 
 const Icon = columnIcons[ColumnType.newsfeed]
+
+const newsfeedPostToWallPost = (
+  item: NewsfeedItemWallpost,
+): WallWallpostFull => {
+  // TODO: а geo перевести в другой формат?
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { geo, post_id: id, source_id: owner, ...compatibleProps } = item
+
+  return {
+    id,
+    owner_id: owner,
+    from_id: owner,
+    ...compatibleProps,
+  }
+}
 
 export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
   ({ data }) => {
@@ -148,7 +164,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
           <VirtualScrollWall
             profiles={profiles}
             groups={groups}
-            items={items}
+            items={items.map((post) => newsfeedPostToWallPost(post))}
             className="column-list-content"
             scrollToRef={scrollToRef}
             onScroll={onScroll}

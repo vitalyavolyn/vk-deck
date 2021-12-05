@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import {
-  NewsfeedItemWallpost,
+  WallWallpostFull,
   GroupsGroupFull,
   UsersUserFull,
 } from '@vkontakte/api-schema-typescript'
@@ -10,8 +10,8 @@ import { WallPost } from '@/components/wall-post'
 import { columnIcons } from '@/components/navbar'
 import { ColumnType } from '@/store/settings-store'
 
-const post: NewsfeedItemWallpost = {
-  source_id: -198361544,
+const post: WallWallpostFull = {
+  owner_id: -198361544,
   date: 1636653600,
   text: 'Путин вернулся из реанимации героем порно!',
   marked_as_ads: 0,
@@ -35,11 +35,10 @@ const post: NewsfeedItemWallpost = {
   },
   is_favorite: false,
   post_id: 54039,
-  type: 'post',
 }
 
-const friendPost: NewsfeedItemWallpost = {
-  source_id: 240762441,
+const friendPost: WallWallpostFull = {
+  owner_id: 240762441,
   date: 1638255074,
   post_type: 'post',
   text: 'Кот.',
@@ -70,7 +69,6 @@ const friendPost: NewsfeedItemWallpost = {
   short_text_rate: 0.8,
   carousel_offset: 0,
   post_id: 878,
-  type: 'post',
 }
 
 const groups: GroupsGroupFull[] = [

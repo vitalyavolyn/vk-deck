@@ -7,6 +7,15 @@
     display: flex;
     column-gap: 8px;
 
+    &.blurred-ad {
+      filter: blur(3px);
+      transition: filter 0.1s;
+
+      &:hover {
+        filter: none;
+      }
+    }
+
     .wall-post-avatar {
       position: relative;
 
