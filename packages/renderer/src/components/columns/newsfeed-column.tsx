@@ -115,6 +115,18 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
       }
     }, [settings.source])
 
+    // возможно, это поможет с двойными запросами в режиме разработки
+    // если замечу, что лучше не стало - уберу
+    // а может, выделю это в хук, принимающий реф с таймером
+    if (import.meta.hot) {
+      import.meta.hot.on('vite:beforeUpdate', () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current)
+          timerRef.current = null
+        }
+      })
+    }
+
     const onScroll: OnScroll = ({ scrollOffset }) => {
       setCanScrollToTop(scrollOffset > 0)
     }
