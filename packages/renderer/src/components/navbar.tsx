@@ -85,10 +85,10 @@ export const Navbar: FC<NavbarProps> = observer(
           </div>
           <div className="bottom-links">
             <Cell onClick={onAddColumnClick}>
-              <Icon28AddOutline />
+              <Icon28AddOutline width={24} height={24} />
             </Cell>
             <Cell onClick={onSettingsClick}>
-              <Icon28SettingsOutline />
+              <Icon28SettingsOutline width={24} height={24} />
             </Cell>
             <AsyncAvatar
               initials={getInitials(user)}
