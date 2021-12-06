@@ -105,7 +105,7 @@ export const WallPost: FC<
     data.attachments?.filter((e) => e.type === type)
 
   const link = getAttachments('link')?.[0]?.link
-  const hasPoll = Boolean(getAttachments('poll')?.length)
+  const poll = getAttachments('poll')?.[0]?.poll
   // TODO: нормально отбражать картинки (и видео...)
   const photosCount = getAttachments('photo')?.length
   const albumsCount = getAttachments('album')?.length
@@ -299,10 +299,11 @@ export const WallPost: FC<
                 />
               </a>
             )}
-            {hasPoll && (
+            {poll && (
               <MediaBadge
                 icon={<Icon16Poll />}
                 type={t`wallPost.mediaBadge.poll`}
+                subject={poll.question}
               />
             )}
             {hasMap && (
