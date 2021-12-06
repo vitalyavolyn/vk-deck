@@ -7,6 +7,7 @@ import {
   Icon28NewsfeedOutline,
   Icon28SparkleOutline,
   Icon28AddOutline,
+  Icon28GridLayoutOutline,
 } from '@vkontakte/icons'
 import { Icon28NewsfeedOutlineProps } from '@vkontakte/icons/dist/28/newsfeed_outline'
 import { observer } from 'mobx-react-lite'
@@ -32,6 +33,8 @@ export type IconProps = Icon28NewsfeedOutlineProps
 export const columnIcons: Record<ColumnType, FC<IconProps>> = {
   [ColumnType.test]: Icon28SparkleOutline,
   [ColumnType.newsfeed]: Icon28NewsfeedOutline,
+  // TODO: неоч
+  [ColumnType.wall]: Icon28GridLayoutOutline,
 }
 
 export const Navbar: FC<NavbarProps> = observer(

@@ -45,6 +45,7 @@ import { numberFormatter } from '@/utils/number-formatter'
 import { useStore } from '@/hooks/use-store'
 
 import './wall-post.css'
+import { getOwner } from '@/utils/get-owner'
 
 interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
   data: WallWallpostFull
@@ -78,12 +79,7 @@ export const WallPost: FC<
     }
   }, [contentRef])
 
-  const getOwner = (id: number) =>
-    id > 0
-      ? profiles.find((e) => e.id === id)
-      : groups.find((value) => -value.id === id)
-
-  const owner = getOwner(data.from_id!)
+  const owner = getOwner(data.from_id!, profiles, groups)
 
   if (!owner) {
     console.log('no owner')
@@ -241,7 +237,9 @@ export const WallPost: FC<
               {shortRelativeTime(date)}
             </a>
           </header>
-          {/* Обновление аватарки: post_source.data: "profile_photo" */}
+          {data.post_source?.data === 'profile_photo' && (
+            <div className="wall-post-source">{t`wallPost.photoUpdated`}</div>
+          )}
           <div className="wall-post-content" ref={contentRef}>
             {data.text}
           </div>
@@ -316,7 +314,9 @@ export const WallPost: FC<
               <MediaBadge
                 icon={<Icon16RepostOutline />}
                 type={t`wallPost.mediaBadge.repost`}
-                subject={getName(getOwner(data.copy_history![0]!.owner_id!)!)}
+                subject={getName(
+                  getOwner(data.copy_history![0]!.owner_id!, profiles, groups)!,
+                )}
               />
             )}
           </div>
@@ -324,7 +324,7 @@ export const WallPost: FC<
             // TODO: ссылка?
             <div className="wall-post-signer">
               <Icon12User />
-              {getName(getOwner(data.signer_id))}
+              {getName(getOwner(data.signer_id, profiles, groups))}
             </div>
           )}
           <div className="wall-post-footer">

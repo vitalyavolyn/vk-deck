@@ -43,7 +43,10 @@ export const Dashboard: FC = observer(() => {
     window.addEventListener(
       'keypress',
       (e) => {
-        if (e.code === 'KeyN') {
+        if (
+          e.code === 'KeyN' &&
+          !/textarea|input|select/i.test(document.activeElement?.nodeName || '')
+        ) {
           setActiveModal('compose')
           setIsModalOpen(true)
         } else if (/^(Digit)|(Numpad)/.test(e.code)) {

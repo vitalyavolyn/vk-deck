@@ -10,9 +10,9 @@ import {
   WallPostParams,
   WallPostResponse,
 } from '@vkontakte/api-schema-typescript'
-import { AccountPicker, AccountPickerMode } from '../account-picker'
-import { ModalProps } from '../modal-container'
 import { ModalHeader } from './modal-header'
+import { AccountPicker, AccountPickerMode } from '@/components/account-picker'
+import { ModalProps } from '@/components/modal-container'
 import { useStore } from '@/hooks/use-store'
 
 import './compose-modal.css'

@@ -1,3 +1,14 @@
-.modal-header .vkuiTitle {
-  margin-bottom: 12px;
+.modal-header .modal-header-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+
+  .back-button {
+    padding: 0;
+  }
+
+  .vkuiTitle {
+    margin-bottom: 12px;
+  }
 }

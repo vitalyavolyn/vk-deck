@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { TestColumn } from './columns/test-column'
 import { NewsfeedColumn } from './columns/newsfeed-column'
+import { WallColumn } from './columns/wall-column'
 import { useStore } from '@/hooks/use-store'
 import { BaseColumn, ColumnType } from '@/store/settings-store'
 
@@ -9,6 +10,7 @@ import './column-container.css'
 const columnComponents = {
   [ColumnType.test]: TestColumn,
   [ColumnType.newsfeed]: NewsfeedColumn,
+  [ColumnType.wall]: WallColumn,
 }
 
 interface ColumnContainerProps {

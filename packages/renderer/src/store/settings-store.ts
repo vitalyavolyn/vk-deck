@@ -1,17 +1,21 @@
 import { autorun, makeAutoObservable } from 'mobx'
 import { RootStore } from './root-store'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
+import { WallColumnSettings } from '@/components/columns/wall-column'
 
 export type ColorScheme = 'auto' | 'light' | 'dark'
 
 export enum ColumnType {
   newsfeed = 'newsfeed',
   test = 'test',
+  wall = 'wall',
 }
 
 export interface Settings {
   colorScheme: ColorScheme
   columns: Column[]
+  columnSize: ColumnSize
+  blurAds: boolean
 }
 
 export interface BaseColumn {
@@ -24,11 +28,17 @@ export interface INewsfeedColumn extends BaseColumn {
   settings: NewsfeedColumnSettings
 }
 
+export interface IWallColumn extends BaseColumn {
+  type: ColumnType.wall
+  settings: WallColumnSettings
+}
+
+// TODO: че с названиями то
 export interface SerializedTestColumn extends BaseColumn {
   type: ColumnType.test
 }
 
-export type Column = INewsfeedColumn | SerializedTestColumn
+export type Column = INewsfeedColumn | SerializedTestColumn | IWallColumn
 
 export enum ColumnSize {
   narrow,
@@ -58,6 +68,8 @@ export class SettingsStore implements Settings {
     return {
       colorScheme: this.colorScheme,
       columns: this.columns,
+      columnSize: this.columnSize,
+      blurAds: this.blurAds,
     }
   }
 

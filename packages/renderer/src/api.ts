@@ -48,7 +48,7 @@ export class Api {
       new URLSearchParams(completeParams).toString(),
     )
 
-    console.log(data)
+    console.log(method, data)
 
     if ('response' in data) {
       return data.response

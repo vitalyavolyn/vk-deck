@@ -1,8 +1,11 @@
 .modal-container {
   position: absolute;
   z-index: -1;
+  display: flex;
+  overflow: hidden;
   width: var(--modal-width);
   height: 100%;
+  flex-flow: column wrap;
   transform: translateX(
     calc(var(--modal-width) * -1 - var(--spaced-columns-gap))
   );
@@ -14,5 +17,9 @@
     padding: 16px 15px 0;
     border-right: 1px solid var(--image_border);
     background-color: var(--modal_card_background);
+
+    .vkuiFormItem {
+      --formitem_padding: 0;
+    }
   }
 }

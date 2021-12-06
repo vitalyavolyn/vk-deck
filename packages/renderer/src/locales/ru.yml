@@ -29,6 +29,11 @@ translation:
   addColumn:
     title: Добавить колонку
 
+  columns:
+    newsfeed: Новости
+    test: Test Column
+    wall: Стена
+
   time:
     relativeDays: '{{d}}д'
     relativeHours: '{{h}}ч'
@@ -37,6 +42,7 @@ translation:
     relativeNow: сейчас
 
   wallPost:
+    photoUpdated: Фотография страницы обновлена
     actions:
       like: Нравится
       comment: Комментарии
@@ -75,3 +81,11 @@ translation:
       groups: Сообщества
     settings:
       source: Источник
+
+  wallSetup:
+    placeholder: Поиск человека или группы
+    emptyText: Ничего не найдено
+    insufficientQuery: Нужно ввести хотя бы три символа
+
+  wall:
+    title: Стена

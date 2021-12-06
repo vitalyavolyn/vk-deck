@@ -4,14 +4,15 @@ import {
   GroupsGroupFull,
   UsersUserFull,
 } from '@vkontakte/api-schema-typescript'
-import { ColumnProps } from '../column-container'
 import { ColumnHeader } from './column-header'
+import { ColumnProps } from '@/components/column-container'
 import { WallPost } from '@/components/wall-post'
 import { columnIcons } from '@/components/navbar'
 import { ColumnType } from '@/store/settings-store'
 
 const post: WallWallpostFull = {
   owner_id: -198361544,
+  from_id: -198361544,
   date: 1636653600,
   text: 'Путин вернулся из реанимации героем порно!',
   marked_as_ads: 0,
@@ -39,6 +40,7 @@ const post: WallWallpostFull = {
 
 const friendPost: WallWallpostFull = {
   owner_id: 240762441,
+  from_id: 240762441,
   date: 1638255074,
   post_type: 'post',
   text: 'Кот.',

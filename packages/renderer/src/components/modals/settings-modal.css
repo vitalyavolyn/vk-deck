@@ -2,10 +2,6 @@
   display: flex;
   flex-direction: column;
 
-  .vkuiFormItem {
-    --formitem_padding: 0;
-  }
-
   .vkuiCheckbox--vkcom {
     /* Как-то странно */
     padding: 0 10px;

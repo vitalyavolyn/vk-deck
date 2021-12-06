@@ -70,7 +70,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         >('newsfeed.get', {
           count: 100,
           filters: 'post',
-          fields: 'verified,screen_name',
+          fields: 'verified,screen_name,photo_50',
           source_ids: settings.source,
           start_time: startTimeRef.current,
         })
@@ -110,6 +110,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
 
     useEffect(() => {
       if (timerRef.current) {
+        startTimeRef.current = 0
         getPosts()
         setFeedItems(undefined)
       }
@@ -184,6 +185,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
           </FormLayout>
         </div>
         {feedItems && groups && profiles ? (
+          // TODO: infinite scroll
           <VirtualScrollWall
             profiles={profiles}
             groups={groups}

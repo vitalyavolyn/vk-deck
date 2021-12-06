@@ -20,7 +20,7 @@ export function initIpc(win: BrowserWindow): void {
       client_id: '7446716',
       redirect_uri: redirectURL,
       response_type: 'token',
-      scope: 'offline,wall,friends',
+      scope: 'offline,wall,friends,groups',
       revoke: '1',
       display: 'mobile',
     }
