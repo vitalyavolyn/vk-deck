@@ -26,6 +26,7 @@ export const Dashboard: FC = observer(() => {
   const { snackbarStore, settingsStore } = useStore()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeModal, setActiveModal] = useState<ModalName | undefined>()
+
   if (!viewWidth) return <PanelSpinner />
 
   const openModal = (name: ModalName) => {
@@ -66,6 +67,7 @@ export const Dashboard: FC = observer(() => {
       <SplitCol fixed width="64px" maxWidth="64px" style={{ zIndex: 1 }}>
         <Navbar
           onColumnClick={scrollToColumn}
+          // TODO: функции ниже надо привести в порядок и объединить
           onComposeButtonClick={() =>
             !isModalOpen || activeModal !== 'compose'
               ? openModal('compose')

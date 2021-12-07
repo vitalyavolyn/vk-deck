@@ -4,7 +4,6 @@ import {
   SearchGetHintsResponse,
 } from '@vkontakte/api-schema-typescript'
 import {
-  Avatar,
   Button,
   CustomSelect,
   CustomSelectOption,
@@ -14,9 +13,11 @@ import {
 } from '@vkontakte/vkui'
 import { CustomSelectProps } from '@vkontakte/vkui/dist/components/CustomSelect/CustomSelect'
 import { useTranslation } from 'react-i18next'
+import { AsyncAvatar } from '@/components/async-avatar'
 import { SetupProps } from '@/components/modals/add-column-modal'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType } from '@/store/settings-store'
+import { getInitials } from '@/utils/get-initials'
 import { getName } from '@/utils/get-name'
 
 export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
@@ -89,7 +90,14 @@ export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
               <CustomSelectOption
                 {...restProps}
                 key={option.value}
-                before={<Avatar size={24} src={option.avatar} />}
+                before={
+                  <AsyncAvatar
+                    size={24}
+                    src={option.avatar}
+                    initials={getInitials(option.label)}
+                    gradientColor={(option.value % 6) + 1}
+                  />
+                }
                 description={'@' + option.description}
               />
             )}
