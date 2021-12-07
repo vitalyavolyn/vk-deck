@@ -29,7 +29,7 @@ export class UserStore {
     await this.fetchUser()
     localStorage.setItem('token', token)
     if (this.data.settings) {
-      this.root.settingsStore.load(JSON.parse(this.data.settings))
+      this.root.settingsStore.load({ columns: JSON.parse(this.data.settings) })
     }
   }
 

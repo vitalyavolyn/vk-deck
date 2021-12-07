@@ -29,6 +29,10 @@ export class Api {
     this.token = token
   }
 
+  get isReady() {
+    return !!this.token
+  }
+
   async call<T, R = Record<string, string | number>>(
     method: string,
     params?: R,

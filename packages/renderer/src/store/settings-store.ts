@@ -64,14 +64,15 @@ export class SettingsStore implements Settings {
     makeAutoObservable(this)
 
     autorun(() => {
+      const { api } = this.root.userStore
+
       localStorage.setItem('settings', JSON.stringify(this.asObject))
-      this.root.userStore.api.call<StorageSetResponse, StorageSetParams>(
-        'storage.set',
-        {
-          key: 'settings',
-          value: JSON.stringify(this.asObject),
-        },
-      )
+      if (api.isReady) {
+        api.call<StorageSetResponse, StorageSetParams>('storage.set', {
+          key: 'columns',
+          value: JSON.stringify(this.asObject.columns),
+        })
+      }
     })
   }
 
@@ -84,7 +85,7 @@ export class SettingsStore implements Settings {
     }
   }
 
-  load(settings: Settings) {
+  load(settings: Partial<Settings>) {
     Object.assign(this, settings)
   }
 
