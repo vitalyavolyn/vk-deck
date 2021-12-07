@@ -1,6 +1,6 @@
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
-import i18n from 'i18next'
+import i18next from 'i18next'
 
 const instance = rateLimit(axios.create({ baseURL: 'https://api.vk.com' }), {
   maxRPS: 3,
@@ -22,8 +22,8 @@ type VKApiData<T> = VKApiResponse<T> | VKApiError
 
 export class Api {
   private token = ''
-  v = '5.131'
-  lang = i18n.language.split('-')[0]
+  v = '5.157'
+  lang = i18next.language.split('-')[0]
 
   setToken(token: string): void {
     this.token = token
@@ -48,13 +48,13 @@ export class Api {
       new URLSearchParams(completeParams).toString(),
     )
 
-    console.log(data)
+    console.log(method, data)
 
     if ('response' in data) {
       return data.response
     }
 
-    // TODO: execute??
+    // TODO: А что с ошибками execute?
     throw data.error
   }
 }

@@ -10,6 +10,7 @@ translation:
     publish: Опубликовать
     done: Готово!
     error: Ошибка при публикации
+
   settings:
     title: Настройки
     colorScheme:
@@ -17,4 +18,83 @@ translation:
       auto: Системная
       light: Светлая
       dark: Тёмная
+    columnSize:
+      title: Ширина колонок
+      narrow: Узкая
+      medium: Средняя
+      wide: Широкая
+    blurAds: Блюрить рекламу
     logout: Выйти
+
+  addColumn:
+    title: Добавить колонку
+    caption:
+      newsfeed: Новости, друзья, пользовательские списки
+      # TODO:
+      # wall: Посты на стене, предложка, отложенные
+
+  columns:
+    newsfeed: Новости
+    test: Test Column
+    wall: Стена
+
+  time:
+    relativeDays: '{{d}}д'
+    relativeHours: '{{h}}ч'
+    relativeMinutes: '{{m}}м'
+    relativeSeconds: '{{s}}с'
+    relativeNow: сейчас
+
+  wallPost:
+    pinned: Закрепленный пост
+    photoUpdated: Фотография страницы обновлена
+    actions:
+      like: Нравится
+      comment: Комментарии
+      share: Поделиться
+      menu: Действия
+    linkCopied: Ссылка скопирована
+    ad: Реклама
+    verified: Подтвержденная страница
+    mediaBadge:
+      repost: Репост
+      photo_one: Фотография
+      photo_few: '{{count}} фото'
+      photo_many: '{{count}} фото'
+      video_one: Видео
+      video_few: '{{count}} видео'
+      video_many: '{{count}} видео'
+      audio_one: Аудио
+      audio_few: '{{count}} аудио'
+      audio_many: '{{count}} аудио'
+      link: Ссылка
+      article: Статья
+      poll: Опрос
+      doc: Файл
+      doc_few: '{{count}} файла'
+      doc_many: '{{count}} файлов'
+      product: Товар
+      product_few: '{{count}} товара'
+      product_many: '{{count}} товаров'
+      album: Альбом
+      album_few: '{{count}} альбома'
+      album_many: '{{count}} альбомов'
+      map: Карта
+
+  newsfeed:
+    sources:
+      feed: Новости
+      friends: Друзья
+      groups: Сообщества
+    settings:
+      source: Источник
+
+  wallSetup:
+    placeholder: Поиск человека или группы
+    emptyText: Ничего не найдено
+    insufficientQuery: Нужно ввести хотя бы три символа
+
+  wall:
+    title: Стена
+    settings:
+      hidePinnedPost: Скрывать закрепленный пост

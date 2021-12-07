@@ -1,0 +1,6 @@
+.dropdown-menu {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: var(--modal_card_background);
+  border-radius: 12px;
+}

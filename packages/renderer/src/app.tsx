@@ -1,19 +1,20 @@
+import { FC, useEffect } from 'react'
+import { Icon16DownloadOutline } from '@vkontakte/icons'
 import {
   AdaptivityProvider,
   AppRoot,
   Avatar,
   ConfigProvider,
+  Platform,
   Snackbar,
 } from '@vkontakte/vkui'
-import { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
-import { Icon16DownloadOutline } from '@vkontakte/icons'
-import { Dashboard } from '@/views/dashboard'
-import { Login } from '@/views/login'
-import { useStore } from '@/hooks/use-store'
 import { useAppScheme } from '@/hooks/use-app-scheme'
 import { useElectron } from '@/hooks/use-electron'
+import { useStore } from '@/hooks/use-store'
+import { Dashboard } from '@/views/dashboard'
+import { Login } from '@/views/login'
 
 export const App: FC = observer(() => {
   const { userStore, snackbarStore } = useStore()
@@ -48,7 +49,7 @@ export const App: FC = observer(() => {
   }, [setUpdateAvailableHandler, snackbarStore, t])
 
   return (
-    <ConfigProvider scheme={scheme}>
+    <ConfigProvider scheme={scheme} platform={Platform.VKCOM}>
       <AdaptivityProvider>
         <AppRoot noLegacyClasses>
           {isAuthorized ? <Dashboard /> : <Login />}

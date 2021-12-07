@@ -1,18 +1,30 @@
 import { FC } from 'react'
-import { Separator, Title } from '@vkontakte/vkui'
+import { PanelHeaderBack, Separator, Title } from '@vkontakte/vkui'
 
 import './modal-header.css'
 
 interface ModalHeaderProps {
   children: string
+  onBackButtonClick?(): void
 }
 
-export const ModalHeader: FC<ModalHeaderProps> = ({ children }) => {
+export const ModalHeader: FC<ModalHeaderProps> = ({
+  children,
+  onBackButtonClick,
+}) => {
   return (
     <div className="modal-header">
-      <Title level="2" weight="semibold">
-        {children}
-      </Title>
+      <div className="modal-header-content">
+        {onBackButtonClick && (
+          <PanelHeaderBack
+            onClick={onBackButtonClick}
+            className="back-button"
+          />
+        )}
+        <Title level="2" weight="semibold">
+          {children}
+        </Title>
+      </div>
       <Separator wide />
     </div>
   )

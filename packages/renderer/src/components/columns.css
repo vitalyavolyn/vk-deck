@@ -2,22 +2,30 @@
   display: flex;
   height: 100%;
   flex-wrap: nowrap;
+  padding-left: var(--spaced-columns-gap);
   overflow-x: auto;
 
   /* TODO: vertical gap? */
+
+  /*
+   TODO: объединить с column-container.css то,
+    что относится к содержанию колонок в Dashboard.
+    также они (возможно) могут быть внутри полноэкранных модалок!
+   */
 
   .column {
     width: var(--column-width);
     height: 100%;
     flex: 0 0 auto;
-    opacity: 30%;
-
-    &:last-of-type {
-      margin-right: var(--spaced-columns-gap);
-    }
+    border-right: 1px solid var(--image_border);
+    transition: width 0.1s;
   }
 }
 
 .vkuiSplitCol--spaced .columns {
-  gap: var(--spaced-columns-gap);
+  column-gap: var(--spaced-columns-gap);
+
+  .column {
+    border-left: 1px solid var(--image_border);
+  }
 }

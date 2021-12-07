@@ -1,8 +1,12 @@
-import { Avatar, classNames, RichCell } from '@vkontakte/vkui'
-import { observer } from 'mobx-react-lite'
 import { FC, useState } from 'react'
 import { Icon20CheckCircleFillGreen, Icon24ChevronUp } from '@vkontakte/icons'
+import { Avatar, classNames, RichCell } from '@vkontakte/vkui'
+import { TextTooltip } from '@vkontakte/vkui/unstable'
+import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
+import { getInitials } from '@/utils/get-initials'
+import { getName } from '@/utils/get-name'
+import { AsyncAvatar } from './async-avatar'
 
 import './account-picker.css'
 
@@ -20,6 +24,7 @@ interface AccountPickerProps {
 
 interface AccountProps {
   name: string
+  id: number
   screenName: string
   photo?: string
   isSelected: boolean
@@ -29,6 +34,7 @@ interface AccountProps {
 
 const Account: FC<AccountProps> = ({
   name,
+  id,
   screenName,
   photo,
   isSelected,
@@ -42,16 +48,22 @@ const Account: FC<AccountProps> = ({
 
     return (
       <div className="account">
-        <div
-          title={name}
-          className={classNames('account-avatar', { selected: isSelected })}
-          onClick={onClick}
-        >
-          <Avatar size={imageSize} src={photo} />
-          {isSelected && (
-            <Icon20CheckCircleFillGreen width={iconSize} height={iconSize} />
-          )}
-        </div>
+        <TextTooltip text={name}>
+          <div
+            className={classNames('account-avatar', { selected: isSelected })}
+            onClick={onClick}
+          >
+            <AsyncAvatar
+              gradientColor={(id % 6) + 1}
+              initials={getInitials(name)}
+              size={imageSize}
+              src={photo}
+            />
+            {isSelected && (
+              <Icon20CheckCircleFillGreen width={iconSize} height={iconSize} />
+            )}
+          </div>
+        </TextTooltip>
       </div>
     )
   }
@@ -88,7 +100,8 @@ export const AccountPicker: FC<AccountPickerProps> = observer(
     return (
       <div className={classNames('account-picker', mode)}>
         <Account
-          name={`${user.first_name} ${user.last_name}`}
+          name={getName(user)}
+          id={user.id}
           screenName={user.screen_name!}
           photo={user.photo_50}
           isSelected={selectedAccount === user.id}
@@ -102,6 +115,7 @@ export const AccountPicker: FC<AccountPickerProps> = observer(
           <Account
             key={group.id}
             name={group.name}
+            id={group.id}
             screenName={group.screen_name}
             photo={group.photo_50}
             isSelected={selectedAccount === -group.id}
@@ -127,6 +141,7 @@ export const AccountPicker: FC<AccountPickerProps> = observer(
             <Account
               key={group.id}
               name={group.name}
+              id={group.id}
               screenName={group.screen_name}
               photo={group.photo_50}
               isSelected={selectedAccount === -group.id}

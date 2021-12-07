@@ -1,0 +1,27 @@
+.add-column-modal {
+  width: 100%;
+  transition: transform 0.2s;
+
+  &.second-screen-active {
+    transform: translateX(calc(var(--modal-width) * -1));
+  }
+
+  .column-type-selector {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+
+    .column-type {
+      padding: 0;
+
+      .column-title {
+        font-weight: 500;
+      }
+
+      /* why */
+      .vkuiRichCell__caption {
+        word-break: break-word;
+      }
+    }
+  }
+}

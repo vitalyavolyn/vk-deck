@@ -1,11 +1,11 @@
 import path from 'path'
 import { URL, fileURLToPath } from 'url'
 import { app, BrowserWindow, shell } from 'electron'
-import windowStateKeeper from 'electron-window-state'
 import contextMenu from 'electron-context-menu'
-import i18n from 'i18next'
+import windowStateKeeper from 'electron-window-state'
+import i18next from 'i18next'
 import ru from '@/locales/ru.yml'
-import { initIpc } from '@/ipc'
+import { initIpc } from './ipc'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 
@@ -16,10 +16,13 @@ if (!isSingleInstance) {
 
 app.disableHardwareAcceleration()
 
-i18n.init({
+i18next.init({
   fallbackLng: 'ru',
   resources: { ru },
+  debug: true,
 })
+
+const { t } = i18next
 
 if (import.meta.env.MODE === 'development') {
   app
@@ -32,7 +35,7 @@ if (import.meta.env.MODE === 'development') {
         },
       }),
     )
-    .catch((error) => console.error('Failed install extension:', error))
+    .catch((error) => console.error('Failed to install extension:', error))
 }
 
 let mainWindow: BrowserWindow | undefined
@@ -66,13 +69,13 @@ const createWindow = async () => {
   initIpc(mainWindow)
   contextMenu({
     labels: {
-      copy: i18n.t`contextmenu.copy`,
-      paste: i18n.t`contextmenu.paste`,
-      cut: i18n.t`contextmenu.cut`,
-      learnSpelling: i18n.t`contextmenu.learnSpelling`,
-      searchWithGoogle: i18n.t`contextmenu.searchWithGoogle`,
-      copyLink: i18n.t`contextmenu.copyLink`,
-      copyImage: i18n.t`contextmenu.copyImage`,
+      copy: t`contextmenu.copy`,
+      paste: t`contextmenu.paste`,
+      cut: t`contextmenu.cut`,
+      learnSpelling: t`contextmenu.learnSpelling`,
+      searchWithGoogle: t`contextmenu.searchWithGoogle`,
+      copyLink: t`contextmenu.copyLink`,
+      copyImage: t`contextmenu.copyImage`,
     },
   })
 

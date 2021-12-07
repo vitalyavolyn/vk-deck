@@ -1,5 +1,5 @@
-import { autoUpdater, UpdateInfo } from 'electron-updater'
 import { BrowserWindow } from 'electron'
+import { autoUpdater, UpdateInfo } from 'electron-updater'
 
 export async function checkForUpdatesAndNotify(
   win: BrowserWindow,

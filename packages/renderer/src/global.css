@@ -1,4 +1,5 @@
 @import '@vkontakte/vkui/dist/vkui.css';
+@import '@vkontakte/vkui/dist/unstable.css';
 
 /* Global overrides */
 
@@ -7,6 +8,14 @@ body {
   --column-width: 310px;
 
   background-color: var(--background_page);
+}
+
+.narrow-columns {
+  --column-width: 270px;
+}
+
+.wide-columns {
+  --column-width: 350px;
 }
 
 .vkuiPanel__in {

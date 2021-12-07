@@ -11,6 +11,7 @@
 
   .column-navigator {
     flex-grow: 1;
+    margin-top: 3px;
     overflow-y: overlay;
 
     &::-webkit-scrollbar-track {
