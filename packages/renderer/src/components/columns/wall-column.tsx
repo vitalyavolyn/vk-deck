@@ -20,6 +20,9 @@ import { ColumnHeader } from './column-header'
 
 export interface WallColumnSettings {
   ownerId: number
+  // TODO: filter: suggests,postponed,owner,others
+  //  возможно, сделать для suggests/postponed отдельный вид колонок???
+  //  который использует этот компонент внутри
 }
 
 const Icon = columnIcons[ColumnType.wall]

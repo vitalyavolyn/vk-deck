@@ -17,8 +17,9 @@ export const shortRelativeTime = (date: Date) => {
   const diffSeconds = differenceInSeconds(now, date)
 
   if (diffDays >= 7) {
-    // @ts-ignore: пойдет
-    return format(date, 'd MMM', { locale: locales[i18n.language] })
+    return format(date, 'd MMM', {
+      locale: locales[i18n.language as keyof typeof locales],
+    })
   }
 
   if (diffHours >= 24) {
@@ -37,5 +38,5 @@ export const shortRelativeTime = (date: Date) => {
     return t('time.relativeSeconds', { s: diffSeconds })
   }
 
-  return t('time.relativeNow')
+  return t`time.relativeNow`
 }

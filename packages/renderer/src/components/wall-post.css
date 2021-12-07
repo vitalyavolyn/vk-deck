@@ -1,5 +1,5 @@
 .wall-post-wrap {
-  /** TODO: это можно выделить в высший класс для карточек всех типов */
+  /* TODO: это можно выделить в высший класс для карточек всех типов */
   padding: 8px 10px;
   border-bottom: 1px solid var(--image_border);
 

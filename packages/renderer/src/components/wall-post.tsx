@@ -58,10 +58,7 @@ interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
 const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
 
 /**
- * Показывает запись из ленты, принимает информацию из newsfeed.get
- *
- * Возможно, было бы лучшей идеей как-то конвертировать `NewsfeedItemWallpost`
- * в `WallWallpostFull` и принимать его. Все равно они похожи. TODO, в общем
+ * Показывает запись по объекту записи на стене
  */
 export const WallPost: FC<
   WallPostProps & { measureRef?: Ref<HTMLDivElement> }
@@ -95,18 +92,18 @@ export const WallPost: FC<
 
   const getAttachments = (
     type: WallWallpostAttachmentType,
-  ): WallWallpostAttachment[] | undefined =>
-    data.attachments?.filter((e) => e.type === type)
+  ): WallWallpostAttachment[] =>
+    data.attachments?.filter((e) => e.type === type) || []
 
   const link = getAttachments('link')?.[0]?.link
   const poll = getAttachments('poll')?.[0]?.poll
   // TODO: нормально отбражать картинки (и видео...)
-  const photosCount = getAttachments('photo')?.length
-  const albumsCount = getAttachments('album')?.length
+  const photosCount = getAttachments('photo').length
+  const albumsCount = getAttachments('album').length
   const videos = getAttachments('video')
-  const audiosCount = getAttachments('audio')?.length
-  const docsCount = getAttachments('doc')?.length
-  const productsCount = getAttachments('market')?.length
+  const audiosCount = getAttachments('audio').length
+  const docsCount = getAttachments('doc').length
+  const productsCount = getAttachments('market').length
 
   const hasMap = !!data?.geo
   const hasArticle = isArticleLink(link?.url)
@@ -243,13 +240,18 @@ export const WallPost: FC<
             {data.text}
           </div>
           <div className="wall-post-badges">
+            {/*
+              TODO:
+               сделать отображение фото и видео с возможностью настройки размера??
+               либо просто бейджи/фото
+            */}
             {!!photosCount && (
               <MediaBadge
                 icon={<Icon20PictureOutline width={16} height={16} />}
                 type={t('wallPost.mediaBadge.photo', { count: photosCount })}
               />
             )}
-            {!!videos?.length && (
+            {!!videos.length && (
               <MediaBadge
                 icon={<Icon20VideoOutline width={16} height={16} />}
                 type={t('wallPost.mediaBadge.video', {
@@ -335,7 +337,7 @@ export const WallPost: FC<
           <div className="wall-post-footer">
             <div className="wall-post-actions">
               <div
-                title={t('wallPost.actions.like')}
+                title={t`wallPost.actions.like`}
                 className={classNames('wall-post-action-item', 'action-like', {
                   'user-likes': likeState,
                 })}
@@ -350,14 +352,14 @@ export const WallPost: FC<
               </div>
               <div
                 className="wall-post-action-item action-comment"
-                title={t('wallPost.actions.comment')}
+                title={t`wallPost.actions.comment`}
               >
                 <Icon20CommentOutline width={18} height={18} />
                 {numberFormatter(data.comments?.count)}
               </div>
               <div
                 className="wall-post-action-item action-share"
-                title={t('wallPost.actions.share')}
+                title={t`wallPost.actions.share`}
               >
                 <Icon20ShareOutline width={18} height={18} />
                 {numberFormatter(data.reposts?.count)}
@@ -388,7 +390,7 @@ export const WallPost: FC<
               >
                 <div
                   className="wall-post-action-item action-menu"
-                  title={t('wallPost.actions.menu')}
+                  title={t`wallPost.actions.menu`}
                 >
                   <Icon20More width={18} height={18} />
                 </div>

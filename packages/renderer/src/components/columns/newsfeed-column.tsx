@@ -78,7 +78,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         const { items, groups, profiles } = response
 
         // TODO: will have duplicates EVERY UPDATE
-        // also this is ugly
+        //  also this is ugly
         setGroups((oldGroups) => [...(oldGroups || []), ...(groups || [])])
         setProfiles((oldProfiles) => [
           ...(oldProfiles || []),
@@ -116,9 +116,11 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
       }
     }, [settings.source])
 
-    // возможно, это поможет с двойными запросами в режиме разработки
-    // если замечу, что лучше не стало - уберу
-    // а может, выделю это в хук, принимающий реф с таймером
+    // помогает с двойными запросами в режиме разработки
+    // выделю это в хук, принимающий реф с таймером
+    //
+    // TODO: при обновлении внутреннего компонента
+    //  лента перестает обновляться
     if (import.meta.hot) {
       import.meta.hot.on('vite:beforeUpdate', () => {
         if (timerRef.current) {
