@@ -62,6 +62,7 @@ translation:
       audio_few: '{{count}} аудио'
       audio_many: '{{count}} аудио'
       link: Ссылка
+      article: Статья
       poll: Опрос
       doc: Файл
       doc_few: '{{count}} файла'

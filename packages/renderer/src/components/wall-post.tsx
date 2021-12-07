@@ -30,6 +30,7 @@ import {
   Icon24PhotosStackOutline,
   Icon20More,
   Icon16Done,
+  Icon16ArticleOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { Avatar } from '@vkontakte/vkui'
@@ -52,6 +53,8 @@ interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
   groups: GroupsGroupFull[]
   profiles: UsersUserFull[]
 }
+
+const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
 
 /**
  * Показывает запись из ленты, принимает информацию из newsfeed.get
@@ -111,6 +114,7 @@ export const WallPost: FC<
   const productsCount = getAttachments('market')?.length
 
   const hasMap = !!data?.geo
+  const hasArticle = isArticleLink(link?.url)
 
   const unsupportedAttachments = data.attachments
     ?.filter(
@@ -288,14 +292,19 @@ export const WallPost: FC<
               />
             )}
             {link && (
-              <a href={link.url} target="_blank">
-                <MediaBadge
-                  icon={<Icon16LinkOutline />}
-                  type={t`wallPost.mediaBadge.link`}
-                  subject={new URL(link.url).hostname}
-                  title={link.url}
-                />
-              </a>
+              <MediaBadge
+                icon={
+                  hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />
+                }
+                type={
+                  hasArticle
+                    ? t`wallPost.mediaBadge.article`
+                    : t`wallPost.mediaBadge.link`
+                }
+                subject={hasArticle ? link.title : new URL(link.url).hostname}
+                title={hasArticle ? link.title : link.url}
+                href={link.url}
+              />
             )}
             {poll && (
               <MediaBadge
