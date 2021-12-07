@@ -1,3 +1,8 @@
+import { FC, useState } from 'react'
+import {
+  SearchGetHintsParams,
+  SearchGetHintsResponse,
+} from '@vkontakte/api-schema-typescript'
 import {
   Avatar,
   Button,
@@ -7,15 +12,10 @@ import {
   FormLayout,
   Text,
 } from '@vkontakte/vkui'
-import { FC, useState } from 'react'
-import {
-  SearchGetHintsParams,
-  SearchGetHintsResponse,
-} from '@vkontakte/api-schema-typescript'
 import { CustomSelectProps } from '@vkontakte/vkui/dist/components/CustomSelect/CustomSelect'
 import { useTranslation } from 'react-i18next'
-import { useStore } from '@/hooks/use-store'
 import { SetupProps } from '@/components/modals/add-column-modal'
+import { useStore } from '@/hooks/use-store'
 import { ColumnType } from '@/store/settings-store'
 
 export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {

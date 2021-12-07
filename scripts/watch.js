@@ -1,8 +1,8 @@
 #!/usr/bin/node
 
 const { spawn } = require('child_process')
-const { createServer, build, createLogger } = require('vite')
 const electronPath = require('electron')
+const { createServer, build, createLogger } = require('vite')
 
 /** @type 'production' | 'development' | 'test' */
 const mode = (process.env.MODE = process.env.MODE || 'development')

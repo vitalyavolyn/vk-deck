@@ -43,7 +43,26 @@ module.exports = {
     // TODO: я очень хочу, но vite ругается на протокол
     'unicorn/prefer-node-protocol': 'off',
 
-    'import/order': 'error',
+    'import/order': [
+      'error',
+      {
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'external',
+            position: 'after',
+          },
+          {
+            pattern: 'react',
+            group: 'builtin',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['react'],
+        alphabetize: { order: 'asc' },
+        // warnOnUnassignedImports: true,
+      },
+    ],
 
     // unicorn - душнила
     'unicorn/prevent-abbreviations': 'off',

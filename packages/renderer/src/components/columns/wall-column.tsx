@@ -5,18 +5,18 @@ import {
   WallGetParams,
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
+import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/methods/wall'
 import { PanelSpinner } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
-import { useTranslation } from 'react-i18next'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
-import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/methods/wall'
-import { ColumnHeader } from './column-header'
-import { useStore } from '@/hooks/use-store'
-import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useTranslation } from 'react-i18next'
 import { ColumnProps } from '@/components/column-container'
-import { ColumnType, IWallColumn } from '@/store/settings-store'
 import { columnIcons } from '@/components/navbar'
+import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useStore } from '@/hooks/use-store'
+import { ColumnType, IWallColumn } from '@/store/settings-store'
 import { getOwner } from '@/utils/get-owner'
+import { ColumnHeader } from './column-header'
 
 export interface WallColumnSettings {
   ownerId: number

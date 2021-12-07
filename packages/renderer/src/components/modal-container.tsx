@@ -1,7 +1,7 @@
 import { FC } from 'react'
+import { AddColumnModal } from './modals/add-column-modal'
 import { ComposeModal } from './modals/compose-modal'
 import { SettingsModal } from './modals/settings-modal'
-import { AddColumnModal } from './modals/add-column-modal'
 
 import './modal-container.css'
 

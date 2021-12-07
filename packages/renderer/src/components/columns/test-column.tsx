@@ -4,11 +4,11 @@ import {
   GroupsGroupFull,
   UsersUserFull,
 } from '@vkontakte/api-schema-typescript'
-import { ColumnHeader } from './column-header'
 import { ColumnProps } from '@/components/column-container'
-import { WallPost } from '@/components/wall-post'
 import { columnIcons } from '@/components/navbar'
+import { WallPost } from '@/components/wall-post'
 import { ColumnType } from '@/store/settings-store'
+import { ColumnHeader } from './column-header'
 
 const post: WallWallpostFull = {
   owner_id: -198361544,

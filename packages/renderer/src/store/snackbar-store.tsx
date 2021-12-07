@@ -1,6 +1,6 @@
+import { Icon16ErrorCircleFill } from '@vkontakte/icons'
 import { Avatar, Snackbar, SnackbarProps } from '@vkontakte/vkui'
 import { makeAutoObservable } from 'mobx'
-import { Icon16ErrorCircleFill } from '@vkontakte/icons'
 import { RootStore } from './root-store'
 
 export class SnackbarStore {

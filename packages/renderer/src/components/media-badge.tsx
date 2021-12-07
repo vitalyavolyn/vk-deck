@@ -1,4 +1,5 @@
 import { FC } from 'react'
+
 import './media-badge.css'
 
 interface MediaBadgeProps {

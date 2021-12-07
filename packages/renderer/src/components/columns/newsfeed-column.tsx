@@ -10,14 +10,14 @@ import {
 import { classNames } from '@vkontakte/vkjs'
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
-import { useTranslation } from 'react-i18next'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
-import { ColumnHeader } from './column-header'
-import { useStore } from '@/hooks/use-store'
-import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useTranslation } from 'react-i18next'
 import { ColumnProps } from '@/components/column-container'
-import { ColumnType, INewsfeedColumn } from '@/store/settings-store'
 import { columnIcons } from '@/components/navbar'
+import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useStore } from '@/hooks/use-store'
+import { ColumnType, INewsfeedColumn } from '@/store/settings-store'
+import { ColumnHeader } from './column-header'
 
 export interface NewsfeedColumnSettings {
   source: string

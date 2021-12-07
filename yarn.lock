@@ -2150,6 +2150,11 @@ eslint-module-utils@^2.7.1:
     find-up "^2.1.0"
     pkg-dir "^2.0.0"
 
+eslint-plugin-css-import-order@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-css-import-order/-/eslint-plugin-css-import-order-1.0.2.tgz#1b219a0642e2c1841981dce8ff736e6513feb9e7"
+  integrity sha512-UsaoHGBDoMGo11MR8kZ1UyE7b8Ov9a1MStJ//MKuSqJE2EMNh6Irym+O3H4EbXrrinsdbvEoLWsPYeRNKvJ1jw==
+
 eslint-plugin-es@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-es/-/eslint-plugin-es-3.0.1.tgz#75a7cdfdccddc0589934aeeb384175f221c57893"

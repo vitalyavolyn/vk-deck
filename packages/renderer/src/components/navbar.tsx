@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
 import {
   Icon28WriteOutline,
   Icon28CancelOutline,
@@ -10,11 +9,12 @@ import {
   Icon28GridLayoutOutline,
 } from '@vkontakte/icons'
 import { Icon28NewsfeedOutlineProps } from '@vkontakte/icons/dist/28/newsfeed_outline'
+import { Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
-import { AsyncAvatar } from './async-avatar'
 import { useStore } from '@/hooks/use-store'
-import { getInitials } from '@/utils/get-initials'
 import { ColumnType } from '@/store/settings-store'
+import { getInitials } from '@/utils/get-initials'
+import { AsyncAvatar } from './async-avatar'
 
 import './navbar.css'
 

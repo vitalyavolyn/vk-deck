@@ -4,7 +4,11 @@ module.exports = {
     browser: true,
     node: false,
   },
-  extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended'],
+  extends: [
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:css-import-order/recommended',
+  ],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-no-target-blank': 'off',

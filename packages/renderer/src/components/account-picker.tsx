@@ -1,11 +1,11 @@
-import { Avatar, classNames, RichCell } from '@vkontakte/vkui'
-import { observer } from 'mobx-react-lite'
 import { FC, useState } from 'react'
 import { Icon20CheckCircleFillGreen, Icon24ChevronUp } from '@vkontakte/icons'
+import { Avatar, classNames, RichCell } from '@vkontakte/vkui'
 import { TextTooltip } from '@vkontakte/vkui/unstable'
-import { AsyncAvatar } from './async-avatar'
+import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
 import { getInitials } from '@/utils/get-initials'
+import { AsyncAvatar } from './async-avatar'
 
 import './account-picker.css'
 

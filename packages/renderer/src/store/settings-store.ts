@@ -1,7 +1,7 @@
 import { autorun, makeAutoObservable } from 'mobx'
-import { RootStore } from './root-store'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
+import { RootStore } from './root-store'
 
 export type ColorScheme = 'auto' | 'light' | 'dark'
 

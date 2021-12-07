@@ -1,19 +1,19 @@
 import { FC, useState } from 'react'
-import { Button, classNames, FormStatus, Textarea } from '@vkontakte/vkui'
-import { useTranslation } from 'react-i18next'
+import {
+  WallPostParams,
+  WallPostResponse,
+} from '@vkontakte/api-schema-typescript'
 import {
   Icon20ArticleOutline,
   Icon20CheckBoxOff,
   Icon20Square4Outline,
 } from '@vkontakte/icons'
-import {
-  WallPostParams,
-  WallPostResponse,
-} from '@vkontakte/api-schema-typescript'
-import { ModalHeader } from './modal-header'
+import { Button, classNames, FormStatus, Textarea } from '@vkontakte/vkui'
+import { useTranslation } from 'react-i18next'
 import { AccountPicker, AccountPickerMode } from '@/components/account-picker'
 import { ModalProps } from '@/components/modal-container'
 import { useStore } from '@/hooks/use-store'
+import { ModalHeader } from './modal-header'
 
 import './compose-modal.css'
 

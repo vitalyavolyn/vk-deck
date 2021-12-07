@@ -32,20 +32,20 @@ import {
   Icon16Done,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
-import { useTranslation } from 'react-i18next'
 import { Avatar } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
+import { useTranslation } from 'react-i18next'
+import { useStore } from '@/hooks/use-store'
+import { getInitials } from '@/utils/get-initials'
+import { getOwner } from '@/utils/get-owner'
+import { numberFormatter } from '@/utils/number-formatter'
+import { shortRelativeTime } from '@/utils/short-relative-time'
 import { AsyncAvatar } from './async-avatar'
-import { MediaBadge } from './media-badge'
 import { DropdownMenu } from './dropdown-menu'
 import { DropdownMenuItem } from './dropdown-menu-item'
-import { shortRelativeTime } from '@/utils/short-relative-time'
-import { getInitials } from '@/utils/get-initials'
-import { numberFormatter } from '@/utils/number-formatter'
-import { useStore } from '@/hooks/use-store'
+import { MediaBadge } from './media-badge'
 
 import './wall-post.css'
-import { getOwner } from '@/utils/get-owner'
 
 interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
   data: WallWallpostFull

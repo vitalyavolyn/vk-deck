@@ -1,12 +1,12 @@
 import { StrictMode } from 'react'
-import { render } from 'react-dom'
 import i18n from 'i18next'
 import { configure } from 'mobx'
+import { render } from 'react-dom'
 import { initReactI18next } from 'react-i18next'
-import ru from '@/locales/ru.yml'
 import { App } from '@/app'
-import { RootStore } from '@/store/root-store'
+import ru from '@/locales/ru.yml'
 import { StoreContext } from '@/store-context'
+import { RootStore } from '@/store/root-store'
 
 import './global.css'
 

@@ -1,6 +1,6 @@
-import { UserStore } from './user-store'
-import { SnackbarStore } from './snackbar-store'
 import { SettingsStore } from './settings-store'
+import { SnackbarStore } from './snackbar-store'
+import { UserStore } from './user-store'
 
 export class RootStore {
   public userStore: UserStore = new UserStore(this)

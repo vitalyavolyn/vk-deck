@@ -1,9 +1,9 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { classNames } from '@vkontakte/vkjs'
-import { ColumnContainer } from './column-container'
+import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
 import { ColumnSize } from '@/store/settings-store'
+import { ColumnContainer } from './column-container'
 
 import './columns.css'
 

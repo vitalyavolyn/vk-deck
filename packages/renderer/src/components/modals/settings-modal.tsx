@@ -1,11 +1,11 @@
 import { ChangeEvent, FC } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Button, Checkbox, FormItem, FormLayout, Select } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
-import { ModalHeader } from './modal-header'
+import { useTranslation } from 'react-i18next'
 import { ModalProps } from '@/components/modal-container'
 import { useStore } from '@/hooks/use-store'
 import { ColorScheme, ColumnSize } from '@/store/settings-store'
+import { ModalHeader } from './modal-header'
 
 import './settings-modal.css'
 

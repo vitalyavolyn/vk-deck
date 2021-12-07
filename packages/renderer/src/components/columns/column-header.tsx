@@ -1,7 +1,7 @@
 import { FC, MouseEvent } from 'react'
 import { Icon24Filter } from '@vkontakte/icons'
-import { Subhead, Title } from '@vkontakte/vkui'
 import { classNames } from '@vkontakte/vkjs'
+import { Subhead, Title } from '@vkontakte/vkui'
 import { IconProps } from '@/components/navbar'
 
 import './column-header.css'

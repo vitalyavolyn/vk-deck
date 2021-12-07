@@ -1,11 +1,11 @@
 import path from 'path'
 import { URL, fileURLToPath } from 'url'
 import { app, BrowserWindow, shell } from 'electron'
-import windowStateKeeper from 'electron-window-state'
 import contextMenu from 'electron-context-menu'
+import windowStateKeeper from 'electron-window-state'
 import i18n from 'i18next'
-import ru from '@/locales/ru.yml'
 import { initIpc } from '@/ipc'
+import ru from '@/locales/ru.yml'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 

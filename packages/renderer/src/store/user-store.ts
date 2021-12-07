@@ -1,11 +1,11 @@
-import { makeAutoObservable } from 'mobx'
 import {
   GroupsGroupFull,
   UsersUserXtrCounters,
 } from '@vkontakte/api-schema-typescript'
 import { NewsfeedList } from '@vkontakte/api-schema-typescript/dist/objects/newsfeed/NewsfeedList'
-import { RootStore } from './root-store'
+import { makeAutoObservable } from 'mobx'
 import { Api } from '@/api'
+import { RootStore } from './root-store'
 
 interface UserData {
   user: UsersUserXtrCounters

@@ -1,17 +1,17 @@
 import { FC, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { classNames } from '@vkontakte/vkjs'
 import { Tappable } from '@vkontakte/vkui'
+import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
-import { ModalHeader } from './modal-header'
+import { WallColumnSetup } from '@/components/column-setup/wall-column-setup'
+import { WallColumnSettings } from '@/components/columns/wall-column'
 import { ModalProps } from '@/components/modal-container'
-import { ColumnType } from '@/store/settings-store'
+import { columnIcons } from '@/components/navbar'
 import { useStore } from '@/hooks/use-store'
+import { ColumnType } from '@/store/settings-store'
+import { ModalHeader } from './modal-header'
 
 import './add-column-modal.css'
-import { columnIcons } from '@/components/navbar'
-import { WallColumnSettings } from '@/components/columns/wall-column'
-import { WallColumnSetup } from '@/components/column-setup/wall-column-setup'
 
 // [
 //   тип колонки,
