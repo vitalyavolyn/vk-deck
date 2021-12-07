@@ -28,6 +28,10 @@ translation:
 
   addColumn:
     title: Добавить колонку
+    caption:
+      newsfeed: Новости, друзья, пользовательские списки
+      # TODO:
+      # wall: Посты на стене, предложка, отложенные
 
   columns:
     newsfeed: Новости

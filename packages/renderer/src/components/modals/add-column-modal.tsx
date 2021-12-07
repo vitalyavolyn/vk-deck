@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { classNames } from '@vkontakte/vkjs'
-import { Cell, List } from '@vkontakte/vkui'
+import { Avatar, List, RichCell } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { WallColumnSetup } from '@/components/column-setup/wall-column-setup'
@@ -15,10 +15,11 @@ import './add-column-modal.css'
 
 // [
 //   тип колонки,
-//   требует ли настройки
+//   требует ли настройки,
+//   доп. подпись про возможности колонки (имя в локали)
 // ]
-const columns: [ColumnType, boolean][] = [
-  [ColumnType.newsfeed, false],
+const columns: [ColumnType, boolean, string?][] = [
+  [ColumnType.newsfeed, false, 'addColumn.caption.newsfeed'],
   [ColumnType.test, false],
   [ColumnType.wall, true],
 ]
@@ -84,11 +85,17 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
       >
         <ModalHeader>{t`addColumn.title`}</ModalHeader>
         <List className="column-type-selector">
-          {columns.map(([type, needsConfiguration]) => {
+          {columns.map(([type, needsConfiguration, caption]) => {
             const Icon = columnIcons[type]
             return (
-              <Cell
-                before={<Icon fill="var(--text_primary)" />}
+              <RichCell
+                before={
+                  <Avatar>
+                    <Icon fill="var(--text_primary)" width={24} height={24} />
+                  </Avatar>
+                }
+                caption={caption ? t(caption) : undefined}
+                multiline
                 className="column-type"
                 onClick={() => {
                   if (needsConfiguration) {
@@ -102,7 +109,7 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
                 key={type}
               >
                 <div className="column-title">{t(`columns.${type}`)}</div>
-              </Cell>
+              </RichCell>
             )
           })}
         </List>

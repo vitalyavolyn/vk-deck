@@ -11,8 +11,17 @@
     flex-direction: column;
     margin-top: 5px;
 
-    .column-title {
-      font-weight: 500;
+    .column-type {
+      padding: 0;
+
+      .column-title {
+        font-weight: 500;
+      }
+
+      /* why */
+      .vkuiRichCell__caption {
+        word-break: break-word;
+      }
     }
   }
 }
