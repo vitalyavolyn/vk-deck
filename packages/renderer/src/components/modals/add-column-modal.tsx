@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { classNames } from '@vkontakte/vkjs'
-import { Tappable } from '@vkontakte/vkui'
+import { Cell, List } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { WallColumnSetup } from '@/components/column-setup/wall-column-setup'
@@ -83,11 +83,12 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
         })}
       >
         <ModalHeader>{t`addColumn.title`}</ModalHeader>
-        <div className="column-type-selector">
+        <List className="column-type-selector">
           {columns.map(([type, needsConfiguration]) => {
             const Icon = columnIcons[type]
             return (
-              <Tappable
+              <Cell
+                before={<Icon fill="var(--text_primary)" />}
                 className="column-type"
                 onClick={() => {
                   if (needsConfiguration) {
@@ -100,14 +101,11 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
                 }}
                 key={type}
               >
-                <div className="icon-wrapper">
-                  <Icon />
-                </div>
                 <div className="column-title">{t(`columns.${type}`)}</div>
-              </Tappable>
+              </Cell>
             )
           })}
-        </div>
+        </List>
       </div>
       {(selectedColumn === 'wall' || animatingColumn === 'wall') && (
         <div

@@ -8,29 +8,11 @@
 
   .column-type-selector {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     margin-top: 5px;
 
-    .column-type {
-      width: 90px;
-      height: 70px;
-      padding: 8px;
-      text-align: center;
-      vertical-align: middle;
-
-      .icon-wrapper {
-        margin-top: 8px;
-
-        .vkuiIcon {
-          display: inline-block;
-        }
-      }
-
-      .column-title {
-        font-weight: 500;
-      }
+    .column-title {
+      font-weight: 500;
     }
   }
 }
