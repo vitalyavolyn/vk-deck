@@ -42,11 +42,8 @@ const { _electron: electron } = require('playwright')
   // Check web-page content
   const element = await page.$('#app', { strict: true })
   assert.notStrictEqual(element, undefined, "Can't find root element")
-  assert.notStrictEqual(
-    (await element.innerHTML()).trim(),
-    '',
-    'Window content is empty',
-  )
+  const content = await element.innerHTML()
+  assert.notStrictEqual(content.trim(), '', 'Window content is empty')
 
   // Check Preload script
   const renderedExposedApi = await page.evaluate(() => globalThis.electron)

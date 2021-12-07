@@ -7,7 +7,7 @@ import {
   format,
 } from 'date-fns'
 import * as locales from 'date-fns/locale'
-import i18n, { t } from 'i18next'
+import i18next, { t } from 'i18next'
 
 export const shortRelativeTime = (date: Date) => {
   const now = new Date()
@@ -18,7 +18,7 @@ export const shortRelativeTime = (date: Date) => {
 
   if (diffDays >= 7) {
     return format(date, 'd MMM', {
-      locale: locales[i18n.language as keyof typeof locales],
+      locale: locales[i18next.language as keyof typeof locales],
     })
   }
 

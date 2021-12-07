@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import i18n from 'i18next'
+import i18next from 'i18next'
 import { configure } from 'mobx'
 import { render } from 'react-dom'
 import { initReactI18next } from 'react-i18next'
@@ -12,7 +12,7 @@ import './global.css'
 
 configure({ enforceActions: 'never' })
 
-i18n.use(initReactI18next).init({
+i18next.use(initReactI18next).init({
   fallbackLng: 'ru',
   resources: { ru },
   debug: true,
