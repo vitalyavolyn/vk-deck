@@ -42,6 +42,7 @@ translation:
     relativeNow: сейчас
 
   wallPost:
+    pinned: Закрепленный пост
     photoUpdated: Фотография страницы обновлена
     actions:
       like: Нравится
@@ -90,3 +91,5 @@ translation:
 
   wall:
     title: Стена
+    settings:
+      hidePinnedPost: Скрывать закрепленный пост

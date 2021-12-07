@@ -84,6 +84,16 @@
             margin-left: 3px;
           }
         }
+
+        .wall-post-header-right {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+
+          .pin {
+            color: var(--text_secondary);
+          }
+        }
       }
 
       .wall-post-source {

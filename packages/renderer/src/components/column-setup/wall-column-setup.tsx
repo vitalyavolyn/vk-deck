@@ -118,6 +118,7 @@ export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
         onClick={() => {
           addColumn(ColumnType.wall, {
             ownerId: selectedId,
+            hidePinnedPost: true,
           })
         }}
       >

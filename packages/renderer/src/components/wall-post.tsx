@@ -31,6 +31,7 @@ import {
   Icon20More,
   Icon16Done,
   Icon16ArticleOutline,
+  Icon20PinOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { Avatar } from '@vkontakte/vkui'
@@ -222,16 +223,23 @@ export const WallPost: FC<
               <span className="full-name">{getName(owner)}</span>
               <span className="screen-name">@{owner.screen_name}</span>
             </a>
-            <a
-              className="time"
-              href={postUrl}
-              target="_blank"
-              title={
-                date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
-              }
-            >
-              {shortRelativeTime(date)}
-            </a>
+            <div className="wall-post-header-right">
+              {data.is_pinned && (
+                <span title={t`wallPost.pinned`}>
+                  <Icon20PinOutline className="pin" width={12} height={12} />
+                </span>
+              )}
+              <a
+                className="time"
+                href={postUrl}
+                target="_blank"
+                title={
+                  date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
+                }
+              >
+                {shortRelativeTime(date)}
+              </a>
+            </div>
           </header>
           {data.post_source?.data === 'profile_photo' && (
             <div className="wall-post-source">{t`wallPost.photoUpdated`}</div>

@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import {
   GroupsGroupFull,
   UsersUserFull,
@@ -6,7 +6,8 @@ import {
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/methods/wall'
-import { PanelSpinner } from '@vkontakte/vkui'
+import { classNames } from '@vkontakte/vkjs'
+import { Checkbox, PanelSpinner } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +21,7 @@ import { ColumnHeader } from './column-header'
 
 export interface WallColumnSettings {
   ownerId: number
+  hidePinnedPost: boolean
   // TODO: filter: suggests,postponed,owner,others
   //  возможно, сделать для suggests/postponed отдельный вид колонок???
   //  который использует этот компонент внутри
@@ -28,10 +30,10 @@ export interface WallColumnSettings {
 const Icon = columnIcons[ColumnType.wall]
 
 export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
-  const { settings } = data
-  const { ownerId } = settings
+  const { settings, id } = data
+  const { ownerId, hidePinnedPost } = settings
 
-  const { userStore, snackbarStore } = useStore()
+  const { userStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
 
   const [posts, setPosts] = useState<WallWallpostFull[]>()
@@ -96,6 +98,12 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
     }
   }
 
+  const onChangeHidePinnedPost = (e: ChangeEvent<HTMLInputElement>) => {
+    const index = settingsStore.columns.findIndex((e) => e.id === id)
+    ;(settingsStore.columns[index] as IWallColumn).settings.hidePinnedPost =
+      e.target.checked
+  }
+
   return (
     <>
       <ColumnHeader
@@ -108,26 +116,20 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
       >
         {t`wall.title`}
       </ColumnHeader>
-      {/* <div className={classNames('column-settings', { hidden: !showSettings })}> */}
-      {/*  <FormLayout> */}
-      {/*    <FormItem top={t`newsfeed.settings.source`}> */}
-      {/*      <Select */}
-      {/*        // TODO: кастомные иконочки? */}
-      {/*        value={settings.source} */}
-      {/*        options={possibleSources} */}
-      {/*        onChange={(e) => { */}
-      {/*          changeSource(e.target.value) */}
-      {/*        }} */}
-      {/*      /> */}
-      {/*    </FormItem> */}
-      {/*  </FormLayout> */}
-      {/* </div> */}
+      <div className={classNames('column-settings', { hidden: !showSettings })}>
+        <div style={{ padding: 8 }}>
+          <Checkbox
+            checked={hidePinnedPost}
+            onChange={onChangeHidePinnedPost}
+          >{t`wall.settings.hidePinnedPost`}</Checkbox>
+        </div>
+      </div>
       {posts && groups && profiles ? (
         // TODO: infinite scroll
         <VirtualScrollWall
           profiles={profiles}
           groups={groups}
-          items={posts}
+          items={hidePinnedPost && posts[0]?.is_pinned ? posts.slice(1) : posts}
           className="column-list-content"
           scrollToRef={scrollToRef}
           onScroll={onScroll}
