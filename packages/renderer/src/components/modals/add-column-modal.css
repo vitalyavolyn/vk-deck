@@ -3,7 +3,7 @@
   transition: transform 0.2s;
 
   &.second-screen-active {
-    transform: translateX(calc(-1 * var(--modal-width)));
+    transform: translateX(calc(var(--modal-width) * -1));
   }
 
   .column-type-selector {

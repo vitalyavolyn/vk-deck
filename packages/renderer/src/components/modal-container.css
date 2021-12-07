@@ -6,9 +6,7 @@
   width: var(--modal-width);
   height: 100%;
   flex-flow: column wrap;
-  transform: translateX(
-    calc(var(--modal-width) * -1 - var(--spaced-columns-gap))
-  );
+  transform: translateX(calc(var(--modal-width) * -1));
 
   .modal {
     width: 100%;

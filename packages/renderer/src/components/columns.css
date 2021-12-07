@@ -2,6 +2,7 @@
   display: flex;
   height: 100%;
   flex-wrap: nowrap;
+  padding-left: var(--spaced-columns-gap);
   overflow-x: auto;
 
   /* TODO: vertical gap? */
@@ -18,10 +19,6 @@
     flex: 0 0 auto;
     border-right: 1px solid var(--image_border);
     transition: width 0.1s;
-
-    &:last-of-type {
-      margin-right: var(--spaced-columns-gap);
-    }
   }
 }
 
