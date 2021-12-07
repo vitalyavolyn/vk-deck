@@ -14,6 +14,7 @@ import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType } from '@/store/settings-store'
 import { getInitials } from '@/utils/get-initials'
+import { getName } from '@/utils/get-name'
 import { AsyncAvatar } from './async-avatar'
 
 import './navbar.css'
@@ -98,7 +99,7 @@ export const Navbar: FC<NavbarProps> = observer(
               gradientColor={(user.id % 6) + 1}
               size={40}
               src={user.photo_50}
-              title={`${user.first_name} ${user.last_name}`}
+              title={getName(user)}
               onClick={() => window.open(`https://vk.com/id${user.id}`)}
             />
           </div>

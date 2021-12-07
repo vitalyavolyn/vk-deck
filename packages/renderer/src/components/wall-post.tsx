@@ -38,6 +38,7 @@ import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { useStore } from '@/hooks/use-store'
 import { getInitials } from '@/utils/get-initials'
+import { getName } from '@/utils/get-name'
 import { getOwner } from '@/utils/get-owner'
 import { numberFormatter } from '@/utils/number-formatter'
 import { shortRelativeTime } from '@/utils/short-relative-time'
@@ -88,12 +89,6 @@ export const WallPost: FC<
     console.log('no owner')
 
     return null
-  }
-
-  const getName = (subject = owner) => {
-    return 'name' in subject
-      ? subject.name
-      : `${subject.first_name} ${subject.last_name}`
   }
 
   const hasRepost = data.copy_history?.length
@@ -225,9 +220,9 @@ export const WallPost: FC<
           <header className="wall-post-header">
             <a
               className="wall-post-author"
-              title={`${getName()} @${owner.screen_name}`}
+              title={`${getName(owner)} @${owner.screen_name}`}
             >
-              <span className="full-name">{getName()}</span>
+              <span className="full-name">{getName(owner)}</span>
               <span className="screen-name">@{owner.screen_name}</span>
             </a>
             <a
@@ -336,6 +331,7 @@ export const WallPost: FC<
               {getName(getOwner(data.signer_id, profiles, groups))}
             </div>
           )}
+          {/* TODO: источник? */}
           <div className="wall-post-footer">
             <div className="wall-post-actions">
               <div

@@ -22,7 +22,7 @@ type VKApiData<T> = VKApiResponse<T> | VKApiError
 
 export class Api {
   private token = ''
-  v = '5.131'
+  v = '5.157'
   lang = i18n.language.split('-')[0]
 
   setToken(token: string): void {

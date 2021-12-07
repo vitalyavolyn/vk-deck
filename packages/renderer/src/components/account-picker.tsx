@@ -5,6 +5,7 @@ import { TextTooltip } from '@vkontakte/vkui/unstable'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
 import { getInitials } from '@/utils/get-initials'
+import { getName } from '@/utils/get-name'
 import { AsyncAvatar } from './async-avatar'
 
 import './account-picker.css'
@@ -99,7 +100,7 @@ export const AccountPicker: FC<AccountPickerProps> = observer(
     return (
       <div className={classNames('account-picker', mode)}>
         <Account
-          name={`${user.first_name} ${user.last_name}`}
+          name={getName(user)}
           id={user.id}
           screenName={user.screen_name!}
           photo={user.photo_50}

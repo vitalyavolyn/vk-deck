@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { SetupProps } from '@/components/modals/add-column-modal'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType } from '@/store/settings-store'
+import { getName } from '@/utils/get-name'
 
 export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
   const { t } = useTranslation()
@@ -65,17 +66,11 @@ export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
                         // метод незадокументированно возвращает приложения 👍
                         .filter((e) => ['profile', 'group'].includes(e.type))
                         .map((hint) => ({
-                          label:
-                            (hint.profile
-                              ? `${hint.profile.first_name} ${hint.profile.last_name}`
-                              : hint.group?.name) || '', // TODO: тупо
+                          label: getName(hint.profile || hint.group),
                           value: hint.profile?.id || -Number(hint.group?.id),
                           avatar:
-                            // TODO
-                            // @ts-ignore: UsersUserMin не знает про fields
                             hint.profile?.photo_50 || hint.group?.photo_50,
                           description:
-                            // @ts-ignore: UsersUserMin не знает про fields
                             hint.profile?.screen_name ||
                             hint.group?.screen_name,
                         })),
