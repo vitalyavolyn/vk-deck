@@ -376,8 +376,9 @@ export const WallPost: FC<
                 items={[
                   <DropdownMenuItem
                     key="copy"
-                    onClick={() => {
-                      navigator.clipboard.writeText(postUrl)
+                    onClick={async () => {
+                      await navigator.clipboard.writeText(postUrl)
+                      snackbarStore.show(t`wallPost.linkCopied`)
                     }}
                   >
                     Копировать ссылку
