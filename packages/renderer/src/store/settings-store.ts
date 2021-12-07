@@ -1,3 +1,7 @@
+import {
+  StorageSetParams,
+  StorageSetResponse,
+} from '@vkontakte/api-schema-typescript'
 import { autorun, makeAutoObservable } from 'mobx'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
@@ -61,6 +65,13 @@ export class SettingsStore implements Settings {
 
     autorun(() => {
       localStorage.setItem('settings', JSON.stringify(this.asObject))
+      this.root.userStore.api.call<StorageSetResponse, StorageSetParams>(
+        'storage.set',
+        {
+          key: 'settings',
+          value: JSON.stringify(this.asObject),
+        },
+      )
     })
   }
 

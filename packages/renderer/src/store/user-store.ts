@@ -11,6 +11,7 @@ interface UserData {
   user: UsersUserXtrCounters
   managedGroups: GroupsGroupFull[]
   newsfeedLists: NewsfeedList[]
+  settings: string
 }
 
 export class UserStore {
@@ -27,6 +28,9 @@ export class UserStore {
     this.api.setToken(token)
     await this.fetchUser()
     localStorage.setItem('token', token)
+    if (this.data.settings) {
+      this.root.settingsStore.load(JSON.parse(this.data.settings))
+    }
   }
 
   async fetchUser(): Promise<void> {
