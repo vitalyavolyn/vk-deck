@@ -30,7 +30,7 @@
 
         &.verified-badge {
           background-color: white;
-          box-shadow: 0 1px 0 2px #00000030;
+          box-shadow: 0 1px 8px 1px #0000001c;
 
           .verified-icon {
             color: var(--accent);
