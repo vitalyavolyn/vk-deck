@@ -8,7 +8,6 @@ import './column-header.css'
 
 interface ColumnHeaderProps {
   icon: FC<IconProps>
-  showSettingsButton?: boolean
   onSettingsClick?(e: MouseEvent<HTMLDivElement>): void
   subtitle?: string
   onClick?(e: MouseEvent<HTMLDivElement>): void
@@ -17,7 +16,6 @@ interface ColumnHeaderProps {
 export const ColumnHeader: FC<ColumnHeaderProps> = ({
   children,
   icon,
-  showSettingsButton = false,
   onSettingsClick,
   onClick,
   subtitle,
@@ -39,20 +37,17 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
       className={classNames('column-header', { clickable: !!onClick })}
       onClick={_onClick}
     >
-      <Icon width={26} height={26} />
+      <Icon width={26} height={26} className="column-icon" />
       <div className="column-title">
         <Title level="3" weight="semibold">
           {children}
         </Title>
         <Subhead weight="medium">{subtitle}</Subhead>
       </div>
-      {/* TODO: индикатор обновления контента? */}
-      {showSettingsButton && (
+      {onSettingsClick && (
         <Icon24Filter
           className="column-settings-toggle"
-          onClick={(e) => {
-            if (onSettingsClick) onSettingsClick(e)
-          }}
+          onClick={onSettingsClick}
         />
       )}
     </header>

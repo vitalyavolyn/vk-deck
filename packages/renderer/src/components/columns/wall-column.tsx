@@ -98,7 +98,6 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
       <ColumnHeader
         icon={Icon}
         subtitle={subtitle}
-        showSettingsButton
         onSettingsClick={() => {
           setShowSettings(!showSettings)
         }}

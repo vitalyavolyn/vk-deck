@@ -160,7 +160,6 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         <ColumnHeader
           icon={Icon}
           subtitle={`@${userStore.data.user.screen_name}`}
-          showSettingsButton
           onSettingsClick={() => {
             setShowSettings(!showSettings)
           }}
