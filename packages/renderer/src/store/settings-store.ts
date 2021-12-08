@@ -1,3 +1,7 @@
+import {
+  StorageSetParams,
+  StorageSetResponse,
+} from '@vkontakte/api-schema-typescript'
 import { autorun, makeAutoObservable } from 'mobx'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
@@ -46,6 +50,10 @@ export enum ColumnSize {
   wide,
 }
 
+// пропускаем первый запуск autorun, чтобы случайно не переписать
+// данные в API старыми
+let columnSaveSkip = true
+
 export class SettingsStore implements Settings {
   colorScheme: ColorScheme = 'auto'
   columns: Column[] = []
@@ -59,8 +67,23 @@ export class SettingsStore implements Settings {
 
     makeAutoObservable(this)
 
+    // сохраняет все настройки в localStorage при изменении чего-либо
     autorun(() => {
       localStorage.setItem('settings', JSON.stringify(this.asObject))
+    })
+
+    // сохраняет колонки с их настройками в VK API при их изменении
+    autorun(() => {
+      const { api } = this.root.userStore
+      const columns = this.columns
+      if (api.isReady && !columnSaveSkip) {
+        api.call<StorageSetResponse, StorageSetParams>('storage.set', {
+          key: 'columns',
+          value: JSON.stringify(columns),
+        })
+      }
+
+      columnSaveSkip = false
     })
   }
 
@@ -73,7 +96,7 @@ export class SettingsStore implements Settings {
     }
   }
 
-  load(settings: Settings) {
+  load(settings: Partial<Settings>) {
     Object.assign(this, settings)
   }
 
