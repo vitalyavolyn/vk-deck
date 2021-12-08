@@ -50,6 +50,10 @@ export enum ColumnSize {
   wide,
 }
 
+// пропускаем первый запуск autorun, чтобы случайно не переписать
+// данные в API старыми
+let columnSaveSkip = true
+
 export class SettingsStore implements Settings {
   colorScheme: ColorScheme = 'auto'
   columns: Column[] = []
@@ -63,16 +67,23 @@ export class SettingsStore implements Settings {
 
     makeAutoObservable(this)
 
+    // сохраняет все настройки в localStorage при изменении чего-либо
+    autorun(() => {
+      localStorage.setItem('settings', JSON.stringify(this.asObject))
+    })
+
+    // сохраняет колонки с их настройками в VK API при их изменении
     autorun(() => {
       const { api } = this.root.userStore
-
-      localStorage.setItem('settings', JSON.stringify(this.asObject))
-      if (api.isReady) {
+      const columns = this.columns
+      if (api.isReady && !columnSaveSkip) {
         api.call<StorageSetResponse, StorageSetParams>('storage.set', {
           key: 'columns',
-          value: JSON.stringify(this.asObject.columns),
+          value: JSON.stringify(columns),
         })
       }
+
+      columnSaveSkip = false
     })
   }
 
