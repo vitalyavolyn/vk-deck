@@ -95,7 +95,6 @@ translation:
     insufficientQuery: Нужно ввести хотя бы три символа
 
   wall:
-    title: Стена
     settings:
       hidePinnedPost: Скрывать закрепленный пост
 

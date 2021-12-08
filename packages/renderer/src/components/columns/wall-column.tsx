@@ -114,7 +114,7 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
         }}
         onClick={canScrollToTop ? scrollToTop : undefined}
       >
-        {t`wall.title`}
+        {t`columns.wall`}
       </ColumnHeader>
       <div className={classNames('column-settings', { hidden: !showSettings })}>
         <div style={{ padding: 8 }}>
