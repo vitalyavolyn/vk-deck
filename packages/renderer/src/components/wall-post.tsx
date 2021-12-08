@@ -266,7 +266,7 @@ export const WallPost: FC<
                 )
                 const { url } = filteredSizes.length
                   ? filteredSizes[0]
-                  : sortedSizes[sortedSizes.length]
+                  : sortedSizes[sortedSizes.length - 1]
 
                 return (
                   <div

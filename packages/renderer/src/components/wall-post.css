@@ -153,8 +153,9 @@
             align-items: center;
             justify-content: center;
             background: rgb(0 0 0 / 55%);
-            color: var(--text_secondary);
+            color: white;
             content: attr(data-text);
+            font-size: 1.5em;
             font-weight: 700;
           }
 
