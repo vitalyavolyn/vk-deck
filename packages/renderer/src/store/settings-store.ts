@@ -74,12 +74,15 @@ export class SettingsStore implements Settings {
     // сохраняет колонки с их настройками в VK API при их изменении
     autorun(() => {
       const { api } = this.root.userStore
-      const columns = this.columns
+
       if (api.isReady && !columnSaveSkip) {
         api.call<StorageSetResponse, StorageSetParams>('storage.set', {
           key: 'columns',
-          value: JSON.stringify(columns),
+          value: JSON.stringify(this.columns),
         })
+      } else {
+        // так надо
+        console.log(this.columns.toString())
       }
 
       columnSaveSkip = false
