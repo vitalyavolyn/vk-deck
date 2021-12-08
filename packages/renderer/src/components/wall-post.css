@@ -138,6 +138,7 @@
 
         .img {
           position: relative;
+          cursor: pointer;
           float: left;
           outline: 1px solid var(--image_border);
           vertical-align: top;
