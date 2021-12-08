@@ -30,8 +30,6 @@ export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
   const [hints, setHints] = useState<CustomSelectProps['options']>([])
   const [selectedId, setSelectedId] = useState(0)
 
-  console.log(selectedId)
-
   return (
     <>
       <FormLayout>

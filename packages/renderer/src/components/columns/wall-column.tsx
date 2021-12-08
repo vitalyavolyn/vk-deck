@@ -6,12 +6,12 @@ import {
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/methods/wall'
-import { classNames } from '@vkontakte/vkjs'
 import { Checkbox, PanelSpinner } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { ColumnProps } from '@/components/column-container'
+import { ColumnSettings } from '@/components/columns/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useStore } from '@/hooks/use-store'
@@ -116,14 +116,14 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
       >
         {t`columns.wall`}
       </ColumnHeader>
-      <div className={classNames('column-settings', { hidden: !showSettings })}>
+      <ColumnSettings columnId={id} show={showSettings}>
         <div style={{ padding: 8 }}>
           <Checkbox
             checked={hidePinnedPost}
             onChange={onChangeHidePinnedPost}
           >{t`wall.settings.hidePinnedPost`}</Checkbox>
         </div>
-      </div>
+      </ColumnSettings>
       {posts && groups && profiles ? (
         // TODO: infinite scroll
         <VirtualScrollWall

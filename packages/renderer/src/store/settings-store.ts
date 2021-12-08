@@ -107,4 +107,13 @@ export class SettingsStore implements Settings {
     if (!col) throw new Error('Unknown column id - ' + columnId)
     return col as C
   }
+
+  /**
+   * Меняет местами колонки с индексами from, to
+   */
+  swapColumns(from: number, to: number) {
+    const tmp = this.columns[from]
+    this.columns[from] = this.columns[to]
+    this.columns[to] = tmp
+  }
 }

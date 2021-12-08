@@ -7,6 +7,7 @@ import { PanelSpinner } from '@vkontakte/vkui'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import { ColumnProps } from '@/components/column-container'
+import { ColumnSettings } from '@/components/columns/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { ColumnType } from '@/store/settings-store'
@@ -19,10 +20,11 @@ interface RickData {
   profile: UsersUserFull
 }
 
-export const RickColumn: FC<ColumnProps> = () => {
+export const RickColumn: FC<ColumnProps> = ({ data: { id } }) => {
   const { t } = useTranslation()
   const [profile, setProfile] = useState<UsersUserFull | null>(null)
   const [items, setItems] = useState<WallWallpostFull[]>([])
+  const [showSettings, setShowSettings] = useState(false)
 
   const addLine = (lines: string[]) => {
     const [line, ...rest] = lines
@@ -49,9 +51,16 @@ export const RickColumn: FC<ColumnProps> = () => {
 
   return (
     <>
-      <ColumnHeader icon={Icon} subtitle={t`rick.subtitle`}>
+      <ColumnHeader
+        icon={Icon}
+        subtitle={t`rick.subtitle`}
+        onSettingsClick={() => {
+          setShowSettings(!showSettings)
+        }}
+      >
         {t`columns.rick`}
       </ColumnHeader>
+      <ColumnSettings columnId={id} show={showSettings} />
       {profile ? (
         <VirtualScrollWall
           className="column-list-content"

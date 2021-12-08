@@ -26,6 +26,9 @@ translation:
     blurAds: Блюрить рекламу
     logout: Выйти
 
+  columnSettings:
+    delete: Удалить
+
   addColumn:
     title: Добавить колонку
     caption:

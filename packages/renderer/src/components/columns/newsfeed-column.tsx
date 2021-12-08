@@ -7,12 +7,12 @@ import {
   UsersUserFull,
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
-import { classNames } from '@vkontakte/vkjs'
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { ColumnProps } from '@/components/column-container'
+import { ColumnSettings } from '@/components/columns/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useStore } from '@/hooks/use-store'
@@ -169,9 +169,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         >
           {possibleSources.find((e) => e.value === settings.source)!.label}
         </ColumnHeader>
-        <div
-          className={classNames('column-settings', { hidden: !showSettings })}
-        >
+        <ColumnSettings columnId={id} show={showSettings}>
           <FormLayout>
             <FormItem top={t`newsfeed.settings.source`}>
               <Select
@@ -184,7 +182,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
               />
             </FormItem>
           </FormLayout>
-        </div>
+        </ColumnSettings>
         {feedItems && groups && profiles ? (
           // TODO: infinite scroll
           <VirtualScrollWall
