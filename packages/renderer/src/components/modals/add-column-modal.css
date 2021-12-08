@@ -12,7 +12,8 @@
     margin-top: 5px;
 
     .column-type {
-      padding: 0;
+      padding-right: 8px;
+      padding-left: 8px;
 
       .column-title {
         font-weight: 500;
