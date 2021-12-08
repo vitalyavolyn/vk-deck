@@ -4,9 +4,9 @@ import {
   Icon28CancelOutline,
   Icon28SettingsOutline,
   Icon28NewsfeedOutline,
-  Icon28SparkleOutline,
   Icon28AddOutline,
   Icon28GridLayoutOutline,
+  Icon28MusicMicOutline,
 } from '@vkontakte/icons'
 import { Icon28NewsfeedOutlineProps } from '@vkontakte/icons/dist/28/newsfeed_outline'
 import { Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
@@ -32,7 +32,7 @@ interface NavbarProps {
 export type IconProps = Icon28NewsfeedOutlineProps
 
 export const columnIcons: Record<ColumnType, FC<IconProps>> = {
-  [ColumnType.test]: Icon28SparkleOutline,
+  [ColumnType.rick]: Icon28MusicMicOutline,
   [ColumnType.newsfeed]: Icon28NewsfeedOutline,
   // TODO: неоч
   [ColumnType.wall]: Icon28GridLayoutOutline,

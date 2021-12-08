@@ -35,7 +35,7 @@ translation:
 
   columns:
     newsfeed: Новости
-    test: Test Column
+    rick: Rick
     wall: Стена
 
   time:
@@ -98,3 +98,6 @@ translation:
     title: Стена
     settings:
       hidePinnedPost: Скрывать закрепленный пост
+
+  rick:
+    subtitle: dQw4w9WgXcQ

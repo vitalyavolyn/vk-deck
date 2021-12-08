@@ -20,8 +20,10 @@ import './add-column-modal.css'
 // ]
 const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.newsfeed, false, 'addColumn.caption.newsfeed'],
-  [ColumnType.test, false],
   [ColumnType.wall, true],
+
+  // оставлять в конце
+  [ColumnType.rick, false],
 ]
 
 export interface AddColumn {
@@ -61,7 +63,7 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
           },
         })
 
-      case ColumnType.test:
+      case ColumnType.rick:
         return settingsStore.columns.push({
           id: uuidv4(),
           type,
@@ -94,6 +96,7 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
                     <Icon fill="var(--text_primary)" width={24} height={24} />
                   </Avatar>
                 }
+                data-column={type}
                 caption={caption ? t(caption) : undefined}
                 multiline
                 className="column-type"

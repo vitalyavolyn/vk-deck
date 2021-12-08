@@ -15,6 +15,10 @@
       padding-right: 8px;
       padding-left: 8px;
 
+      &[data-column='rick'] > div {
+        opacity: 0;
+      }
+
       .column-title {
         font-weight: 500;
       }

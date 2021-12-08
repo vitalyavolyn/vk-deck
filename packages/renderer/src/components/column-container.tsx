@@ -2,13 +2,13 @@ import { FC } from 'react'
 import { useStore } from '@/hooks/use-store'
 import { BaseColumn, ColumnType } from '@/store/settings-store'
 import { NewsfeedColumn } from './columns/newsfeed-column'
-import { TestColumn } from './columns/test-column'
+import { RickColumn } from './columns/rick-column'
 import { WallColumn } from './columns/wall-column'
 
 import './column-container.css'
 
 const columnComponents = {
-  [ColumnType.test]: TestColumn,
+  [ColumnType.rick]: RickColumn,
   [ColumnType.newsfeed]: NewsfeedColumn,
   [ColumnType.wall]: WallColumn,
 }

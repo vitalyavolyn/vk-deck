@@ -11,7 +11,7 @@ export type ColorScheme = 'auto' | 'light' | 'dark'
 
 export enum ColumnType {
   newsfeed = 'newsfeed',
-  test = 'test',
+  rick = 'rick',
   wall = 'wall',
 }
 
@@ -37,11 +37,11 @@ export interface IWallColumn extends BaseColumn {
   settings: WallColumnSettings
 }
 
-export interface ITestColumn extends BaseColumn {
-  type: ColumnType.test
+export interface IRickColumn extends BaseColumn {
+  type: ColumnType.rick
 }
 
-export type Column = INewsfeedColumn | ITestColumn | IWallColumn
+export type Column = INewsfeedColumn | IRickColumn | IWallColumn
 
 export enum ColumnSize {
   narrow,
