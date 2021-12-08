@@ -37,12 +37,11 @@ export interface IWallColumn extends BaseColumn {
   settings: WallColumnSettings
 }
 
-// TODO: че с названиями то
-export interface SerializedTestColumn extends BaseColumn {
+export interface ITestColumn extends BaseColumn {
   type: ColumnType.test
 }
 
-export type Column = INewsfeedColumn | SerializedTestColumn | IWallColumn
+export type Column = INewsfeedColumn | ITestColumn | IWallColumn
 
 export enum ColumnSize {
   narrow,
