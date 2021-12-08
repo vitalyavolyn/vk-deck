@@ -124,6 +124,103 @@
         }
       }
 
+      .wall-post-media {
+        overflow: hidden;
+        width: 100%;
+
+        /* TODO: увеличивать высоту с шириной колонок */
+        height: 130px;
+        border: 1px solid var(--image_border);
+        margin: 6px 0 2px;
+        border-radius: 14px;
+
+        /* TODO: границы между фото? */
+
+        .img {
+          position: relative;
+          float: left;
+          outline: 1px solid var(--image_border);
+          vertical-align: top;
+
+          &.has-more::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgb(0 0 0 / 55%);
+            color: var(--text_secondary);
+            content: attr(data-text);
+            font-weight: 700;
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        /* тут можно просто &-1, но webstorm это не переваривает 👍 */
+        &.wall-post-media-1 {
+          .img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        &.wall-post-media-2 {
+          .img {
+            width: 50%;
+            height: 100%;
+          }
+        }
+
+        &.wall-post-media-3 {
+          .img {
+            width: 50%;
+            height: 50%;
+          }
+
+          .img:first-child {
+            height: 100%;
+          }
+        }
+
+        &.wall-post-media-4 {
+          /* stylelint-disable-next-line no-descending-specificity */
+          .img {
+            width: 50%;
+            height: 50%;
+          }
+        }
+
+        &.wall-post-media-5 {
+          /* stylelint-disable-next-line no-descending-specificity */
+          .img {
+            width: calc(100% / 3);
+            height: 40%;
+          }
+
+          .img:first-child,
+          .img:nth-child(2) {
+            width: 50%;
+            height: 60%;
+          }
+        }
+
+        &.wall-post-media-6 {
+          /* stylelint-disable-next-line no-descending-specificity */
+          .img {
+            width: calc(100% / 3);
+            height: 50%;
+          }
+        }
+      }
+
       .wall-post-badges {
         display: flex;
         flex-wrap: wrap;

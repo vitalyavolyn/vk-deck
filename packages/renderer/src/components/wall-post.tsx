@@ -20,7 +20,6 @@ import {
   Icon16RepostOutline,
   Icon16LinkOutline,
   Icon16Poll,
-  Icon20PictureOutline,
   Icon20VideoOutline,
   Icon20MusicOutline,
   Icon20DocumentOutline,
@@ -84,7 +83,7 @@ export const WallPost: FC<
   const owner = getOwner(data.from_id!, profiles, groups)
 
   if (!owner) {
-    console.log('no owner')
+    console.log('no owner', data)
 
     return null
   }
@@ -99,7 +98,7 @@ export const WallPost: FC<
   const link = getAttachments('link')?.[0]?.link
   const poll = getAttachments('poll')?.[0]?.poll
   // TODO: нормально отбражать картинки (и видео...)
-  const photosCount = getAttachments('photo').length
+  const photos = getAttachments('photo')
   const albumsCount = getAttachments('album').length
   const videos = getAttachments('video')
   const audiosCount = getAttachments('audio').length
@@ -247,18 +246,48 @@ export const WallPost: FC<
           <div className="wall-post-content" ref={contentRef}>
             {data.text}
           </div>
+          {!!photos.length && (
+            <div
+              className={`wall-post-media wall-post-media-${Math.min(
+                photos.length,
+                6,
+              )}`}
+            >
+              {photos.slice(0, 6).map(({ photo }, i) => {
+                if (!photo || !photo.sizes) return null // TODO: проблема тайпинга?
+
+                const sortedSizes = photo.sizes.sort(
+                  (a, b) => a.height - b.height,
+                )
+
+                const minWidth = 240
+                const filteredSizes = sortedSizes.filter(
+                  (e) => e.width > minWidth,
+                )
+                const { url } = filteredSizes.length
+                  ? filteredSizes[0]
+                  : sortedSizes[sortedSizes.length]
+
+                return (
+                  <div
+                    key={`${photo?.owner_id}_${photo?.id}`}
+                    className={classNames('img', {
+                      'has-more': photos.length > 6 && i === 5,
+                    })}
+                    data-text={`+${photos.length - 5}`}
+                  >
+                    <img src={url} />
+                  </div>
+                )
+              })}
+            </div>
+          )}
           <div className="wall-post-badges">
             {/*
               TODO:
                сделать отображение фото и видео с возможностью настройки размера??
                либо просто бейджи/фото
             */}
-            {!!photosCount && (
-              <MediaBadge
-                icon={<Icon20PictureOutline width={16} height={16} />}
-                type={t('wallPost.mediaBadge.photo', { count: photosCount })}
-              />
-            )}
             {!!videos.length && (
               <MediaBadge
                 icon={<Icon20VideoOutline width={16} height={16} />}
