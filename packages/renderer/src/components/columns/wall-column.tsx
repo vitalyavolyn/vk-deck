@@ -15,11 +15,15 @@ import { ColumnSettings } from '@/components/columns/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useStore } from '@/hooks/use-store'
-import { ColumnType, IWallColumn } from '@/store/settings-store'
+import {
+  ColumnImageGridSettings,
+  ColumnType,
+  IWallColumn,
+} from '@/store/settings-store'
 import { getOwner } from '@/utils/get-owner'
 import { ColumnHeader } from './column-header'
 
-export interface WallColumnSettings {
+export interface WallColumnSettings extends ColumnImageGridSettings {
   ownerId: number
   hidePinnedPost: boolean
   // TODO: filter: suggests,postponed,owner,others
@@ -31,7 +35,7 @@ const Icon = columnIcons[ColumnType.wall]
 
 export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
   const { settings, id } = data
-  const { ownerId, hidePinnedPost } = settings
+  const { ownerId, hidePinnedPost, imageGridSize } = settings
 
   const { userStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
@@ -116,7 +120,7 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
       >
         {t`columns.wall`}
       </ColumnHeader>
-      <ColumnSettings columnId={id} show={showSettings}>
+      <ColumnSettings columnId={id} show={showSettings} imageGridSettings>
         <div style={{ padding: 8 }}>
           <Checkbox
             checked={hidePinnedPost}
@@ -127,8 +131,11 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
       {posts && groups && profiles ? (
         // TODO: infinite scroll
         <VirtualScrollWall
-          profiles={profiles}
-          groups={groups}
+          wallPostProps={{
+            profiles,
+            groups,
+            mediaSize: imageGridSize,
+          }}
           items={hidePinnedPost && posts[0]?.is_pinned ? posts.slice(1) : posts}
           className="column-list-content"
           scrollToRef={scrollToRef}

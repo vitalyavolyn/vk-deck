@@ -27,6 +27,17 @@ export interface BaseColumn {
   type: ColumnType
 }
 
+export enum ImageGridSize {
+  badges = 'badges',
+  // TODO: small
+  medium = 'medium',
+  // TODO: large
+}
+
+export interface ColumnImageGridSettings {
+  imageGridSize: ImageGridSize
+}
+
 export interface INewsfeedColumn extends BaseColumn {
   type: ColumnType.newsfeed
   settings: NewsfeedColumnSettings

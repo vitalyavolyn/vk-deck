@@ -28,6 +28,10 @@ translation:
 
   columnSettings:
     delete: Удалить
+    mediaGridSize:
+      title: Размер медиа
+      badges: Скрыты
+      medium: Средний
 
   addColumn:
     title: Добавить колонку

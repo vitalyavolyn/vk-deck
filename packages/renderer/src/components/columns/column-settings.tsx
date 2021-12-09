@@ -7,6 +7,7 @@ import {
 import { classNames } from '@vkontakte/vkjs'
 import { IconButton, Link } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
+import { ColumnImageGridSettingsForm } from '@/components/columns/column-image-grid-settings-form'
 import { useStore } from '@/hooks/use-store'
 
 import './column-settings.css'
@@ -14,6 +15,7 @@ import './column-settings.css'
 interface ColumnSettingsProps extends HTMLAttributes<HTMLDivElement> {
   columnId: string
   show: boolean
+  imageGridSettings?: boolean
 }
 
 // TODO: move this and column-header to /components/columns/common/
@@ -21,6 +23,7 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
   columnId,
   children,
   show,
+  imageGridSettings,
   ...rest
 }) => {
   const { t } = useTranslation()
@@ -42,6 +45,7 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
   return (
     <div className={classNames('column-settings', { hidden: !show })} {...rest}>
       {children}
+      {imageGridSettings && <ColumnImageGridSettingsForm columnId={columnId} />}
       <div className="column-actions">
         <div className="move-buttons">
           <IconButton onClick={() => moveColumn(-1)}>

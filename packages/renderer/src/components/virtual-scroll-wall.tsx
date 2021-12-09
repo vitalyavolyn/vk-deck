@@ -1,27 +1,21 @@
 import { FC, HTMLAttributes, MutableRefObject, useEffect } from 'react'
-import {
-  GroupsGroupFull,
-  UsersUserFull,
-  WallWallpostFull,
-} from '@vkontakte/api-schema-typescript'
+import { WallWallpostFull } from '@vkontakte/api-schema-typescript'
 import useVirtual, { OnScroll, ScrollTo } from 'react-cool-virtual'
-import { WallPost } from './wall-post'
+import { WallPost, WallPostProps } from './wall-post'
 
 interface VirtualScrollWallProps
   extends Pick<HTMLAttributes<HTMLDivElement>, 'className'> {
   items: WallWallpostFull[]
-  groups: GroupsGroupFull[]
-  profiles: UsersUserFull[]
   scrollToRef?: MutableRefObject<ScrollTo | null>
   onScroll?: OnScroll
+  wallPostProps: Omit<WallPostProps, 'data'>
 }
 
 export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   items,
-  profiles,
-  groups,
   scrollToRef,
   onScroll,
+  wallPostProps,
   ...rest
 }) => {
   const {
@@ -50,9 +44,8 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
             <WallPost
               key={`${data.owner_id}_${data.id}`}
               data={items[index]}
-              groups={groups}
-              profiles={profiles}
               measureRef={measureRef}
+              {...wallPostProps}
             />
           )
         })}
