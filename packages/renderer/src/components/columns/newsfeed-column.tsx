@@ -12,14 +12,18 @@ import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { ColumnProps } from '@/components/column-container'
-import { ColumnSettings } from '@/components/columns/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useStore } from '@/hooks/use-store'
-import { ColumnType, INewsfeedColumn } from '@/store/settings-store'
+import {
+  ColumnImageGridSettings,
+  ColumnType,
+  INewsfeedColumn,
+} from '@/store/settings-store'
 import { ColumnHeader } from './column-header'
+import { ColumnSettings } from './column-settings'
 
-export interface NewsfeedColumnSettings {
+export interface NewsfeedColumnSettings extends ColumnImageGridSettings {
   source: string
 }
 
@@ -169,7 +173,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         >
           {possibleSources.find((e) => e.value === settings.source)!.label}
         </ColumnHeader>
-        <ColumnSettings columnId={id} show={showSettings}>
+        <ColumnSettings columnId={id} show={showSettings} imageGridSettings>
           <FormLayout>
             <FormItem top={t`newsfeed.settings.source`}>
               <Select
@@ -186,8 +190,11 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(
         {feedItems && groups && profiles ? (
           // TODO: infinite scroll
           <VirtualScrollWall
-            profiles={profiles}
-            groups={groups}
+            wallPostProps={{
+              profiles,
+              groups,
+              mediaSize: settings.imageGridSize,
+            }}
             items={feedItems.map((post) => newsfeedPostToWallPost(post))}
             className="column-list-content"
             scrollToRef={scrollToRef}
