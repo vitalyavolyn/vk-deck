@@ -1,4 +1,3 @@
-/* eslint-disable import/no-duplicates */
 import {
   differenceInDays,
   differenceInHours,

@@ -13,8 +13,19 @@ const api: ElectronApi = {
       })
     })
   },
+  openViewer(data) {
+    ipcRenderer.send('open-viewer', data)
+  },
+  closeViewer() {
+    ipcRenderer.send('close-viewer')
+  },
   setUpdateAvailableHandler(func: UpdateAvailableHandler) {
     ipcRenderer.on('update-available', (event, arg) => func(arg))
+  },
+
+  // эти специфичны для просмотрщика
+  getViewerParams() {
+    return ipcRenderer.invoke('get-viewer-params')
   },
 }
 

@@ -37,12 +37,14 @@ import { classNames } from '@vkontakte/vkjs'
 import { Avatar } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
+import { useElectron } from '@/hooks/use-electron'
 import { useStore } from '@/hooks/use-store'
 import { ImageGridSize } from '@/store/settings-store'
 import { getInitials } from '@/utils/get-initials'
 import { getName } from '@/utils/get-name'
 import { getOwner } from '@/utils/get-owner'
 import { numberFormatter } from '@/utils/number-formatter'
+import { photoToViewerPhoto } from '@/utils/photo-to-viewer-photo'
 import { shortRelativeTime } from '@/utils/short-relative-time'
 import { AsyncAvatar } from './async-avatar'
 import { DropdownMenu } from './dropdown-menu'
@@ -78,6 +80,7 @@ export const WallPost: FC<
 
     const contentRef = useRef<HTMLDivElement>(null)
     const { t } = useTranslation()
+    const { openViewer } = useElectron()
 
     const [likeState, setLikeState] = useState(!!data.likes?.user_likes)
     const [likeCount, setLikeCount] = useState(data.likes?.count)
@@ -183,6 +186,23 @@ export const WallPost: FC<
 
     const isAd = !!data.marked_as_ads
 
+    const openPhotosInViewer = (index = 0) => {
+      openViewer({
+        photos: photos.map(({ photo }) =>
+          photoToViewerPhoto(
+            photo!,
+            getOwner(
+              // аааааааа миллион !
+              photo?.user_id === 100 ? photo!.owner_id : photo!.user_id!,
+              profiles,
+              groups,
+            ),
+          ),
+        ),
+        index,
+      })
+    }
+
     return (
       <div
         className="wall-post-wrap"
@@ -282,11 +302,14 @@ export const WallPost: FC<
                     ? filteredSizes[0]
                     : sortedSizes[sortedSizes.length - 1]
 
+                  const isOverlayed = photos.length > 6 && i === 5
+
                   return (
                     <div
                       key={`${photo?.owner_id}_${photo?.id}`}
+                      onClick={() => !isOverlayed && openPhotosInViewer(i)}
                       className={classNames('img', {
-                        'has-more': photos.length > 6 && i === 5,
+                        'has-more': isOverlayed,
                       })}
                       data-text={`+${photos.length - 5}`}
                     >
@@ -303,6 +326,9 @@ export const WallPost: FC<
                   type={t('wallPost.mediaBadge.photo', {
                     count: photos.length,
                   })}
+                  onClick={() => {
+                    openPhotosInViewer()
+                  }}
                 />
               )}
               {!!videos.length && (

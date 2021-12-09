@@ -41,6 +41,10 @@ const config = {
     },
     rollupOptions: {
       external: [...builtinModules],
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        viewer: path.resolve(__dirname, 'viewer.html'),
+      },
     },
     emptyOutDir: true,
     brotliSize: false,
