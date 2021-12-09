@@ -8,6 +8,10 @@
     transform: translateY(-200%);
   }
 
+  .vkuiFormLayout + .vkuiFormLayout .vkuiFormItem {
+    padding-top: 0;
+  }
+
   .column-actions {
     display: flex;
     justify-content: space-between;
@@ -20,6 +24,10 @@
 
     .move-buttons {
       display: flex;
+
+      .vkuiIconButton {
+        color: var(--accent);
+      }
     }
 
     .delete-link {
