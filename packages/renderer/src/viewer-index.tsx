@@ -7,6 +7,8 @@ import {
   Platform,
   Scheme,
 } from '@vkontakte/vkui'
+import { format } from 'date-fns'
+import * as locales from 'date-fns/locale'
 import i18next from 'i18next'
 import { render } from 'react-dom'
 import { initReactI18next, useTranslation } from 'react-i18next'
@@ -43,6 +45,8 @@ const Viewer: FC = () => {
 
   if (!photos) return null
 
+  const locale = locales[i18next.language as keyof typeof locales]
+
   const { url, date, owner } = photos[index]
 
   return (
@@ -66,8 +70,9 @@ const Viewer: FC = () => {
           <div className="text">
             <div className="name">{owner.name}</div>
             <div className="date">
-              {/* TODO: улучшить формат */}
-              {new Date(date * 1000).toLocaleDateString()}
+              {format(new Date(date * 1000), 'd MMM yyyy HH:mm', {
+                locale,
+              })}
             </div>
           </div>
         </div>
