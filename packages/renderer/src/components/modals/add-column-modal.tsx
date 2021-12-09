@@ -8,7 +8,11 @@ import { WallColumnSettings } from '@/components/columns/wall-column'
 import { ModalProps } from '@/components/modal-container'
 import { columnIcons } from '@/components/navbar'
 import { useStore } from '@/hooks/use-store'
-import { ColumnType } from '@/store/settings-store'
+import {
+  ColumnImageGridSettings,
+  ColumnType,
+  ImageGridSize,
+} from '@/store/settings-store'
 import { ModalHeader } from './modal-header'
 
 import './add-column-modal.css'
@@ -26,14 +30,26 @@ const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.rick, false],
 ]
 
+export type WithoutImageGridSettings<T extends ColumnImageGridSettings> = Omit<
+  T,
+  'imageGridSize'
+>
+
 export interface AddColumn {
   (type: ColumnType.newsfeed): void
-  (type: ColumnType.wall, settings: WallColumnSettings): void
+  (
+    type: ColumnType.wall,
+    settings: WithoutImageGridSettings<WallColumnSettings>,
+  ): void
   (type: ColumnType): void
 }
 
 export interface SetupProps {
   addColumn: AddColumn
+}
+
+const defaultImageGridSettings: ColumnImageGridSettings = {
+  imageGridSize: ImageGridSize.medium,
 }
 
 export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
@@ -59,6 +75,7 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
           id: uuidv4(),
           type,
           settings: {
+            ...defaultImageGridSettings,
             source: '',
           },
         })
@@ -73,7 +90,10 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
         return settingsStore.columns.push({
           id: uuidv4(),
           type,
-          settings,
+          settings: {
+            ...defaultImageGridSettings,
+            ...settings,
+          },
         })
     }
   }

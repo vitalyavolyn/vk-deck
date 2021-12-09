@@ -64,8 +64,7 @@ export const RickColumn: FC<ColumnProps> = ({ data: { id } }) => {
       {profile ? (
         <VirtualScrollWall
           className="column-list-content"
-          profiles={[profile]}
-          groups={[]}
+          wallPostProps={{ profiles: [profile], groups: [] }}
           items={items}
         />
       ) : (
