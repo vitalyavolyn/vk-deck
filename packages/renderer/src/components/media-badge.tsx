@@ -8,6 +8,7 @@ interface MediaBadgeProps {
   subject?: string
   title?: string
   href?: string
+  onClick?(): void
 }
 
 export const MediaBadge: FC<MediaBadgeProps> = ({
@@ -16,6 +17,7 @@ export const MediaBadge: FC<MediaBadgeProps> = ({
   subject,
   title,
   href,
+  onClick,
 }) => {
   const Component = href ? 'a' : 'div'
 
@@ -27,7 +29,7 @@ export const MediaBadge: FC<MediaBadgeProps> = ({
     : {}
 
   return (
-    <Component className="media-badge" {...linkProps}>
+    <Component className="media-badge" {...linkProps} onClick={onClick}>
       {icon} {type} {subject && <b title={title || subject}>{subject}</b>}
     </Component>
   )

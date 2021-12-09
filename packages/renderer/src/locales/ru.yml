@@ -107,3 +107,6 @@ translation:
 
   rick:
     subtitle: dQw4w9WgXcQ
+
+  viewer:
+    photoCounter: Фотография {{index}} из {{total}}

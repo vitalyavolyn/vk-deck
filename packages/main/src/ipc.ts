@@ -1,9 +1,10 @@
 import path from 'path'
 import { fileURLToPath, URL, URLSearchParams } from 'url'
-import { BrowserView, BrowserWindow, ipcMain } from 'electron'
+import { BrowserView, BrowserWindow, ipcMain, screen } from 'electron'
 import { preloadPath } from '@/index'
 
 let viewerWindow: BrowserWindow | undefined
+let viewerParams: ViewerData | undefined
 
 const closeViewer = () => {
   viewerWindow?.close()
@@ -50,11 +51,12 @@ export function initIpc(win: BrowserWindow): void {
     closeViewer()
   })
 
-  ipcMain.on('open-viewer', () => {
+  ipcMain.on('open-viewer', (e, data: ViewerData) => {
     closeViewer()
+    viewerParams = data
 
     const pageName = 'viewer.html'
-    // как-то объединить с кодом в index.ts
+    // TODO: как-то объединить с кодом в index.ts
     const url =
       import.meta.env.MODE === 'development' &&
       import.meta.env.VITE_DEV_SERVER_URL !== undefined
@@ -64,11 +66,20 @@ export function initIpc(win: BrowserWindow): void {
             'file://' + path.dirname(fileURLToPath(import.meta.url)),
           )
 
+    // странно, что нет способа проще открыть окно на том же мониторе
+    const mainWindow = BrowserWindow.getFocusedWindow()!
+    const { x, y } = mainWindow.getBounds()
+    const { bounds } = screen.getDisplayNearestPoint({ x, y })
+
     viewerWindow = new BrowserWindow({
-      // minWidth: e.width,
-      // minHeight: e.height,
+      // TODO: убрать лишнее
+      //  все это выдрано из vk messenger,
+      //  причем, там их еще больше
+      x: bounds.x,
+      y: bounds.y,
       frame: false,
-      show: false,
+      // show: false,
+      parent: BrowserWindow.getFocusedWindow() || undefined,
       maximizable: false,
       minimizable: false,
       resizable: false,
@@ -76,27 +87,27 @@ export function initIpc(win: BrowserWindow): void {
       hasShadow: false,
       transparent: true,
       alwaysOnTop: true,
-      // backgroundColor: (0, _.getFullscreenBackgroundColor)(),
       type: 'toolbar',
       skipTaskbar: true,
+      fullscreen: true,
       webPreferences: {
         preload: preloadPath,
       },
     })
 
-    // on mac
-    // win.setAlwaysOnTop(!0,"screen-saver")
-
     viewerWindow.webContents.loadURL(url.toString())
 
-    viewerWindow.on('ready-to-show', () => {
-      // открывается не всегда на том же мониторе, где приложение
-      viewerWindow?.show()
-      viewerWindow?.setFullScreen(true)
+    // viewerWindow.on('ready-to-show', () => {
+    //   if (import.meta.env.MODE === 'development') {
+    //     viewerWindow?.webContents.openDevTools()
+    //   }
+    // })
+  })
 
-      // if (import.meta.env.MODE === 'development') {
-      //   viewerWindow.webContents.openDevTools()
-      // }
-    })
+  ipcMain.handle('get-viewer-params', () => viewerParams)
+
+  // закрывает окно просмотра картинок при клике на основное окно
+  win.on('focus', () => {
+    closeViewer()
   })
 }

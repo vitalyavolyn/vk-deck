@@ -1,4 +1,5 @@
 @import '@vkontakte/vkui/dist/vkui.css';
+@import '@vkontakte/vkui/dist/unstable.css';
 
 html,
 body {
@@ -7,6 +8,7 @@ body {
   height: 100vh;
   padding: 0;
   margin: 0;
+  background: transparent !important;
   user-select: none;
 }
 
@@ -34,14 +36,58 @@ body {
 
   .canvas {
     display: flex;
+    height: 92%;
     flex-grow: 2;
     align-items: center;
     justify-content: center;
+
+    .content {
+      height: 100%;
+      box-sizing: border-box;
+      padding: 40px;
+
+      img {
+        /* TODO: так оно занимает все место и ловит клики вокруг себя, если фото узкое */
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        object-fit: contain;
+      }
+    }
   }
 
   .toolbar {
-    height: 90px;
-    background: black;
+    display: flex;
+    height: 8%;
+    align-items: center;
+    justify-content: space-around;
+    background: rgb(40 40 40 / 82%);
     color: white;
+
+    .owner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .name {
+          font-weight: 600;
+          opacity: 0.8;
+        }
+
+        .date {
+          color: var(--text_secondary);
+          font-size: 0.8em;
+        }
+      }
+    }
+
+    .counter {
+      color: var(--text_secondary);
+    }
   }
 }
