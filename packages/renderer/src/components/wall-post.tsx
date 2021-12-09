@@ -302,12 +302,14 @@ export const WallPost: FC<
                     ? filteredSizes[0]
                     : sortedSizes[sortedSizes.length - 1]
 
+                  const isOverlayed = photos.length > 6 && i === 5
+
                   return (
                     <div
                       key={`${photo?.owner_id}_${photo?.id}`}
-                      onClick={() => openPhotosInViewer(i)}
+                      onClick={() => !isOverlayed && openPhotosInViewer(i)}
                       className={classNames('img', {
-                        'has-more': photos.length > 6 && i === 5,
+                        'has-more': isOverlayed,
                       })}
                       data-text={`+${photos.length - 5}`}
                     >
