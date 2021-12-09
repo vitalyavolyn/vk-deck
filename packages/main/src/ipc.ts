@@ -1,5 +1,14 @@
-import { URL, URLSearchParams } from 'url'
+import path from 'path'
+import { fileURLToPath, URL, URLSearchParams } from 'url'
 import { BrowserView, BrowserWindow, ipcMain } from 'electron'
+import { preloadPath } from '@/index'
+
+let viewerWindow: BrowserWindow | undefined
+
+const closeViewer = () => {
+  viewerWindow?.close()
+  viewerWindow = undefined
+}
 
 export function initIpc(win: BrowserWindow): void {
   ipcMain.on('create-browser-view', (e) => {
@@ -34,6 +43,60 @@ export function initIpc(win: BrowserWindow): void {
 
         e.reply('auth-info', result.get('access_token'))
       }
+    })
+  })
+
+  ipcMain.on('close-viewer', () => {
+    closeViewer()
+  })
+
+  ipcMain.on('open-viewer', () => {
+    closeViewer()
+
+    const pageName = 'viewer.html'
+    // как-то объединить с кодом в index.ts
+    const url =
+      import.meta.env.MODE === 'development' &&
+      import.meta.env.VITE_DEV_SERVER_URL !== undefined
+        ? new URL(pageName, import.meta.env.VITE_DEV_SERVER_URL)
+        : new URL(
+            `../renderer/dist/${pageName}`,
+            'file://' + path.dirname(fileURLToPath(import.meta.url)),
+          )
+
+    viewerWindow = new BrowserWindow({
+      // minWidth: e.width,
+      // minHeight: e.height,
+      frame: false,
+      show: false,
+      maximizable: false,
+      minimizable: false,
+      resizable: false,
+      movable: false,
+      hasShadow: false,
+      transparent: true,
+      alwaysOnTop: true,
+      // backgroundColor: (0, _.getFullscreenBackgroundColor)(),
+      type: 'toolbar',
+      skipTaskbar: true,
+      webPreferences: {
+        preload: preloadPath,
+      },
+    })
+
+    // on mac
+    // win.setAlwaysOnTop(!0,"screen-saver")
+
+    viewerWindow.webContents.loadURL(url.toString())
+
+    viewerWindow.on('ready-to-show', () => {
+      // открывается не всегда на том же мониторе, где приложение
+      viewerWindow?.show()
+      viewerWindow?.setFullScreen(true)
+
+      // if (import.meta.env.MODE === 'development') {
+      //   viewerWindow.webContents.openDevTools()
+      // }
     })
   })
 }

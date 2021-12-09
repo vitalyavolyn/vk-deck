@@ -13,6 +13,12 @@ const api: ElectronApi = {
       })
     })
   },
+  openViewer() {
+    ipcRenderer.send('open-viewer')
+  },
+  closeViewer() {
+    ipcRenderer.send('close-viewer')
+  },
   setUpdateAvailableHandler(func: UpdateAvailableHandler) {
     ipcRenderer.on('update-available', (event, arg) => func(arg))
   },

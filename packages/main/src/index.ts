@@ -24,6 +24,11 @@ i18next.init({
 
 const { t } = i18next
 
+export const preloadPath = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../../preload/dist/index.cjs',
+)
+
 if (import.meta.env.MODE === 'development') {
   app
     .whenReady()
@@ -52,10 +57,7 @@ const createWindow = async () => {
     webPreferences: {
       nativeWindowOpen: true,
       webSecurity: false,
-      preload: path.join(
-        path.dirname(fileURLToPath(import.meta.url)),
-        '../../preload/dist/index.cjs',
-      ),
+      preload: preloadPath,
     },
     ...windowState,
   })
