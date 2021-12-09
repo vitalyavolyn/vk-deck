@@ -33,10 +33,7 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
   const Icon = icon
 
   return (
-    <header
-      className={classNames('column-header', { clickable: !!onClick })}
-      onClick={_onClick}
-    >
+    <header className={classNames('column-header', { clickable: !!onClick })} onClick={_onClick}>
       <Icon width={26} height={26} className="column-icon" />
       <div className="column-title">
         <Title level="3" weight="semibold">
@@ -45,10 +42,7 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
         <Subhead weight="medium">{subtitle}</Subhead>
       </div>
       {onSettingsClick && (
-        <Icon24Filter
-          className="column-settings-toggle"
-          onClick={onSettingsClick}
-        />
+        <Icon24Filter className="column-settings-toggle" onClick={onSettingsClick} />
       )}
     </header>
   )

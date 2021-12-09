@@ -16,9 +16,7 @@ import { useStore } from '@/hooks/use-store'
 import './dashboard.css'
 
 const scrollToColumn = (id: string) => {
-  document
-    .querySelector(`.column[data-id="${id}"]`)
-    ?.scrollIntoView({ behavior: 'smooth' })
+  document.querySelector(`.column[data-id="${id}"]`)?.scrollIntoView({ behavior: 'smooth' })
 }
 
 export const Dashboard: FC = observer(() => {
@@ -69,9 +67,7 @@ export const Dashboard: FC = observer(() => {
           onColumnClick={scrollToColumn}
           // TODO: функции ниже надо привести в порядок и объединить
           onComposeButtonClick={() =>
-            !isModalOpen || activeModal !== 'compose'
-              ? openModal('compose')
-              : setIsModalOpen(false)
+            !isModalOpen || activeModal !== 'compose' ? openModal('compose') : setIsModalOpen(false)
           }
           isComposerOpened={isModalOpen && activeModal === 'compose'}
           onSettingsClick={() =>
@@ -89,10 +85,7 @@ export const Dashboard: FC = observer(() => {
 
       <SplitCol
         spaced={isDesktop}
-        className={classNames(
-          { 'modal-open': isModalOpen },
-          'columns-container',
-        )}
+        className={classNames({ 'modal-open': isModalOpen }, 'columns-container')}
       >
         <ModalContainer modal={activeModal} closeModal={closeModal} />
         <Columns />

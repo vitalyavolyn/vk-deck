@@ -11,17 +11,13 @@ import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { ColumnProps } from '@/components/column-container'
-import { ColumnSettings } from '@/components/columns/column-settings'
+import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useStore } from '@/hooks/use-store'
-import {
-  ColumnImageGridSettings,
-  ColumnType,
-  IWallColumn,
-} from '@/store/settings-store'
+import { ColumnImageGridSettings, ColumnType, IWallColumn } from '@/store/settings-store'
 import { getOwner } from '@/utils/get-owner'
-import { ColumnHeader } from './column-header'
+import { ColumnHeader } from './common/column-header'
 
 export interface WallColumnSettings extends ColumnImageGridSettings {
   ownerId: number
@@ -57,15 +53,15 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
     }
 
     try {
-      const response = await userStore.api.call<
-        WallGetExtendedResponse,
-        WallGetParams
-      >('wall.get', {
-        owner_id: ownerId,
-        count: 100,
-        extended: 1,
-        fields: 'verified,screen_name,photo_50',
-      })
+      const response = await userStore.api.call<WallGetExtendedResponse, WallGetParams>(
+        'wall.get',
+        {
+          owner_id: ownerId,
+          count: 100,
+          extended: 1,
+          fields: 'verified,screen_name,photo_50',
+        },
+      )
 
       const { items, groups, profiles } = response
 
@@ -104,8 +100,7 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
 
   const onChangeHidePinnedPost = (e: ChangeEvent<HTMLInputElement>) => {
     const index = settingsStore.columns.findIndex((e) => e.id === id)
-    ;(settingsStore.columns[index] as IWallColumn).settings.hidePinnedPost =
-      e.target.checked
+    ;(settingsStore.columns[index] as IWallColumn).settings.hidePinnedPost = e.target.checked
   }
 
   return (

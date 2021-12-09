@@ -22,15 +22,8 @@ export interface ModalProps {
   closeModal(): void
 }
 
-export const ModalContainer: FC<ModalContainerProps> = ({
-  modal,
-  closeModal,
-}) => {
+export const ModalContainer: FC<ModalContainerProps> = ({ modal, closeModal }) => {
   const Component = modal ? modals[modal] : undefined
 
-  return (
-    <div className="modal-container">
-      {Component && <Component closeModal={closeModal} />}
-    </div>
-  )
+  return <div className="modal-container">{Component && <Component closeModal={closeModal} />}</div>
 }

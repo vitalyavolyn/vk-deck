@@ -28,15 +28,9 @@ module.exports = {
     'no-use-before-define': 'off',
 
     '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/consistent-type-imports': [
-      'error',
-      { prefer: 'no-type-imports' },
-    ],
+    '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'no-type-imports' }],
     '@typescript-eslint/no-use-before-define': 'error',
-    '@typescript-eslint/ban-ts-comment': [
-      'error',
-      { 'ts-ignore': 'allow-with-description' },
-    ],
+    '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
 
     // TODO: remove this
     '@typescript-eslint/no-non-null-assertion': 'off',

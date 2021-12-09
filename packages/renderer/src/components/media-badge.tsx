@@ -11,14 +11,7 @@ interface MediaBadgeProps {
   onClick?(): void
 }
 
-export const MediaBadge: FC<MediaBadgeProps> = ({
-  icon,
-  type,
-  subject,
-  title,
-  href,
-  onClick,
-}) => {
+export const MediaBadge: FC<MediaBadgeProps> = ({ icon, type, subject, title, href, onClick }) => {
   const Component = href ? 'a' : 'div'
 
   const linkProps = href

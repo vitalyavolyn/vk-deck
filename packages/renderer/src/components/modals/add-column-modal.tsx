@@ -8,11 +8,7 @@ import { WallColumnSettings } from '@/components/columns/wall-column'
 import { ModalProps } from '@/components/modal-container'
 import { columnIcons } from '@/components/navbar'
 import { useStore } from '@/hooks/use-store'
-import {
-  ColumnImageGridSettings,
-  ColumnType,
-  ImageGridSize,
-} from '@/store/settings-store'
+import { ColumnImageGridSettings, ColumnType, ImageGridSize } from '@/store/settings-store'
 import { ModalHeader } from './modal-header'
 
 import './add-column-modal.css'
@@ -30,17 +26,11 @@ const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.rick, false],
 ]
 
-export type WithoutImageGridSettings<T extends ColumnImageGridSettings> = Omit<
-  T,
-  'imageGridSize'
->
+export type WithoutImageGridSettings<T extends ColumnImageGridSettings> = Omit<T, 'imageGridSize'>
 
 export interface AddColumn {
   (type: ColumnType.newsfeed): void
-  (
-    type: ColumnType.wall,
-    settings: WithoutImageGridSettings<WallColumnSettings>,
-  ): void
+  (type: ColumnType.wall, settings: WithoutImageGridSettings<WallColumnSettings>): void
   (type: ColumnType): void
 }
 
@@ -56,9 +46,7 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
   const { t } = useTranslation()
   const { settingsStore } = useStore()
   const [selectedColumn, setSelectedColumn] = useState<ColumnType | null>(null)
-  const [animatingColumn, setAnimatingColumn] = useState<ColumnType | null>(
-    null,
-  )
+  const [animatingColumn, setAnimatingColumn] = useState<ColumnType | null>(null)
 
   useEffect(() => {
     if (!selectedColumn && animatingColumn) {

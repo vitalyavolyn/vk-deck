@@ -1,7 +1,4 @@
-import {
-  StorageSetParams,
-  StorageSetResponse,
-} from '@vkontakte/api-schema-typescript'
+import { StorageSetParams, StorageSetResponse } from '@vkontakte/api-schema-typescript'
 import { autorun, makeAutoObservable } from 'mobx'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'

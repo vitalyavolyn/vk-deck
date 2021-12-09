@@ -33,10 +33,7 @@ export class Api {
     return !!this.token
   }
 
-  async call<T, R = Record<string, string | number>>(
-    method: string,
-    params?: R,
-  ): Promise<T> {
+  async call<T, R = Record<string, string | number>>(method: string, params?: R): Promise<T> {
     const { v, lang, token } = this
     console.log('CALL', method, params)
 

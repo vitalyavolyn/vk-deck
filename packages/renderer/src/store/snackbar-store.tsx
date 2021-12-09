@@ -12,16 +12,9 @@ export class SnackbarStore {
     this.element = undefined
   }
 
-  show(
-    content: string | JSX.Element,
-    snackbarProps: SnackbarProps = this.defaultProps,
-  ): void {
+  show(content: string | JSX.Element, snackbarProps: SnackbarProps = this.defaultProps): void {
     this.element =
-      typeof content === 'string' ? (
-        <Snackbar {...snackbarProps}>{content}</Snackbar>
-      ) : (
-        content
-      )
+      typeof content === 'string' ? <Snackbar {...snackbarProps}>{content}</Snackbar> : content
   }
 
   showError(content: string) {

@@ -59,11 +59,7 @@ export const Navbar: FC<NavbarProps> = observer(
               active: isComposerOpened,
             })}
           >
-            {isComposerOpened ? (
-              <Icon28CancelOutline />
-            ) : (
-              <Icon28WriteOutline />
-            )}
+            {isComposerOpened ? <Icon28CancelOutline /> : <Icon28WriteOutline />}
           </Tappable>
 
           <div className="column-navigator">
@@ -71,11 +67,7 @@ export const Navbar: FC<NavbarProps> = observer(
               const Icon = columnIcons[col.type]
 
               return (
-                <Cell
-                  key={col.id}
-                  data-column={col.id}
-                  onClick={() => onColumnClick(col.id)}
-                >
+                <Cell key={col.id} data-column={col.id} onClick={() => onColumnClick(col.id)}>
                   {/*
                    * TODO:
                    *  Аватарки кроме иконок?

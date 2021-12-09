@@ -14,11 +14,7 @@ export function useAppScheme(): Scheme {
 
   useEffect(() => {
     if (settingsStore.colorScheme !== 'auto') {
-      setScheme(
-        settingsStore.colorScheme === 'light'
-          ? Scheme.VKCOM_LIGHT
-          : Scheme.VKCOM_DARK,
-      )
+      setScheme(settingsStore.colorScheme === 'light' ? Scheme.VKCOM_LIGHT : Scheme.VKCOM_DARK)
     } else {
       setScheme(getThemeByMediaQuery(darkThemeMatch))
     }

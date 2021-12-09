@@ -65,17 +65,8 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
 /**
  * Показывает запись по объекту записи на стене
  */
-export const WallPost: FC<
-  WallPostProps & { measureRef?: Ref<HTMLDivElement> }
-> = observer(
-  ({
-    data,
-    groups,
-    profiles,
-    measureRef,
-    mediaSize = ImageGridSize.medium,
-    ...rest
-  }) => {
+export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> = observer(
+  ({ data, groups, profiles, measureRef, mediaSize = ImageGridSize.medium, ...rest }) => {
     const { userStore, snackbarStore, settingsStore } = useStore()
 
     const contentRef = useRef<HTMLDivElement>(null)
@@ -104,9 +95,7 @@ export const WallPost: FC<
 
     const hasRepost = data.copy_history?.length
 
-    const getAttachments = (
-      type: WallWallpostAttachmentType,
-    ): WallWallpostAttachment[] =>
+    const getAttachments = (type: WallWallpostAttachmentType): WallWallpostAttachment[] =>
       data.attachments?.filter((e) => e.type === type) || []
 
     const link = getAttachments('link')?.[0]?.link
@@ -124,16 +113,7 @@ export const WallPost: FC<
     const unsupportedAttachments = data.attachments
       ?.filter(
         (e) =>
-          ![
-            'link',
-            'poll',
-            'photo',
-            'video',
-            'audio',
-            'doc',
-            'market',
-            'album',
-          ].includes(e.type),
+          !['link', 'poll', 'photo', 'video', 'audio', 'doc', 'market', 'album'].includes(e.type),
       )
       .map((e) => e.type)
 
@@ -156,10 +136,7 @@ export const WallPost: FC<
       if (!likeState) {
         setLikeState(true)
         try {
-          const { likes } = await api.call<LikesAddResponse, LikesAddParams>(
-            'likes.add',
-            params,
-          )
+          const { likes } = await api.call<LikesAddResponse, LikesAddParams>('likes.add', params)
           setLikeCount(likes)
         } catch (error) {
           console.error(error)
@@ -169,10 +146,10 @@ export const WallPost: FC<
       } else {
         setLikeState(false)
         try {
-          const { likes } = await api.call<
-            LikesDeleteResponse,
-            LikesDeleteParams
-          >('likes.delete', params)
+          const { likes } = await api.call<LikesDeleteResponse, LikesDeleteParams>(
+            'likes.delete',
+            params,
+          )
           setLikeCount(likes)
         } catch (error) {
           console.error(error)
@@ -233,26 +210,15 @@ export const WallPost: FC<
                 />
               )}
               {!!owner.verified && (
-                <Avatar
-                  title={t`wallPost.verified`}
-                  size={16}
-                  className="badge verified-badge"
-                >
-                  <Icon16Done
-                    width={12}
-                    height={12}
-                    className="verified-icon"
-                  />
+                <Avatar title={t`wallPost.verified`} size={16} className="badge verified-badge">
+                  <Icon16Done width={12} height={12} className="verified-icon" />
                 </Avatar>
               )}
             </div>
           </div>
           <div className="wall-post-main">
             <header className="wall-post-header">
-              <a
-                className="wall-post-author"
-                title={`${getName(owner)} @${owner.screen_name}`}
-              >
+              <a className="wall-post-author" title={`${getName(owner)} @${owner.screen_name}`}>
                 <span className="full-name">{getName(owner)}</span>
                 <span className="screen-name">@{owner.screen_name}</span>
               </a>
@@ -266,9 +232,7 @@ export const WallPost: FC<
                   className="time"
                   href={postUrl}
                   target="_blank"
-                  title={
-                    date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
-                  }
+                  title={date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
                 >
                   {shortRelativeTime(date)}
                 </a>
@@ -281,23 +245,14 @@ export const WallPost: FC<
               {data.text}
             </div>
             {!!photos.length && mediaSize === ImageGridSize.medium && (
-              <div
-                className={`wall-post-media wall-post-media-${Math.min(
-                  photos.length,
-                  6,
-                )}`}
-              >
+              <div className={`wall-post-media wall-post-media-${Math.min(photos.length, 6)}`}>
                 {photos.slice(0, 6).map(({ photo }, i) => {
                   if (!photo || !photo.sizes) return null // TODO: проблема тайпинга?
 
-                  const sortedSizes = photo.sizes.sort(
-                    (a, b) => a.height - b.height,
-                  )
+                  const sortedSizes = photo.sizes.sort((a, b) => a.height - b.height)
 
                   const minWidth = 240
-                  const filteredSizes = sortedSizes.filter(
-                    (e) => e.width > minWidth,
-                  )
+                  const filteredSizes = sortedSizes.filter((e) => e.width > minWidth)
                   const { url } = filteredSizes.length
                     ? filteredSizes[0]
                     : sortedSizes[sortedSizes.length - 1]
@@ -337,9 +292,7 @@ export const WallPost: FC<
                   type={t('wallPost.mediaBadge.video', {
                     count: videos.length,
                   })}
-                  subject={
-                    videos.length === 1 ? videos[0].video!.title : undefined
-                  }
+                  subject={videos.length === 1 ? videos[0].video!.title : undefined}
                 />
               )}
               {!!audiosCount && (
@@ -370,18 +323,8 @@ export const WallPost: FC<
               )}
               {link && (
                 <MediaBadge
-                  icon={
-                    hasArticle ? (
-                      <Icon16ArticleOutline />
-                    ) : (
-                      <Icon16LinkOutline />
-                    )
-                  }
-                  type={
-                    hasArticle
-                      ? t`wallPost.mediaBadge.article`
-                      : t`wallPost.mediaBadge.link`
-                  }
+                  icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
+                  type={hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`}
                   subject={hasArticle ? link.title : new URL(link.url).hostname}
                   title={hasArticle ? link.title : link.url}
                   href={link.url}
@@ -404,13 +347,7 @@ export const WallPost: FC<
                 <MediaBadge
                   icon={<Icon16RepostOutline />}
                   type={t`wallPost.mediaBadge.repost`}
-                  subject={getName(
-                    getOwner(
-                      data.copy_history![0]!.owner_id!,
-                      profiles,
-                      groups,
-                    )!,
-                  )}
+                  subject={getName(getOwner(data.copy_history![0]!.owner_id!, profiles, groups)!)}
                 />
               )}
             </div>
@@ -426,13 +363,9 @@ export const WallPost: FC<
               <div className="wall-post-actions">
                 <div
                   title={t`wallPost.actions.like`}
-                  className={classNames(
-                    'wall-post-action-item',
-                    'action-like',
-                    {
-                      'user-likes': likeState,
-                    },
-                  )}
+                  className={classNames('wall-post-action-item', 'action-like', {
+                    'user-likes': likeState,
+                  })}
                   onClick={onLikeClick}
                 >
                   {likeState ? (

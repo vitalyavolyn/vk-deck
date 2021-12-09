@@ -11,14 +11,12 @@ interface ColumnImageGridSettingsFormProps {
 
 type HasImageGridSettings = { settings: ColumnImageGridSettings }
 
-export const ColumnImageGridSettingsForm: FC<ColumnImageGridSettingsFormProps> =
-  observer(({ columnId }) => {
+export const ColumnImageGridSettingsForm: FC<ColumnImageGridSettingsFormProps> = observer(
+  ({ columnId }) => {
     const { t } = useTranslation()
     const { settingsStore } = useStore()
 
-    const col = settingsStore.columns.find(
-      (e) => e.id === columnId,
-    ) as HasImageGridSettings
+    const col = settingsStore.columns.find((e) => e.id === columnId) as HasImageGridSettings
 
     const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
       col.settings.imageGridSize = e.target.value as ImageGridSize
@@ -44,4 +42,5 @@ export const ColumnImageGridSettingsForm: FC<ColumnImageGridSettingsFormProps> =
         </FormItem>
       </FormLayout>
     )
-  })
+  },
+)

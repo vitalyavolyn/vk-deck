@@ -1,8 +1,5 @@
 import { FC, useState } from 'react'
-import {
-  SearchGetHintsParams,
-  SearchGetHintsResponse,
-} from '@vkontakte/api-schema-typescript'
+import { SearchGetHintsParams, SearchGetHintsResponse } from '@vkontakte/api-schema-typescript'
 import {
   Button,
   CustomSelect,
@@ -50,14 +47,11 @@ export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
                 setIsFetching(true)
                 // TODO: где обработка ошибок?
                 api
-                  .call<SearchGetHintsResponse, SearchGetHintsParams>(
-                    'search.getHints',
-                    {
-                      fields: 'photo_50,screen_name',
-                      search_global: 1,
-                      q: query,
-                    },
-                  )
+                  .call<SearchGetHintsResponse, SearchGetHintsParams>('search.getHints', {
+                    fields: 'photo_50,screen_name',
+                    search_global: 1,
+                    q: query,
+                  })
                   .then(({ items }) => {
                     setIsFetching(false)
                     setHints(
@@ -67,11 +61,8 @@ export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
                         .map((hint) => ({
                           label: getName(hint.profile || hint.group),
                           value: hint.profile?.id || -Number(hint.group?.id),
-                          avatar:
-                            hint.profile?.photo_50 || hint.group?.photo_50,
-                          description:
-                            hint.profile?.screen_name ||
-                            hint.group?.screen_name,
+                          avatar: hint.profile?.photo_50 || hint.group?.photo_50,
+                          description: hint.profile?.screen_name || hint.group?.screen_name,
                         })),
                     )
                   })

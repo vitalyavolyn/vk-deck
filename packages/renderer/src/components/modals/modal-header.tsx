@@ -8,18 +8,12 @@ interface ModalHeaderProps {
   onBackButtonClick?(): void
 }
 
-export const ModalHeader: FC<ModalHeaderProps> = ({
-  children,
-  onBackButtonClick,
-}) => {
+export const ModalHeader: FC<ModalHeaderProps> = ({ children, onBackButtonClick }) => {
   return (
     <div className="modal-header">
       <div className="modal-header-content">
         {onBackButtonClick && (
-          <PanelHeaderBack
-            onClick={onBackButtonClick}
-            className="back-button"
-          />
+          <PanelHeaderBack onClick={onBackButtonClick} className="back-button" />
         )}
         <Title level="2" weight="semibold">
           {children}

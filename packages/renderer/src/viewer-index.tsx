@@ -1,12 +1,6 @@
 import { FC, MouseEventHandler, StrictMode, useEffect, useState } from 'react'
 import { Icon36CancelOutline } from '@vkontakte/icons'
-import {
-  AdaptivityProvider,
-  AppRoot,
-  ConfigProvider,
-  Platform,
-  Scheme,
-} from '@vkontakte/vkui'
+import { AdaptivityProvider, AppRoot, ConfigProvider, Platform, Scheme } from '@vkontakte/vkui'
 import { format } from 'date-fns'
 import * as locales from 'date-fns/locale'
 import i18next from 'i18next'

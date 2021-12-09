@@ -51,9 +51,7 @@ export const App: FC = observer(() => {
   return (
     <ConfigProvider scheme={scheme} platform={Platform.VKCOM}>
       <AdaptivityProvider>
-        <AppRoot noLegacyClasses>
-          {isAuthorized ? <Dashboard /> : <Login />}
-        </AppRoot>
+        <AppRoot noLegacyClasses>{isAuthorized ? <Dashboard /> : <Login />}</AppRoot>
       </AdaptivityProvider>
     </ConfigProvider>
   )

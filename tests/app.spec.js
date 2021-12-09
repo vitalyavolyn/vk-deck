@@ -21,9 +21,7 @@ const { _electron: electron } = require('playwright')
       if (mainWindow.isVisible()) {
         resolve(getState())
       } else {
-        mainWindow.once('ready-to-show', () =>
-          setTimeout(() => resolve(getState()), 0),
-        )
+        mainWindow.once('ready-to-show', () => setTimeout(() => resolve(getState()), 0))
       }
     })
   })
@@ -54,10 +52,7 @@ const { _electron: electron } = require('playwright')
     undefined,
     'In renderer `globalThis.electron` is undefined',
   )
-  assert.strictEqual(
-    renderedExposedApi?.versions?.electron,
-    realVersions.electron,
-  )
+  assert.strictEqual(renderedExposedApi?.versions?.electron, realVersions.electron)
 
   // Close app
   await electronApp.close()

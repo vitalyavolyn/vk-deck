@@ -1,14 +1,10 @@
 import { FC, HTMLAttributes } from 'react'
-import {
-  Icon16Chevron,
-  Icon16ChevronLeft,
-  Icon20DeleteOutline,
-} from '@vkontakte/icons'
+import { Icon16Chevron, Icon16ChevronLeft, Icon20DeleteOutline } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { IconButton, Link } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
-import { ColumnImageGridSettingsForm } from '@/components/columns/column-image-grid-settings-form'
 import { useStore } from '@/hooks/use-store'
+import { ColumnImageGridSettingsForm } from './column-image-grid-settings-form'
 
 import './column-settings.css'
 
@@ -29,8 +25,7 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
   const { t } = useTranslation()
   const { settingsStore } = useStore()
 
-  const getColumnIndex = () =>
-    settingsStore.columns.findIndex(({ id }) => id === columnId)
+  const getColumnIndex = () => settingsStore.columns.findIndex(({ id }) => id === columnId)
 
   const moveColumn = (direction: -1 | 1) => {
     const from = getColumnIndex()

@@ -32,15 +32,7 @@ interface AccountProps {
   onClick: () => void
 }
 
-const Account: FC<AccountProps> = ({
-  name,
-  id,
-  screenName,
-  photo,
-  isSelected,
-  mode,
-  onClick,
-}) => {
+const Account: FC<AccountProps> = ({ name, id, screenName, photo, isSelected, mode, onClick }) => {
   if (mode !== AccountPickerMode.list) {
     const isLargeGrid = mode === AccountPickerMode.grid
     const imageSize = isLargeGrid ? 48 : 32
@@ -49,19 +41,14 @@ const Account: FC<AccountProps> = ({
     return (
       <div className="account">
         <TextTooltip text={name}>
-          <div
-            className={classNames('account-avatar', { selected: isSelected })}
-            onClick={onClick}
-          >
+          <div className={classNames('account-avatar', { selected: isSelected })} onClick={onClick}>
             <AsyncAvatar
               gradientColor={(id % 6) + 1}
               initials={getInitials(name)}
               size={imageSize}
               src={photo}
             />
-            {isSelected && (
-              <Icon20CheckCircleFillGreen width={iconSize} height={iconSize} />
-            )}
+            {isSelected && <Icon20CheckCircleFillGreen width={iconSize} height={iconSize} />}
           </div>
         </TextTooltip>
       </div>

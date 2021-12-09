@@ -1,7 +1,4 @@
-import {
-  GroupsGroupFull,
-  UsersUserXtrCounters,
-} from '@vkontakte/api-schema-typescript'
+import { GroupsGroupFull, UsersUserXtrCounters } from '@vkontakte/api-schema-typescript'
 import { NewsfeedList } from '@vkontakte/api-schema-typescript/dist/objects/newsfeed/NewsfeedList'
 import { makeAutoObservable } from 'mobx'
 import { Api } from '@/api'

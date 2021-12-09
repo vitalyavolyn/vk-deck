@@ -58,8 +58,7 @@ export function initIpc(win: BrowserWindow): void {
     const pageName = 'viewer.html'
     // TODO: как-то объединить с кодом в index.ts
     const url =
-      import.meta.env.MODE === 'development' &&
-      import.meta.env.VITE_DEV_SERVER_URL !== undefined
+      import.meta.env.MODE === 'development' && import.meta.env.VITE_DEV_SERVER_URL !== undefined
         ? new URL(pageName, import.meta.env.VITE_DEV_SERVER_URL)
         : new URL(
             `../renderer/dist/${pageName}`,

@@ -1,13 +1,6 @@
 import { FC, useState } from 'react'
-import {
-  WallPostParams,
-  WallPostResponse,
-} from '@vkontakte/api-schema-typescript'
-import {
-  Icon20ArticleOutline,
-  Icon20CheckBoxOff,
-  Icon20Square4Outline,
-} from '@vkontakte/icons'
+import { WallPostParams, WallPostResponse } from '@vkontakte/api-schema-typescript'
+import { Icon20ArticleOutline, Icon20CheckBoxOff, Icon20Square4Outline } from '@vkontakte/icons'
 import { Button, classNames, FormStatus, Textarea } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { AccountPicker, AccountPickerMode } from '@/components/account-picker'
@@ -23,9 +16,7 @@ export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
 
   const { t } = useTranslation()
 
-  const [pickerMode, setPickerMode] = useState<AccountPickerMode>(
-    AccountPickerMode.minigrid,
-  )
+  const [pickerMode, setPickerMode] = useState<AccountPickerMode>(AccountPickerMode.minigrid)
   const [selectedAccount, setSelectedAccount] = useState(id)
   const [text, setText] = useState('')
   const [isLoading, setIsLoading] = useState(false)

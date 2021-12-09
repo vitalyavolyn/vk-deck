@@ -114,11 +114,7 @@
           left: 0;
           width: 100%;
           height: 100%;
-          background: linear-gradient(
-            to bottom,
-            transparent 70%,
-            var(--background_content)
-          );
+          background: linear-gradient(to bottom, transparent 70%, var(--background_content));
           content: '';
           pointer-events: none;
         }

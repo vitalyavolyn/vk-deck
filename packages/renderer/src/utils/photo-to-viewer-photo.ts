@@ -1,8 +1,4 @@
-import {
-  GroupsGroup,
-  PhotosPhoto,
-  UsersUser,
-} from '@vkontakte/api-schema-typescript'
+import { GroupsGroup, PhotosPhoto, UsersUser } from '@vkontakte/api-schema-typescript'
 import { getBiggestSize } from '@/utils/get-biggest-size'
 import { getName } from '@/utils/get-name'
 

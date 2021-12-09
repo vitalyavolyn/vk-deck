@@ -68,14 +68,11 @@ const setupMainPackageWatcher = (viteDevServer) => {
 
       spawnProcess.stdout.on(
         'data',
-        (d) =>
-          d.toString().trim() && logger.warn(d.toString(), { timestamp: true }),
+        (d) => d.toString().trim() && logger.warn(d.toString(), { timestamp: true }),
       )
       spawnProcess.stderr.on(
         'data',
-        (d) =>
-          d.toString().trim() &&
-          logger.error(d.toString(), { timestamp: true }),
+        (d) => d.toString().trim() && logger.error(d.toString(), { timestamp: true }),
       )
     },
   })

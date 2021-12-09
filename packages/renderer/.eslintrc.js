@@ -19,10 +19,7 @@ module.exports = {
     'unicorn/no-useless-undefined': 'off',
 
     'react/jsx-curly-brace-presence': ['error', 'never'],
-    'react/function-component-definition': [
-      'error',
-      { namedComponents: 'arrow-function' },
-    ],
+    'react/function-component-definition': ['error', { namedComponents: 'arrow-function' }],
     'react/no-array-index-key': 'error',
     'react/no-multi-comp': 'error',
     'react/jsx-fragments': 'error',

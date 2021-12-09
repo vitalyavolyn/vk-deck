@@ -8,8 +8,7 @@ const { execSync } = require('child_process')
  * @returns   string
  */
 function getInput(name, options) {
-  const val =
-    process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || ''
+  const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || ''
   if (options && options.required && !val) {
     throw new Error(`Input required and not supplied: ${name}`)
   }
@@ -20,8 +19,7 @@ function getInput(name, options) {
 const START_FROM = getInput('from')
 const END_TO = getInput('to')
 const INCLUDE_COMMIT_BODY = getInput('include-commit-body') === 'true'
-const INCLUDE_ABBREVIATED_COMMIT =
-  getInput('include-abbreviated-commit') === 'true'
+const INCLUDE_ABBREVIATED_COMMIT = getInput('include-abbreviated-commit') === 'true'
 
 /**
  * @typedef {Object} ICommit
@@ -99,9 +97,7 @@ const supportedTypes = [
 function parseCommit(commitString) {
   /** @type {ICommit} */
   const commitDataObj = {}
-  const commitDataArray = commitString
-    .split(commitInnerSeparator)
-    .map((s) => s.trim())
+  const commitDataArray = commitString.split(commitInnerSeparator).map((s) => s.trim())
 
   for (const [key] of commitDataMap) {
     commitDataObj[key] = commitDataArray.shift()
@@ -116,13 +112,10 @@ function parseCommit(commitString) {
  */
 function getCommits() {
   const format =
-    Array.from(commitDataMap.values()).join(commitInnerSeparator) +
-    commitOuterSeparator
+    Array.from(commitDataMap.values()).join(commitInnerSeparator) + commitOuterSeparator
 
   const logs = String(
-    execSync(
-      `git --no-pager log ${START_FROM}..${END_TO} --pretty=format:"${format}" --reverse`,
-    ),
+    execSync(`git --no-pager log ${START_FROM}..${END_TO} --pretty=format:"${format}" --reverse`),
   )
 
   return logs
@@ -138,10 +131,7 @@ function getCommits() {
  * @return {ICommitExtended}
  */
 function setCommitTypeAndScope(commit) {
-  const matchRE = new RegExp(
-    `^(?:(${supportedTypes.join('|')})(?:\\((\\S+)\\))?:)?(.*)`,
-    'i',
-  )
+  const matchRE = new RegExp(`^(?:(${supportedTypes.join('|')})(?:\\((\\S+)\\))?:)?(.*)`, 'i')
 
   let [, type, scope, clearSubject] = commit.subject.match(matchRE)
 
@@ -321,19 +311,14 @@ function getChangeLog(groups) {
 }
 
 function escapeData(s) {
-  return String(s)
-    .replace(/%/g, '%25')
-    .replace(/\r/g, '%0D')
-    .replace(/\n/g, '%0A')
+  return String(s).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')
 }
 
 try {
   const commits = getCommits()
   const grouped = getGroupedCommits(commits)
   const changelog = getChangeLog(grouped)
-  process.stdout.write(
-    '::set-output name=release-note::' + escapeData(changelog) + '\r\n',
-  )
+  process.stdout.write('::set-output name=release-note::' + escapeData(changelog) + '\r\n')
   // require('fs').writeFileSync('../CHANGELOG.md', changelog, {encoding: 'utf-8'})
 } catch (e) {
   console.error(e)

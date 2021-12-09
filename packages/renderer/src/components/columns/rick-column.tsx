@@ -1,17 +1,14 @@
 import { FC, useEffect, useState } from 'react'
-import {
-  UsersUserFull,
-  WallWallpostFull,
-} from '@vkontakte/api-schema-typescript'
+import { UsersUserFull, WallWallpostFull } from '@vkontakte/api-schema-typescript'
 import { PanelSpinner } from '@vkontakte/vkui'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import { ColumnProps } from '@/components/column-container'
-import { ColumnSettings } from '@/components/columns/column-settings'
+import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { ColumnType } from '@/store/settings-store'
-import { ColumnHeader } from './column-header'
+import { ColumnHeader } from './common/column-header'
 
 const Icon = columnIcons[ColumnType.rick]
 
@@ -41,12 +38,10 @@ export const RickColumn: FC<ColumnProps> = ({ data: { id } }) => {
   }
 
   useEffect(() => {
-    axios
-      .get<RickData>('https://files.vitalya.me/rickroll.json')
-      .then(({ data }) => {
-        setProfile(data.profile)
-        addLine(data.lyrics.split('\n'))
-      })
+    axios.get<RickData>('https://files.vitalya.me/rickroll.json').then(({ data }) => {
+      setProfile(data.profile)
+      addLine(data.lyrics.split('\n'))
+    })
   }, [])
 
   return (
