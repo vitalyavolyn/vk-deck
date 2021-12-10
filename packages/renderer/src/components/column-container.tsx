@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { LikedPostsColumn } from '@/components/columns/liked-posts-column'
 import { useStore } from '@/hooks/use-store'
 import { BaseColumn, ColumnType } from '@/store/settings-store'
 import { NewsfeedColumn } from './columns/newsfeed-column'
@@ -11,6 +12,7 @@ const columnComponents = {
   [ColumnType.rick]: RickColumn,
   [ColumnType.newsfeed]: NewsfeedColumn,
   [ColumnType.wall]: WallColumn,
+  [ColumnType.likedPosts]: LikedPostsColumn,
 }
 
 interface ColumnContainerProps {

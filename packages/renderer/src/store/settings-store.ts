@@ -10,6 +10,7 @@ export enum ColumnType {
   newsfeed = 'newsfeed',
   rick = 'rick',
   wall = 'wall',
+  likedPosts = 'likedPosts',
 }
 
 export interface Settings {
@@ -49,7 +50,12 @@ export interface IRickColumn extends BaseColumn {
   type: ColumnType.rick
 }
 
-export type Column = INewsfeedColumn | IRickColumn | IWallColumn
+export interface ILikedPostsColumn extends BaseColumn {
+  type: ColumnType.likedPosts
+  settings: ColumnImageGridSettings
+}
+
+export type Column = INewsfeedColumn | IRickColumn | IWallColumn | ILikedPostsColumn
 
 export enum ColumnSize {
   narrow,

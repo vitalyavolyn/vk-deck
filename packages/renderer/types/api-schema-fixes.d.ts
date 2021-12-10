@@ -1,4 +1,4 @@
-import '@vkontakte/api-schema-typescript'
+import { GroupsGroup, UsersUserFull, WallWallpostFull } from '@vkontakte/api-schema-typescript'
 
 declare module '@vkontakte/api-schema-typescript' {
   interface NewsfeedItemWallpost {
@@ -9,5 +9,19 @@ declare module '@vkontakte/api-schema-typescript' {
   interface UsersUserMin {
     photo_50: string
     screen_name: string
+  }
+
+  // метод считается deprecated, типов нет
+  interface FaveGetPostsExtendedResponse {
+    count: number
+    items: WallWallpostFull[]
+    profiles: UsersUserFull[]
+    groups: GroupsGroup[]
+  }
+
+  interface FaveGetPostsParams {
+    offset?: number
+    count?: number
+    extended?: 1 | 0
   }
 }

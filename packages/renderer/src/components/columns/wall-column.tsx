@@ -23,6 +23,7 @@ export interface WallColumnSettings extends ColumnImageGridSettings {
   ownerId: number
   hidePinnedPost: boolean
   // TODO: filter: suggests,postponed,owner,others
+  //  donut???
   //  возможно, сделать для suggests/postponed отдельный вид колонок???
   //  который использует этот компонент внутри
 }

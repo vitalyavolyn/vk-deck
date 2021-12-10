@@ -21,6 +21,7 @@ import './add-column-modal.css'
 const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.newsfeed, false, 'addColumn.caption.newsfeed'],
   [ColumnType.wall, true],
+  [ColumnType.likedPosts, false],
 
   // оставлять в конце
   [ColumnType.rick, false],
@@ -31,6 +32,7 @@ export type WithoutImageGridSettings<T extends ColumnImageGridSettings> = Omit<T
 export interface AddColumn {
   (type: ColumnType.newsfeed): void
   (type: ColumnType.wall, settings: WithoutImageGridSettings<WallColumnSettings>): void
+  (type: ColumnType.likedPosts): void
   (type: ColumnType): void
 }
 
@@ -82,6 +84,13 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
             ...defaultImageGridSettings,
             ...settings,
           },
+        })
+
+      case ColumnType.likedPosts:
+        return settingsStore.columns.push({
+          id: uuidv4(),
+          type,
+          settings: defaultImageGridSettings,
         })
     }
   }
