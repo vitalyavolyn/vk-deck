@@ -5,10 +5,10 @@ import { Checkbox, PanelSpinner } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
-import { ColumnProps } from '@/components/column-container'
 import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, IWallColumn } from '@/store/settings-store'
 import { getOwner } from '@/utils/get-owner'
@@ -25,8 +25,8 @@ export interface WallColumnSettings extends ColumnImageGridSettings {
 
 const Icon = columnIcons[ColumnType.wall]
 
-export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
-  const { settings, id } = data
+export const WallColumn: FC = observer(() => {
+  const { settings, id } = useColumn<IWallColumn>()
   const { ownerId, hidePinnedPost, imageGridSize } = settings
 
   const { apiStore, snackbarStore, settingsStore } = useStore()

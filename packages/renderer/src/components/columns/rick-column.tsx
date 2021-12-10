@@ -3,12 +3,12 @@ import { UsersUserFull, WallWallpostFull } from '@vkontakte/api-schema-typescrip
 import { PanelSpinner } from '@vkontakte/vkui'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
-import { ColumnProps } from '@/components/column-container'
 import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
-import { ColumnType } from '@/store/settings-store'
+import { ColumnType, IRickColumn } from '@/store/settings-store'
 import { ColumnHeader } from './common/column-header'
 
 const Icon = columnIcons[ColumnType.rick]
@@ -18,7 +18,8 @@ interface RickData {
   profile: UsersUserFull
 }
 
-export const RickColumn: FC<ColumnProps> = ({ data: { id } }) => {
+export const RickColumn: FC = () => {
+  const { id } = useColumn<IRickColumn>()
   const { t } = useTranslation()
   const { apiStore } = useStore()
   const [isReady, setIsReady] = useState(false)

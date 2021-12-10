@@ -6,9 +6,9 @@ import {
 } from '@vkontakte/api-schema-typescript'
 import { PanelSpinner } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
-import { ColumnProps } from '@/components/column-container'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ILikedPostsColumn } from '@/store/settings-store'
 import { ColumnHeader } from './common/column-header'
@@ -16,9 +16,8 @@ import { ColumnSettings } from './common/column-settings'
 
 const Icon = columnIcons[ColumnType.likedPosts]
 
-export const LikedPostsColumn: FC<ColumnProps<ILikedPostsColumn>> = ({ data }) => {
-  const { id, settings } = data
-
+export const LikedPostsColumn: FC = () => {
+  const { id, settings } = useColumn<ILikedPostsColumn>()
   const { t } = useTranslation()
   const { apiStore, snackbarStore, settingsStore } = useStore()
 

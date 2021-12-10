@@ -9,9 +9,9 @@ import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
-import { ColumnProps } from '@/components/column-container'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, INewsfeedColumn } from '@/store/settings-store'
 import { ColumnHeader } from './common/column-header'
@@ -36,9 +36,8 @@ const newsfeedPostToWallPost = (item: NewsfeedItemWallpost): WallWallpostFull =>
   }
 }
 
-export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data }) => {
-  const { settings, id } = data
-
+export const NewsfeedColumn: FC = observer(() => {
+  const { settings, id } = useColumn<INewsfeedColumn>()
   const { apiStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
 
