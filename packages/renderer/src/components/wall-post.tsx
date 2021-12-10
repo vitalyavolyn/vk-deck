@@ -35,6 +35,8 @@ import { classNames } from '@vkontakte/vkjs'
 import { Avatar } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
+import { HasImageGridSettings } from '@/components/columns/common/column-image-grid-settings-form'
+import { useColumn } from '@/hooks/use-column'
 import { useElectron } from '@/hooks/use-electron'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ImageGridSize } from '@/store/settings-store'
@@ -52,7 +54,6 @@ import './wall-post.css'
 
 export interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
   data: WallWallpostFull
-  mediaSize?: ImageGridSize
 }
 
 const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
@@ -61,7 +62,9 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
  * Показывает запись по объекту записи на стене
  */
 export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> = observer(
-  ({ data, measureRef, mediaSize = ImageGridSize.medium, ...rest }) => {
+  ({ data, measureRef, ...rest }) => {
+    const { settings } = useColumn<Partial<HasImageGridSettings>>()
+    const mediaSize = settings?.imageGridSize || ImageGridSize.medium
     const { apiStore, snackbarStore, settingsStore } = useStore()
     const { getOwner } = apiStore
 

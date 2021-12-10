@@ -172,7 +172,7 @@ export const NewsfeedColumn: FC = observer(() => {
       >
         {possibleSources.find((e) => e.value === settings.source)!.label}
       </ColumnHeader>
-      <ColumnSettings columnId={id} show={showSettings} imageGridSettings>
+      <ColumnSettings show={showSettings} imageGridSettings>
         <FormLayout>
           <FormItem top={t`newsfeed.settings.source`}>
             <Select
@@ -189,9 +189,6 @@ export const NewsfeedColumn: FC = observer(() => {
       {feedItems ? (
         // TODO: infinite scroll
         <VirtualScrollWall
-          wallPostProps={{
-            mediaSize: settings.imageGridSize,
-          }}
           items={feedItems.map((post) => newsfeedPostToWallPost(post))}
           className="column-list-content"
           scrollToRef={scrollToRef}

@@ -17,7 +17,7 @@ import { ColumnSettings } from './common/column-settings'
 const Icon = columnIcons[ColumnType.likedPosts]
 
 export const LikedPostsColumn: FC = () => {
-  const { id, settings } = useColumn<ILikedPostsColumn>()
+  const { id } = useColumn<ILikedPostsColumn>()
   const { t } = useTranslation()
   const { apiStore, snackbarStore, settingsStore } = useStore()
 
@@ -73,13 +73,9 @@ export const LikedPostsColumn: FC = () => {
       >
         {t`columns.likedPosts`}
       </ColumnHeader>
-      <ColumnSettings columnId={id} show={showSettings} imageGridSettings />
+      <ColumnSettings show={showSettings} imageGridSettings />
       {posts ? (
-        <VirtualScrollWall
-          items={posts}
-          wallPostProps={{ mediaSize: settings.imageGridSize }}
-          className="column-list-content"
-        />
+        <VirtualScrollWall items={posts} className="column-list-content" />
       ) : (
         <PanelSpinner />
       )}

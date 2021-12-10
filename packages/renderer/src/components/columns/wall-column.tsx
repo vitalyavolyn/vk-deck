@@ -27,7 +27,7 @@ const Icon = columnIcons[ColumnType.wall]
 
 export const WallColumn: FC = observer(() => {
   const { settings, id } = useColumn<IWallColumn>()
-  const { ownerId, hidePinnedPost, imageGridSize } = settings
+  const { ownerId, hidePinnedPost } = settings
 
   const { apiStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
@@ -107,7 +107,7 @@ export const WallColumn: FC = observer(() => {
       >
         {t`columns.wall`}
       </ColumnHeader>
-      <ColumnSettings columnId={id} show={showSettings} imageGridSettings>
+      <ColumnSettings show={showSettings} imageGridSettings>
         <div style={{ padding: '8px 8px 0' }}>
           <Checkbox
             checked={hidePinnedPost}
@@ -118,9 +118,6 @@ export const WallColumn: FC = observer(() => {
       {posts ? (
         // TODO: infinite scroll
         <VirtualScrollWall
-          wallPostProps={{
-            mediaSize: imageGridSize,
-          }}
           items={hidePinnedPost && posts[0]?.is_pinned ? posts.slice(1) : posts}
           className="column-list-content"
           scrollToRef={scrollToRef}
