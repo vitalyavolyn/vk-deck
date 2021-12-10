@@ -9,6 +9,7 @@ if (!process.env.VITE_APP_VERSION) {
  * @see https://www.electron.build/configuration/configuration
  */
 const config = {
+  productName: 'VK Deck',
   appId: 'me.vitalya.vk-deck',
   directories: {
     output: 'dist',
