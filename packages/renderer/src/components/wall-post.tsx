@@ -37,7 +37,7 @@ import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { useElectron } from '@/hooks/use-electron'
 import { useStore } from '@/hooks/use-store'
-import { ImageGridSize } from '@/store/settings-store'
+import { ColumnType, ImageGridSize } from '@/store/settings-store'
 import { getInitials } from '@/utils/get-initials'
 import { getName } from '@/utils/get-name'
 import { numberFormatter } from '@/utils/number-formatter'
@@ -151,6 +151,13 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
           console.error(error)
           if (error instanceof Error) snackbarStore.showError(error.toString())
           setLikeState(true)
+        }
+      }
+
+      // обновляем колонки с лайкнутыми постами
+      for (const column of settingsStore.columns) {
+        if (column.type === ColumnType.likedPosts) {
+          settingsStore.refreshColumn(column.id)
         }
       }
     }
