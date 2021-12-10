@@ -6,4 +6,9 @@ export class RootStore {
   public userStore: UserStore = new UserStore(this)
   public snackbarStore: SnackbarStore = new SnackbarStore(this)
   public settingsStore: SettingsStore = new SettingsStore(this)
+
+  constructor() {
+    // @ts-ignore: для дебага
+    window.rootStore = this
+  }
 }

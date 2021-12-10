@@ -57,6 +57,8 @@ export enum ColumnSize {
   wide,
 }
 
+type ColumnRefreshFn = () => void
+
 // пропускаем первый запуск autorun, чтобы случайно не переписать
 // данные в API старыми
 let columnSaveSkip = true
@@ -66,6 +68,20 @@ export class SettingsStore implements Settings {
   columns: Column[] = []
   columnSize: ColumnSize = ColumnSize.medium
   blurAds = false
+
+  // функции для обновления колонок, ключ - id колонки
+  columnRefreshFns: Record<string, ColumnRefreshFn> = {}
+
+  // информация о колонках-стенах
+  // ownerId: id колонки
+  // нужно для того, чтобы можно было быстро проверить,
+  // есть ли колонка определенной страницы
+  //
+  // например, чтобы форсить обновление колонки после
+  // появления поста в ленте
+  //
+  // очень специфично, конечно, но я хотел это сделать
+  wallColumns: Record<number, string> = {}
 
   constructor(public root: RootStore) {
     const json = localStorage.getItem('settings') || '{}'
@@ -95,6 +111,11 @@ export class SettingsStore implements Settings {
 
       columnSaveSkip = false
     })
+
+    autorun(() => {
+      const cols = this.columns.filter((col) => col.type === 'wall') as IWallColumn[]
+      this.wallColumns = Object.fromEntries(cols.map((val) => [val.settings.ownerId, val.id]))
+    })
   }
 
   get asObject(): Settings {
@@ -123,5 +144,9 @@ export class SettingsStore implements Settings {
     const tmp = this.columns[from]
     this.columns[from] = this.columns[to]
     this.columns[to] = tmp
+  }
+
+  refreshColumn(id: string) {
+    this.columnRefreshFns[id]?.()
   }
 }

@@ -82,6 +82,7 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
 
   useEffect(() => {
     getPosts()
+    settingsStore.columnRefreshFns[id] = getPosts
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)

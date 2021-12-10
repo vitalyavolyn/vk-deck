@@ -51,8 +51,22 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data
   const [canScrollToTop, setCanScrollToTop] = useState(false)
 
   const scrollToRef = useRef<ScrollTo | null>(null)
+  // TODO: setTimeout здесь якобы возвращает этот тип, а не число. неприятно.
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
+
+  /**
+   * @see SettingsStore.wallColumns
+   */
+  const triggerWallColumns = (newItems: NewsfeedItemWallpost[]) => {
+    for (const item of newItems) {
+      const columnId = settingsStore.wallColumns[item.source_id]
+
+      if (columnId) {
+        settingsStore.refreshColumn(columnId)
+      }
+    }
+  }
 
   const getPosts = async () => {
     if (timerRef.current) {
@@ -74,15 +88,16 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data
 
       const { items, groups, profiles } = response
 
+      const newItems = items?.filter((e) => e.date !== startTimeRef.current) || []
+      // пропускаем при первом обновлении
+      if (startTimeRef.current) triggerWallColumns(newItems)
+
       // TODO: will have duplicates EVERY UPDATE
       //  also this is ugly
       setGroups((oldGroups) => [...(oldGroups || []), ...(groups || [])])
       setProfiles((oldProfiles) => [...(oldProfiles || []), ...(profiles || [])])
       setFeedItems((oldItems) => {
-        return [
-          ...(items?.filter((e) => e.date !== startTimeRef.current) || []),
-          ...(oldItems || []),
-        ]
+        return [...newItems, ...(oldItems || [])]
       })
 
       startTimeRef.current = items?.[0]?.date || 0
@@ -97,6 +112,8 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data
 
   useEffect(() => {
     getPosts()
+    settingsStore.columnRefreshFns[id] = getPosts
+
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
     }
