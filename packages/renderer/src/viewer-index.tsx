@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, StrictMode, useEffect, useState } from 'react'
+import { FC, MouseEvent, StrictMode, useEffect, useState } from 'react'
 import { Icon36CancelOutline } from '@vkontakte/icons'
 import { AdaptivityProvider, AppRoot, ConfigProvider, Platform, Scheme } from '@vkontakte/vkui'
 import { format } from 'date-fns'
@@ -24,17 +24,52 @@ const Viewer: FC = () => {
   const { t } = useTranslation()
   const [photos, setPhotos] = useState<ViewerPhoto[] | null>(null)
   const [index, setIndex] = useState(0)
+  const [nextIndexDiff, setNextIndexDiff] = useState(0)
 
-  const next: MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation()
-    setIndex((index + 1) % photos!.length)
+  type Direction = -1 | 1
+
+  // TODO: refactor this
+  // wtf
+  const moveIndex = (direction: Direction, e?: MouseEvent<HTMLElement>) => {
+    e?.stopPropagation()
+    setNextIndexDiff(direction)
   }
+
+  useEffect(() => {
+    if (nextIndexDiff) {
+      const newIndex = (index + nextIndexDiff) % photos!.length
+      setIndex(newIndex < 0 ? photos!.length - 1 : newIndex)
+      setNextIndexDiff(0)
+    }
+  }, [nextIndexDiff])
+  // end wtf
 
   useEffect(() => {
     getViewerParams().then(({ photos, index }) => {
       setIndex(index)
       setPhotos(photos)
     })
+  }, [])
+
+  useEffect(() => {
+    // если будут инпуты, то это все испортит
+    window.addEventListener(
+      'keydown',
+      (e) => {
+        let direction: Direction | undefined
+
+        if (e.code === 'ArrowLeft' || e.code === 'KeyH') {
+          direction = -1
+        } else if (e.code === 'ArrowRight' || e.code === 'KeyL') {
+          direction = 1
+        }
+
+        if (direction) {
+          moveIndex(direction)
+        }
+      },
+      true,
+    )
   }, [])
 
   if (!photos) return null
@@ -50,7 +85,7 @@ const Viewer: FC = () => {
       </div>
       <div className="canvas" onClick={closeViewer}>
         <div className="content">
-          <img src={url} onClick={next} />
+          <img src={url} onClick={(e) => moveIndex(1, e)} />
         </div>
       </div>
       <div className="toolbar">
