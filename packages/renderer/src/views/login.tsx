@@ -5,19 +5,19 @@ import { useElectron } from '@/hooks/use-electron'
 import { useStore } from '@/hooks/use-store'
 
 export const Login: FC = observer(() => {
-  const { userStore } = useStore()
+  const { apiStore } = useStore()
   const { getTokenFromBrowserView } = useElectron()
 
   useEffect(() => {
-    if (!userStore.token) {
+    if (!apiStore.token) {
       getTokenFromBrowserView().then(async (token) => {
         // TODO: отлавливание ошибок здесь
         // может быть при ошибке соединения или
         // отзыве ключа доступа
-        await userStore.setToken(token)
+        await apiStore.setToken(token)
       })
     }
-  }, [userStore, getTokenFromBrowserView])
+  }, [apiStore, getTokenFromBrowserView])
 
   return <ScreenSpinner />
 })

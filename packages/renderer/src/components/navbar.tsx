@@ -48,8 +48,8 @@ export const Navbar: FC<NavbarProps> = observer(
     onSettingsClick,
     onAddColumnClick,
   }) => {
-    const { userStore, settingsStore } = useStore()
-    const { user } = userStore.data
+    const { apiStore, settingsStore } = useStore()
+    const { user } = apiStore.initData
 
     return (
       <Panel id="nav">

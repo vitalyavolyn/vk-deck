@@ -11,8 +11,8 @@ import { ModalHeader } from './modal-header'
 import './compose-modal.css'
 
 export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
-  const { userStore } = useStore()
-  const { id } = userStore.data.user
+  const { apiStore } = useStore()
+  const { id } = apiStore.initData.user
 
   const { t } = useTranslation()
 
@@ -29,7 +29,7 @@ export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
     setErrorText('')
     setIsLoading(true)
     try {
-      await userStore.api.call<WallPostResponse, WallPostParams>('wall.post', {
+      await apiStore.api.call<WallPostResponse, WallPostParams>('wall.post', {
         owner_id: selectedAccount,
         message: text,
       })

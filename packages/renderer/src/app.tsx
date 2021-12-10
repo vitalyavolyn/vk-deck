@@ -17,8 +17,8 @@ import { Dashboard } from '@/views/dashboard'
 import { Login } from '@/views/login'
 
 export const App: FC = observer(() => {
-  const { userStore, snackbarStore } = useStore()
-  const { isAuthorized } = userStore
+  const { apiStore, snackbarStore } = useStore()
+  const { isAuthorized } = apiStore
   const { t } = useTranslation()
 
   const scheme = useAppScheme()

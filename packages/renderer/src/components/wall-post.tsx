@@ -1,11 +1,9 @@
 import { FC, HTMLAttributes, Ref, useEffect, useRef, useState } from 'react'
 import {
-  GroupsGroupFull,
   LikesAddParams,
   LikesAddResponse,
   LikesDeleteParams,
   LikesDeleteResponse,
-  UsersUserFull,
   WallWallpostAttachment,
   WallWallpostAttachmentType,
   WallWallpostFull,
@@ -42,7 +40,6 @@ import { useStore } from '@/hooks/use-store'
 import { ImageGridSize } from '@/store/settings-store'
 import { getInitials } from '@/utils/get-initials'
 import { getName } from '@/utils/get-name'
-import { getOwner } from '@/utils/get-owner'
 import { numberFormatter } from '@/utils/number-formatter'
 import { photoToViewerPhoto } from '@/utils/photo-to-viewer-photo'
 import { shortRelativeTime } from '@/utils/short-relative-time'
@@ -55,8 +52,6 @@ import './wall-post.css'
 
 export interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
   data: WallWallpostFull
-  groups: GroupsGroupFull[]
-  profiles: UsersUserFull[]
   mediaSize?: ImageGridSize
 }
 
@@ -66,8 +61,9 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
  * Показывает запись по объекту записи на стене
  */
 export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> = observer(
-  ({ data, groups, profiles, measureRef, mediaSize = ImageGridSize.medium, ...rest }) => {
-    const { userStore, snackbarStore, settingsStore } = useStore()
+  ({ data, measureRef, mediaSize = ImageGridSize.medium, ...rest }) => {
+    const { apiStore, snackbarStore, settingsStore } = useStore()
+    const { getOwner } = apiStore
 
     const contentRef = useRef<HTMLDivElement>(null)
     const { t } = useTranslation()
@@ -85,7 +81,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
       }
     }, [contentRef])
 
-    const owner = getOwner(data.from_id!, profiles, groups)
+    const owner = getOwner(data.from_id!)
 
     if (!owner) {
       console.log('no owner', data)
@@ -124,7 +120,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
     const date = new Date(data.date! * 1000)
 
     const onLikeClick = async () => {
-      const { api } = userStore
+      const { api } = apiStore
 
       const params = {
         type: 'post',
@@ -168,12 +164,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
         photos: photos.map(({ photo }) =>
           photoToViewerPhoto(
             photo!,
-            getOwner(
-              // аааааааа миллион !
-              photo?.user_id === 100 ? photo!.owner_id : photo!.user_id!,
-              profiles,
-              groups,
-            ),
+            getOwner(photo?.user_id === 100 ? photo!.owner_id : photo!.user_id!),
           ),
         ),
         index,
@@ -347,7 +338,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                 <MediaBadge
                   icon={<Icon16RepostOutline />}
                   type={t`wallPost.mediaBadge.repost`}
-                  subject={getName(getOwner(data.copy_history![0]!.owner_id!, profiles, groups)!)}
+                  subject={getName(getOwner(data.copy_history![0]!.owner_id!)!)}
                 />
               )}
             </div>
@@ -355,7 +346,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
               // TODO: ссылка?
               <div className="wall-post-signer">
                 <Icon12User />
-                {getName(getOwner(data.signer_id, profiles, groups))}
+                {getName(getOwner(data.signer_id))}
               </div>
             )}
             {/* TODO: источник? */}

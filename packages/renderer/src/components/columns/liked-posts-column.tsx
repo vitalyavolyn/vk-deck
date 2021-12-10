@@ -2,8 +2,6 @@ import { FC, useEffect, useRef, useState } from 'react'
 import {
   FaveGetPostsExtendedResponse,
   FaveGetPostsParams,
-  GroupsGroupFull,
-  UsersUserFull,
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { PanelSpinner } from '@vkontakte/vkui'
@@ -22,12 +20,10 @@ export const LikedPostsColumn: FC<ColumnProps<ILikedPostsColumn>> = ({ data }) =
   const { id, settings } = data
 
   const { t } = useTranslation()
-  const { userStore, snackbarStore, settingsStore } = useStore()
+  const { apiStore, snackbarStore, settingsStore } = useStore()
 
   const [showSettings, setShowSettings] = useState(false)
   const [posts, setPosts] = useState<WallWallpostFull[]>([])
-  const [groups, setGroups] = useState<GroupsGroupFull[]>([])
-  const [profiles, setProfiles] = useState<UsersUserFull[]>([])
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const offsetRef = useRef(0)
@@ -39,14 +35,14 @@ export const LikedPostsColumn: FC<ColumnProps<ILikedPostsColumn>> = ({ data }) =
     }
 
     try {
-      const { items, groups, profiles } = await userStore.api.call<
+      const { items, groups, profiles } = await apiStore.api.call<
         FaveGetPostsExtendedResponse,
         FaveGetPostsParams
       >('fave.getPosts', { extended: 1, count: 100, offset: withOffset ? offsetRef.current : 0 })
 
+      apiStore.add('profiles', profiles)
+      apiStore.add('groups', groups)
       setPosts(items)
-      setGroups(groups)
-      setProfiles(profiles)
     } catch (error) {
       if (error instanceof Error) {
         snackbarStore.showError(error.toString())
@@ -69,7 +65,7 @@ export const LikedPostsColumn: FC<ColumnProps<ILikedPostsColumn>> = ({ data }) =
     <>
       <ColumnHeader
         icon={Icon}
-        subtitle={`@${userStore.data.user.screen_name}`}
+        subtitle={`@${apiStore.initData.user.screen_name}`}
         onSettingsClick={() => {
           setShowSettings(!showSettings)
         }}
@@ -82,7 +78,7 @@ export const LikedPostsColumn: FC<ColumnProps<ILikedPostsColumn>> = ({ data }) =
       {posts ? (
         <VirtualScrollWall
           items={posts}
-          wallPostProps={{ profiles, groups, mediaSize: settings.imageGridSize }}
+          wallPostProps={{ mediaSize: settings.imageGridSize }}
           className="column-list-content"
         />
       ) : (

@@ -1,10 +1,8 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import {
-  GroupsGroupFull,
   NewsfeedGetParams,
   NewsfeedGetResponse,
   NewsfeedItemWallpost,
-  UsersUserFull,
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
@@ -41,12 +39,10 @@ const newsfeedPostToWallPost = (item: NewsfeedItemWallpost): WallWallpostFull =>
 export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data }) => {
   const { settings, id } = data
 
-  const { userStore, snackbarStore, settingsStore } = useStore()
+  const { apiStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
 
   const [feedItems, setFeedItems] = useState<NewsfeedItemWallpost[]>()
-  const [groups, setGroups] = useState<GroupsGroupFull[]>()
-  const [profiles, setProfiles] = useState<UsersUserFull[]>()
   const [showSettings, setShowSettings] = useState(false)
   const [canScrollToTop, setCanScrollToTop] = useState(false)
 
@@ -75,7 +71,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data
     }
 
     try {
-      const response = await userStore.api.call<NewsfeedGetResponse, NewsfeedGetParams>(
+      const response = await apiStore.api.call<NewsfeedGetResponse, NewsfeedGetParams>(
         'newsfeed.get',
         {
           count: 100,
@@ -92,10 +88,8 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data
       // пропускаем при первом обновлении
       if (startTimeRef.current) triggerWallColumns(newItems)
 
-      // TODO: will have duplicates EVERY UPDATE
-      //  also this is ugly
-      setGroups((oldGroups) => [...(oldGroups || []), ...(groups || [])])
-      setProfiles((oldProfiles) => [...(oldProfiles || []), ...(profiles || [])])
+      apiStore.add('profiles', profiles)
+      apiStore.add('groups', groups)
       setFeedItems((oldItems) => {
         return [...newItems, ...(oldItems || [])]
       })
@@ -149,7 +143,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data
     { label: t`newsfeed.sources.feed`, value: '' },
     { label: t`newsfeed.sources.friends`, value: 'friends' },
     { label: t`newsfeed.sources.groups`, value: 'groups' },
-    ...userStore.data.newsfeedLists.map(({ title, id }) => ({
+    ...apiStore.initData.newsfeedLists.map(({ title, id }) => ({
       label: title,
       value: `list${id}`,
     })),
@@ -171,7 +165,7 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data
     <>
       <ColumnHeader
         icon={Icon}
-        subtitle={`@${userStore.data.user.screen_name}`}
+        subtitle={`@${apiStore.initData.user.screen_name}`}
         onSettingsClick={() => {
           setShowSettings(!showSettings)
         }}
@@ -193,12 +187,10 @@ export const NewsfeedColumn: FC<ColumnProps<INewsfeedColumn>> = observer(({ data
           </FormItem>
         </FormLayout>
       </ColumnSettings>
-      {feedItems && groups && profiles ? (
+      {feedItems ? (
         // TODO: infinite scroll
         <VirtualScrollWall
           wallPostProps={{
-            profiles,
-            groups,
             mediaSize: settings.imageGridSize,
           }}
           items={feedItems.map((post) => newsfeedPostToWallPost(post))}

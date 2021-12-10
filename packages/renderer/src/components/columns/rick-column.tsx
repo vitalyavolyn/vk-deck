@@ -7,6 +7,7 @@ import { ColumnProps } from '@/components/column-container'
 import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useStore } from '@/hooks/use-store'
 import { ColumnType } from '@/store/settings-store'
 import { ColumnHeader } from './common/column-header'
 
@@ -19,28 +20,30 @@ interface RickData {
 
 export const RickColumn: FC<ColumnProps> = ({ data: { id } }) => {
   const { t } = useTranslation()
-  const [profile, setProfile] = useState<UsersUserFull | null>(null)
+  const { apiStore } = useStore()
+  const [isReady, setIsReady] = useState(false)
   const [items, setItems] = useState<WallWallpostFull[]>([])
   const [showSettings, setShowSettings] = useState(false)
 
-  const addLine = (lines: string[]) => {
+  const addLine = (lines: string[], ownerId: number) => {
     const [line, ...rest] = lines
 
     const post: WallWallpostFull = {
-      owner_id: 100,
-      from_id: 100,
+      owner_id: ownerId,
+      from_id: ownerId,
       text: line,
       id: lines.length,
     }
 
     setItems((items) => [post, ...items])
-    if (rest.length) setTimeout(() => addLine(rest), 3000)
+    if (rest.length) setTimeout(() => addLine(rest, ownerId), 3000)
   }
 
   useEffect(() => {
     axios.get<RickData>('https://files.vitalya.me/rickroll.json').then(({ data }) => {
-      setProfile(data.profile)
-      addLine(data.lyrics.split('\n'))
+      apiStore.add('profiles', [data.profile])
+      setIsReady(true)
+      addLine(data.lyrics.split('\n'), data.profile.id)
     })
   }, [])
 
@@ -56,12 +59,8 @@ export const RickColumn: FC<ColumnProps> = ({ data: { id } }) => {
         {t`columns.rick`}
       </ColumnHeader>
       <ColumnSettings columnId={id} show={showSettings} />
-      {profile ? (
-        <VirtualScrollWall
-          className="column-list-content"
-          wallPostProps={{ profiles: [profile], groups: [] }}
-          items={items}
-        />
+      {isReady ? (
+        <VirtualScrollWall className="column-list-content" wallPostProps={{}} items={items} />
       ) : (
         <PanelSpinner />
       )}

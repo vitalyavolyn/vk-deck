@@ -19,8 +19,8 @@ import { getName } from '@/utils/get-name'
 
 export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
   const { t } = useTranslation()
-  const { userStore } = useStore()
-  const { api } = userStore
+  const { apiStore } = useStore()
+  const { api } = apiStore
 
   const [query, setQuery] = useState('')
   const [isFetching, setIsFetching] = useState(false)

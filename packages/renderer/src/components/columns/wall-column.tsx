@@ -1,10 +1,5 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
-import {
-  GroupsGroupFull,
-  UsersUserFull,
-  WallGetParams,
-  WallWallpostFull,
-} from '@vkontakte/api-schema-typescript'
+import { WallGetParams, WallWallpostFull } from '@vkontakte/api-schema-typescript'
 import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/methods/wall'
 import { Checkbox, PanelSpinner } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
@@ -34,12 +29,10 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
   const { settings, id } = data
   const { ownerId, hidePinnedPost, imageGridSize } = settings
 
-  const { userStore, snackbarStore, settingsStore } = useStore()
+  const { apiStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
 
   const [posts, setPosts] = useState<WallWallpostFull[]>()
-  const [groups, setGroups] = useState<GroupsGroupFull[]>([])
-  const [profiles, setProfiles] = useState<UsersUserFull[]>([])
   const [showSettings, setShowSettings] = useState(false)
   const [canScrollToTop, setCanScrollToTop] = useState(false)
   const [subtitle, setSubtitle] = useState(ownerId.toString())
@@ -54,20 +47,17 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
     }
 
     try {
-      const response = await userStore.api.call<WallGetExtendedResponse, WallGetParams>(
-        'wall.get',
-        {
-          owner_id: ownerId,
-          count: 100,
-          extended: 1,
-          fields: 'verified,screen_name,photo_50',
-        },
-      )
+      const response = await apiStore.api.call<WallGetExtendedResponse, WallGetParams>('wall.get', {
+        owner_id: ownerId,
+        count: 100,
+        extended: 1,
+        fields: 'verified,screen_name,photo_50',
+      })
 
       const { items, groups, profiles } = response
 
-      setGroups(groups)
-      setProfiles(profiles)
+      apiStore.add('profiles', profiles)
+      apiStore.add('groups', groups)
       setPosts(items)
 
       // TODO: возможно, нет смысла устанавливать это каждый раз
@@ -125,12 +115,10 @@ export const WallColumn: FC<ColumnProps<IWallColumn>> = observer(({ data }) => {
           >{t`wall.settings.hidePinnedPost`}</Checkbox>
         </div>
       </ColumnSettings>
-      {posts && groups && profiles ? (
+      {posts ? (
         // TODO: infinite scroll
         <VirtualScrollWall
           wallPostProps={{
-            profiles,
-            groups,
             mediaSize: imageGridSize,
           }}
           items={hidePinnedPost && posts[0]?.is_pinned ? posts.slice(1) : posts}
