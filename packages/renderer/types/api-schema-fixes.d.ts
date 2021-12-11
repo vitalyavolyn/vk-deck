@@ -1,4 +1,4 @@
-import { GroupsGroup, UsersUserFull, WallWallpostFull } from '@vkontakte/api-schema-typescript'
+import { GroupsGroup, UsersUserFull } from '@vkontakte/api-schema-typescript'
 
 declare module '@vkontakte/api-schema-typescript' {
   interface NewsfeedItemWallpost {
@@ -23,5 +23,10 @@ declare module '@vkontakte/api-schema-typescript' {
     offset?: number
     count?: number
     extended?: 1 | 0
+  }
+
+  interface WallWallpostFull {
+    // есть, когда пост создан удалением страницы
+    final_post?: 0 | 1
   }
 }

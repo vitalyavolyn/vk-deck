@@ -76,7 +76,7 @@ export const NewsfeedColumn: FC = observer(() => {
         {
           count: 100,
           filters: 'post',
-          fields: 'verified,screen_name,photo_50',
+          fields: 'verified,screen_name,photo_50,sex',
           source_ids: settings.source,
           start_time: startTimeRef.current,
         },

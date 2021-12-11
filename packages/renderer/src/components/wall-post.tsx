@@ -243,6 +243,13 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
             {data.post_source?.data === 'profile_photo' && (
               <div className="wall-post-source">{t`wallPost.photoUpdated`}</div>
             )}
+            {data.final_post && (
+              <div className="wall-post-source">
+                {t('wallPost.deletedPage', {
+                  context: ('sex' in owner && owner.sex) === 1 ? 'female' : 'male',
+                })}
+              </div>
+            )}
             <div className="wall-post-content" ref={contentRef}>
               {data.text}
             </div>
@@ -368,6 +375,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                   className={classNames('wall-post-action-item', 'action-like', {
                     'user-likes': likeState,
                   })}
+                  // TODO: likes.can_like (0 при удалении страницы, например)
                   onClick={onLikeClick}
                 >
                   {likeState ? (
@@ -380,6 +388,8 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                 <div
                   className="wall-post-action-item action-comment"
                   title={t`wallPost.actions.comment`}
+                  // TODO: comments.can_post
+                  // TODO: открывать блок для быстрого комментария?
                 >
                   <Icon20CommentOutline width={18} height={18} />
                   {numberFormatter(data.comments?.count)}

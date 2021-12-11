@@ -56,6 +56,8 @@ translation:
   wallPost:
     pinned: Закрепленный пост
     photoUpdated: Фотография страницы обновлена
+    deletedPage_male: Удалил страницу
+    deletedPage_female: Удалила страницу
     actions:
       like: Нравится
       comment: Комментарии
