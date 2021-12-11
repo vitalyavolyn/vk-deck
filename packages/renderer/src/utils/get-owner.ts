@@ -1,4 +1,5 @@
 import { GroupsGroupFull, UsersUserFull } from '@vkontakte/api-schema-typescript'
+import _ from 'lodash'
 
 export const getOwner = (id: number, profiles: UsersUserFull[], groups: GroupsGroupFull[]) =>
-  id > 0 ? profiles.find((e) => e.id === id) : groups.find((value) => -value.id === id)
+  id > 0 ? _.find(profiles, { id }) : _.find(groups, { id: -id })

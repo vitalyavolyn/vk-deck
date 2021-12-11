@@ -2,6 +2,7 @@ import { FC, HTMLAttributes } from 'react'
 import { Icon16Chevron, Icon16ChevronLeft, Icon20DeleteOutline } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { IconButton, Link } from '@vkontakte/vkui'
+import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
@@ -25,7 +26,7 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
   const { t } = useTranslation()
   const { settingsStore } = useStore()
 
-  const getColumnIndex = () => settingsStore.columns.findIndex(({ id }) => id === columnId)
+  const getColumnIndex = () => _.findIndex(settingsStore.columns, { id: columnId })
 
   const moveColumn = (direction: -1 | 1) => {
     const from = getColumnIndex()

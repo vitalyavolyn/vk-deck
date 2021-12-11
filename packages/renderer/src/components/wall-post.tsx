@@ -33,6 +33,7 @@ import {
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { Avatar } from '@vkontakte/vkui'
+import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { HasImageGridSettings } from '@/components/columns/common/column-image-grid-settings-form'
@@ -95,10 +96,10 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
     const hasRepost = data.copy_history?.length
 
     const getAttachments = (type: WallWallpostAttachmentType): WallWallpostAttachment[] =>
-      data.attachments?.filter((e) => e.type === type) || []
+      _.filter(data.attachments, { type })
 
-    const link = getAttachments('link')?.[0]?.link
-    const poll = getAttachments('poll')?.[0]?.poll
+    const link = getAttachments('link')[0]?.link
+    const poll = getAttachments('poll')[0]?.poll
     const photos = getAttachments('photo')
     const albumsCount = getAttachments('album').length
     const videos = getAttachments('video')

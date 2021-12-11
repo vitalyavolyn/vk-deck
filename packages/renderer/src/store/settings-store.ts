@@ -1,4 +1,5 @@
 import { StorageSetParams, StorageSetResponse } from '@vkontakte/api-schema-typescript'
+import _ from 'lodash'
 import { autorun, makeAutoObservable } from 'mobx'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
@@ -119,7 +120,7 @@ export class SettingsStore implements Settings {
     })
 
     autorun(() => {
-      const cols = this.columns.filter((col) => col.type === 'wall') as IWallColumn[]
+      const cols = _.filter(this.columns, { type: 'wall' }) as IWallColumn[]
       this.wallColumns = Object.fromEntries(cols.map((val) => [val.settings.ownerId, val.id]))
     })
   }
@@ -138,7 +139,7 @@ export class SettingsStore implements Settings {
   }
 
   getColumn<C extends BaseColumn = BaseColumn>(columnId: string): C {
-    const col = this.columns.find((e) => e.id === columnId)
+    const col = _.find(this.columns, { id: columnId })
     if (!col) throw new Error('Unknown column id - ' + columnId)
     return col as C
   }

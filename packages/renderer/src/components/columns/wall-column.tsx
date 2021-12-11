@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import { WallGetParams, WallWallpostFull } from '@vkontakte/api-schema-typescript'
 import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/methods/wall'
 import { Checkbox, PanelSpinner } from '@vkontakte/vkui'
+import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
@@ -91,8 +92,8 @@ export const WallColumn: FC = observer(() => {
   }
 
   const onChangeHidePinnedPost = (e: ChangeEvent<HTMLInputElement>) => {
-    const index = settingsStore.columns.findIndex((e) => e.id === id)
-    ;(settingsStore.columns[index] as IWallColumn).settings.hidePinnedPost = e.target.checked
+    const column = _.find(settingsStore.columns, { id }) as IWallColumn
+    column.settings.hidePinnedPost = e.target.checked
   }
 
   return (

@@ -1,5 +1,6 @@
 import { ChangeEvent, FC } from 'react'
 import { FormItem, FormLayout, Select } from '@vkontakte/vkui'
+import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { useColumn } from '@/hooks/use-column'
@@ -13,7 +14,7 @@ export const ColumnImageGridSettingsForm: FC = observer(() => {
   const { t } = useTranslation()
   const { settingsStore } = useStore()
 
-  const col = settingsStore.columns.find((e) => e.id === columnId) as HasImageGridSettings
+  const col = _.find(settingsStore.columns, { id: columnId }) as HasImageGridSettings
 
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
     col.settings.imageGridSize = e.target.value as ImageGridSize

@@ -6,6 +6,7 @@ import {
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
+import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
@@ -150,8 +151,8 @@ export const NewsfeedColumn: FC = observer(() => {
 
   const changeSource = (source: string) => {
     /* этому место в сторе? */
-    const index = settingsStore.columns.findIndex((e) => e.id === id)
-    ;(settingsStore.columns[index] as INewsfeedColumn).settings.source = source
+    const column = _.find(settingsStore.columns, { id }) as INewsfeedColumn
+    column.settings.source = source
   }
 
   const scrollToTop = () => {
@@ -170,7 +171,7 @@ export const NewsfeedColumn: FC = observer(() => {
         }}
         onClick={canScrollToTop ? scrollToTop : undefined}
       >
-        {possibleSources.find((e) => e.value === settings.source)!.label}
+        {_.find(possibleSources, { value: settings.source })!.label}
       </ColumnHeader>
       <ColumnSettings show={showSettings} imageGridSettings>
         <FormLayout>
