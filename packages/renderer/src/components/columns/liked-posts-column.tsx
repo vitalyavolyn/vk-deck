@@ -5,6 +5,8 @@ import {
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { PanelSpinner } from '@vkontakte/vkui'
+import { differenceInSeconds } from 'date-fns'
+import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
@@ -16,6 +18,8 @@ import { ColumnSettings } from './common/column-settings'
 
 const Icon = columnIcons[ColumnType.likedPosts]
 
+const getPostKey = (item: WallWallpostFull) => `${item.owner_id}_${item.id}`
+
 export const LikedPostsColumn: FC = () => {
   const { id } = useColumn<ILikedPostsColumn>()
   const { t } = useTranslation()
@@ -26,12 +30,15 @@ export const LikedPostsColumn: FC = () => {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const offsetRef = useRef(0)
+  const lastUpdate = useRef<Date | false>(false)
 
   const getPosts = async (withOffset = false) => {
     if (timerRef.current) {
       clearTimeout(timerRef.current)
       timerRef.current = null
     }
+
+    lastUpdate.current = false
 
     try {
       const { items, groups, profiles } = await apiStore.api.call<
@@ -41,13 +48,16 @@ export const LikedPostsColumn: FC = () => {
 
       apiStore.add('profiles', profiles)
       apiStore.add('groups', groups)
-      setPosts(items)
+      setPosts((old) =>
+        withOffset ? _.unionBy(old, items, getPostKey) : _.unionBy(items, old, getPostKey),
+      )
     } catch (error) {
       if (error instanceof Error) {
         snackbarStore.showError(error.toString())
       }
     }
 
+    lastUpdate.current = new Date()
     timerRef.current = setTimeout(getPosts, 20000)
   }
 
@@ -59,6 +69,10 @@ export const LikedPostsColumn: FC = () => {
       if (timerRef.current) clearTimeout(timerRef.current)
     }
   }, [])
+
+  useEffect(() => {
+    offsetRef.current = posts.length
+  }, [posts])
 
   return (
     <>
@@ -75,7 +89,18 @@ export const LikedPostsColumn: FC = () => {
       </ColumnHeader>
       <ColumnSettings show={showSettings} imageGridSettings />
       {posts ? (
-        <VirtualScrollWall items={posts} className="column-list-content" />
+        <VirtualScrollWall
+          items={posts}
+          className="column-list-content"
+          loadMore={(e) => {
+            if (
+              lastUpdate.current &&
+              differenceInSeconds(lastUpdate.current, new Date()) <= -3 &&
+              offsetRef.current - e.startIndex < 20
+            )
+              getPosts(true)
+          }}
+        />
       ) : (
         <PanelSpinner />
       )}

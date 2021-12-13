@@ -59,9 +59,6 @@ export class ApiStore {
   }
 
   getOwner(id: number) {
-    if (id === -114503206) {
-      console.log(this.groups)
-    }
     return id > 0 ? this.profiles[id] : this.groups[-id]
   }
 }

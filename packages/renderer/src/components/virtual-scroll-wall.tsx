@@ -1,18 +1,20 @@
 import { FC, HTMLAttributes, MutableRefObject, useEffect } from 'react'
 import { WallWallpostFull } from '@vkontakte/api-schema-typescript'
-import useVirtual, { OnScroll, ScrollTo } from 'react-cool-virtual'
+import useVirtual, { LoadMore, OnScroll, ScrollTo } from 'react-cool-virtual'
 import { WallPost } from './wall-post'
 
 interface VirtualScrollWallProps extends Pick<HTMLAttributes<HTMLDivElement>, 'className'> {
   items: WallWallpostFull[]
   scrollToRef?: MutableRefObject<ScrollTo | null>
   onScroll?: OnScroll
+  loadMore?: LoadMore
 }
 
 export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   items,
   scrollToRef,
   onScroll,
+  loadMore,
   ...rest
 }) => {
   const {
@@ -23,7 +25,9 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   } = useVirtual<HTMLDivElement>({
     itemCount: items.length,
     itemSize: 80,
+    loadMoreCount: 20,
     onScroll,
+    loadMore,
   })
 
   useEffect(() => {
