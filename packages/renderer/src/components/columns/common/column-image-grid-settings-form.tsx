@@ -11,6 +11,7 @@ import { ReactComponent as Hidden } from '@assets/hidden.svg'
 import { ReactComponent as Medium } from '@assets/medium.svg'
 
 import './column-image-grid-settings-form.css'
+
 export type HasImageGridSettings = { settings: ColumnImageGridSettings }
 
 const images: [ImageGridSize, FC<SVGProps<SVGElement>>][] = [

@@ -7,12 +7,18 @@ body {
   --modal-width: 270px;
   --column-width: 310px;
   --dropdown-background: rgb(255 255 255 / 90%);
+  --link-background: hsl(0deg 0% 90% / 70%);
+  --link-hover-background: hsl(0deg 0% 0%);
+  --link-hover-color: white;
 
   background-color: var(--background_page);
 }
 
 body[scheme='vkcom_dark'] {
   --dropdown-background: rgb(51 51 51 / 90%);
+  --link-background: rgb(64 64 64 / 50%);
+  --link-hover-background: rgb(212 212 212);
+  --link-hover-color: black;
 }
 
 .narrow-columns {

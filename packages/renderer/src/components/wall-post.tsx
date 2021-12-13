@@ -40,6 +40,7 @@ import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { HasImageGridSettings } from '@/components/columns/common/column-image-grid-settings-form'
+import { TextProcessor } from '@/components/text-processor'
 import { useColumn } from '@/hooks/use-column'
 import { useElectron } from '@/hooks/use-electron'
 import { useStore } from '@/hooks/use-store'
@@ -254,7 +255,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
               </div>
             )}
             <div className="wall-post-content" ref={contentRef}>
-              {data.text}
+              <TextProcessor content={data.text || ''} />
             </div>
             {!!photos.length && mediaSize === ImageGridSize.medium && (
               <div className={`wall-post-media wall-post-media-${Math.min(photos.length, 6)}`}>

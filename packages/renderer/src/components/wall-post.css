@@ -108,6 +108,23 @@
         overflow-wrap: break-word;
         white-space: pre-wrap;
 
+        .link-highlight {
+          display: inline-block;
+
+          a {
+            padding: 0 4px;
+            background-color: var(--link-background);
+            border-radius: 0.375rem;
+            color: unset;
+            text-decoration: none;
+
+            &:hover {
+              background-color: var(--link-hover-background);
+              color: var(--link-hover-color);
+            }
+          }
+        }
+
         &.overflow::after {
           position: absolute;
           bottom: 0;
@@ -227,6 +244,8 @@
         flex-wrap: wrap;
         column-gap: 5px;
 
+        /* ну все же по порядку, а */
+        /* stylelint-disable-next-line no-descending-specificity */
         a {
           text-decoration: none;
         }
