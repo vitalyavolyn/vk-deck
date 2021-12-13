@@ -20,7 +20,6 @@ interface ColumnSettingsProps extends HTMLAttributes<HTMLDivElement> {
   imageGridSettings?: boolean
 }
 
-// TODO: move this and column-header to /components/columns/common/
 export const ColumnSettings: FC<ColumnSettingsProps> = ({
   children,
   show,

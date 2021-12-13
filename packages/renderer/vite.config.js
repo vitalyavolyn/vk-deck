@@ -3,6 +3,7 @@
 import { builtinModules } from 'module'
 import path from 'path'
 import yaml from '@rollup/plugin-yaml'
+import svgr from '@svgr/rollup'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 
 /**
@@ -12,7 +13,7 @@ import reactRefresh from '@vitejs/plugin-react-refresh'
 const config = {
   mode: process.env.MODE,
   root: __dirname,
-  plugins: [reactRefresh(), yaml()],
+  plugins: [reactRefresh(), yaml(), svgr()],
   base: '',
   server: {
     fs: {
@@ -22,6 +23,7 @@ const config = {
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@assets': path.resolve(__dirname, './assets'),
     },
   },
   esbuild: {

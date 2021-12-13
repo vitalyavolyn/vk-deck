@@ -1,0 +1,16 @@
+.media-grid-size-settings {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+
+  --media-size-select-color: #c4c4c4;
+
+  svg {
+    width: 85px;
+    cursor: pointer;
+  }
+
+  .selected {
+    --media-size-select-color: var(--accent);
+  }
+}
