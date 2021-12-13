@@ -13,12 +13,12 @@ const comboRegex = new RegExp(`(?:${linkRegex})|(?:${mentionRegex})`, 'gi')
 export const TextProcessor: FC<TextProcessorProps> = memo(({ content }) => {
   const children: ReactNode[] = []
 
-  for (const part of content.split(comboRegex)) {
+  for (const [index, part] of content.split(comboRegex).entries()) {
     let element
 
     if (new RegExp(linkRegex).test(part)) {
       element = (
-        <div className="link-highlight" key={part}>
+        <div className="link-highlight" key={index}>
           <a target="_blank" href={part}>
             {part.replace(/(.{40}).+/, '$1..')}
           </a>
@@ -28,7 +28,7 @@ export const TextProcessor: FC<TextProcessorProps> = memo(({ content }) => {
       const [, type, id, text] = /\[(club|public|id)(\d+)\|(.+?)]/gi.exec(part)!
 
       element = (
-        <div className="link-highlight" key={part}>
+        <div className="link-highlight" key={index}>
           <a target="_blank" href={`https://vk.com/${type}${id}`}>
             {text}
           </a>
