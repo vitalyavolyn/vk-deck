@@ -17,6 +17,8 @@ import {
   Icon16Poll,
   Icon16RepostOutline,
   Icon20CommentOutline,
+  Icon20CopyOutline,
+  Icon20DeleteOutline,
   Icon20DocumentOutline,
   Icon20Like,
   Icon20LikeOutline,
@@ -30,6 +32,7 @@ import {
   Icon20View,
   Icon24PhotosStackOutline,
   Icon28LocationMapOutline,
+  Icon28LogoVkOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { Avatar } from '@vkontakte/vkui'
@@ -410,7 +413,12 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                         snackbarStore.show(t`wallPost.linkCopied`)
                       }}
                     >
-                      Копировать ссылку
+                      <Icon20CopyOutline width={16} height={16} />
+                      {t`wallPost.actions.copyLink`}
+                    </DropdownMenuItem>,
+                    <DropdownMenuItem key="open" onClick={() => window.open(postUrl)}>
+                      <Icon28LogoVkOutline width={16} height={16} />
+                      {t`wallPost.actions.openInBrowser`}
                     </DropdownMenuItem>,
                     !!data.can_delete && (
                       <DropdownMenuItem
@@ -421,7 +429,8 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                         }}
                         style={{ color: 'var(--destructive)' }}
                       >
-                        Удалить
+                        <Icon20DeleteOutline width={16} height={16} />
+                        {t`wallPost.actions.delete`}
                       </DropdownMenuItem>
                     ),
                   ]}

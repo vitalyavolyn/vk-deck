@@ -1,6 +1,11 @@
-.dropdown-menu {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background: var(--modal_card_background);
-  border-radius: 12px;
+.dropdown-menu-popper {
+  background: none !important;
+
+  .dropdown-menu {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    backdrop-filter: blur(3px);
+    background: var(--dropdown-background);
+    border-radius: 12px;
+  }
 }

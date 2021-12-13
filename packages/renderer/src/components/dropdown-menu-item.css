@@ -5,6 +5,7 @@
   padding: 0 16px;
   cursor: pointer;
   font-size: 14px;
+  gap: 5px;
   transition: background 0.2s;
   vertical-align: middle;
 

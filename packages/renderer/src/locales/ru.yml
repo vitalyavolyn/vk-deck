@@ -66,6 +66,9 @@ translation:
       comment: Комментарии
       share: Поделиться
       menu: Действия
+      copyLink: Копировать ссылку
+      openInBrowser: Открыть в браузере
+      delete: Удалить
     linkCopied: Ссылка скопирована
     ad: Реклама
     verified: Подтвержденная страница

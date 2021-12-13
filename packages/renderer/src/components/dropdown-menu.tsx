@@ -15,6 +15,9 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({ items, children }) => {
     <Dropdown
       shown={isShown}
       onShownChange={setIsShown}
+      // @ts-ignore: VKUI не расширяют HTMLAttriblutes<HTMLDivElement>, но по факту работает
+      // Пытался "запатчить" файлом d.ts, не получилось
+      className="dropdown-menu-popper"
       content={
         <div
           onClick={() => {

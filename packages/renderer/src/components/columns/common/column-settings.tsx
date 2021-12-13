@@ -52,7 +52,7 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
           <IconButton onClick={() => moveColumn(-1)} title={t`columnSettings.moveLeft`}>
             <Icon16ChevronLeft />
           </IconButton>
-          <IconButton onClick={() => moveColumn(1)} title={t`columnSettings.moveLeft`}>
+          <IconButton onClick={() => moveColumn(1)} title={t`columnSettings.moveRight`}>
             <Icon16Chevron />
           </IconButton>
         </div>

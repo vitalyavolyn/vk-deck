@@ -18,16 +18,16 @@
     padding: 0 8px 4px;
     border-bottom: 1px solid var(--image_border);
 
+    .vkuiIconButton {
+      color: var(--accent);
+    }
+
     &:first-child {
       padding-top: 4px;
     }
 
     .move-buttons {
       display: flex;
-
-      .vkuiIconButton {
-        color: var(--accent);
-      }
     }
 
     .control-buttons {

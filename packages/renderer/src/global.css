@@ -6,8 +6,13 @@
 body {
   --modal-width: 270px;
   --column-width: 310px;
+  --dropdown-background: rgb(255 255 255 / 90%);
 
   background-color: var(--background_page);
+}
+
+body[scheme='vkcom_dark'] {
+  --dropdown-background: rgb(51 51 51 / 90%);
 }
 
 .narrow-columns {
