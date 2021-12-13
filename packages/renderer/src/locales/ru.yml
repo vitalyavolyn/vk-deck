@@ -32,6 +32,9 @@ translation:
       title: Размер медиа
       badges: Скрыты
       medium: Средний
+    moveLeft: Подвинуть влево
+    moveRight: Подвинуть вправо
+    duplicate: Дублировать колонку
 
   addColumn:
     title: Добавить колонку

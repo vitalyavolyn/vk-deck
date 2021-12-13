@@ -1,6 +1,7 @@
 import { StorageSetParams, StorageSetResponse } from '@vkontakte/api-schema-typescript'
 import _ from 'lodash'
 import { autorun, makeAutoObservable } from 'mobx'
+import { v4 as uuidv4 } from 'uuid'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
 import { RootStore } from './root-store'
@@ -155,5 +156,17 @@ export class SettingsStore implements Settings {
 
   refreshColumn(id: string) {
     this.columnRefreshFns[id]?.()
+  }
+
+  duplicateColumn(id: string) {
+    const index = _.findIndex(this.columns, { id })
+    const col = this.columns[index]
+
+    const newCol = {
+      ...col,
+      id: uuidv4(),
+    }
+
+    this.columns.splice(index + 1, 0, newCol)
   }
 }

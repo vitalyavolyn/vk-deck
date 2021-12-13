@@ -1,5 +1,10 @@
 import { FC, HTMLAttributes } from 'react'
-import { Icon16Chevron, Icon16ChevronLeft, Icon20DeleteOutline } from '@vkontakte/icons'
+import {
+  Icon16Chevron,
+  Icon16ChevronLeft,
+  Icon20CopyOutline,
+  Icon20DeleteOutline,
+} from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { IconButton, Link } from '@vkontakte/vkui'
 import _ from 'lodash'
@@ -44,16 +49,21 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
       {imageGridSettings && <ColumnImageGridSettingsForm />}
       <div className="column-actions">
         <div className="move-buttons">
-          <IconButton onClick={() => moveColumn(-1)}>
+          <IconButton onClick={() => moveColumn(-1)} title={t`columnSettings.moveLeft`}>
             <Icon16ChevronLeft />
           </IconButton>
-          <IconButton onClick={() => moveColumn(1)}>
+          <IconButton onClick={() => moveColumn(1)} title={t`columnSettings.moveLeft`}>
             <Icon16Chevron />
           </IconButton>
         </div>
-        <Link className="delete-link" onClick={deleteColumn}>
-          <Icon20DeleteOutline /> {t`columnSettings.delete`}
-        </Link>
+        <div className="control-buttons">
+          <IconButton onClick={() => settingsStore.duplicateColumn(columnId)}>
+            <Icon20CopyOutline width={16} height={16} title={t`columnSettings.duplicate`} />
+          </IconButton>
+          <Link className="delete-link" onClick={deleteColumn}>
+            <Icon20DeleteOutline width={16} height={16} /> {t`columnSettings.delete`}
+          </Link>
+        </div>
       </div>
     </div>
   )

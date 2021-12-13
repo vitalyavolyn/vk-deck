@@ -30,10 +30,14 @@
       }
     }
 
-    .delete-link {
+    .control-buttons {
       display: flex;
-      align-items: center;
-      gap: 4px;
+
+      .delete-link {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
     }
   }
 }
