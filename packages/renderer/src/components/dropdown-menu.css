@@ -4,8 +4,20 @@
   .dropdown-menu {
     padding-top: 8px;
     padding-bottom: 8px;
+    animation: scale-appear 0.2s;
     backdrop-filter: blur(3px);
     background: var(--dropdown-background);
     border-radius: 12px;
+    transform-origin: top left;
+  }
+}
+
+@keyframes scale-appear {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
