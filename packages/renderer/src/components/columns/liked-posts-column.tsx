@@ -15,12 +15,11 @@ import { useColumn } from '@/hooks/use-column'
 import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ILikedPostsColumn } from '@/store/settings-store'
+import { getPostKey } from '@/utils/get-post-key'
 import { ColumnHeader } from './common/column-header'
 import { ColumnSettings } from './common/column-settings'
 
 const Icon = columnIcons[ColumnType.likedPosts]
-
-const getPostKey = (item: WallWallpostFull) => `${item.owner_id}_${item.id}`
 
 export const LikedPostsColumn: FC = () => {
   const { id } = useColumn<ILikedPostsColumn>()
@@ -32,6 +31,8 @@ export const LikedPostsColumn: FC = () => {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const offsetRef = useRef(0)
+  // TODO: зачем вообще? можно просто true/false для тех же целей
+  //  как в wall-column
   const lastUpdate = useRef<Date | false>(false)
   const scrollToRef = useRef<ScrollTo | null>(null)
 
@@ -93,7 +94,7 @@ export const LikedPostsColumn: FC = () => {
         {t`columns.likedPosts`}
       </ColumnHeader>
       <ColumnSettings show={showSettings} imageGridSettings />
-      {posts ? (
+      {posts.length ? (
         <VirtualScrollWall
           items={posts}
           className="column-list-content"
@@ -101,7 +102,7 @@ export const LikedPostsColumn: FC = () => {
             if (
               lastUpdate.current &&
               differenceInSeconds(lastUpdate.current, new Date()) <= -3 &&
-              offsetRef.current - e.startIndex < 20
+              offsetRef.current - e.stopIndex < 20
             )
               getPosts(true)
           }}

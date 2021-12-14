@@ -13,6 +13,7 @@ import { useColumn } from '@/hooks/use-column'
 import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, IWallColumn } from '@/store/settings-store'
+import { getPostKey } from '@/utils/get-post-key'
 import { ColumnHeader } from './common/column-header'
 
 export interface WallColumnSettings extends ColumnImageGridSettings {
@@ -33,16 +34,19 @@ export const WallColumn: FC = observer(() => {
   const { apiStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
 
-  const [posts, setPosts] = useState<WallWallpostFull[]>()
+  const [posts, setPosts] = useState<WallWallpostFull[]>([])
   const [showSettings, setShowSettings] = useState(false)
+  const [canLoadMore, setCanLoadMore] = useState(true)
   const [subtitle, setSubtitle] = useState(ownerId.toString())
 
-  const scrollToRef = useRef<ScrollTo | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const offsetRef = useRef(0)
+  const scrollToRef = useRef<ScrollTo | null>(null)
 
   const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
 
-  const getPosts = async () => {
+  const getPosts = async (withOffset = false) => {
+    if (withOffset) setCanLoadMore(false)
     if (timerRef.current) {
       clearTimeout(timerRef.current)
       timerRef.current = null
@@ -52,15 +56,20 @@ export const WallColumn: FC = observer(() => {
       const response = await apiStore.api.call<WallGetExtendedResponse, WallGetParams>('wall.get', {
         owner_id: ownerId,
         count: 100,
+        offset: withOffset ? offsetRef.current : 0,
         extended: 1,
         fields: 'verified,screen_name,photo_50',
       })
 
       const { items, groups, profiles } = response
 
+      if (items.length && withOffset) setCanLoadMore(true)
+
       apiStore.add('profiles', profiles)
       apiStore.add('groups', groups)
-      setPosts(items)
+      setPosts((old) =>
+        withOffset ? _.unionBy(old, items, getPostKey) : _.unionBy(items, old, getPostKey),
+      )
 
       // TODO: возможно, нет смысла устанавливать это каждый раз
       setSubtitle('@' + apiStore.getOwner(ownerId).screen_name)
@@ -81,6 +90,10 @@ export const WallColumn: FC = observer(() => {
       if (timerRef.current) clearTimeout(timerRef.current)
     }
   }, [])
+
+  useEffect(() => {
+    offsetRef.current = posts.length
+  }, [posts])
 
   const onChangeHidePinnedPost = (e: ChangeEvent<HTMLInputElement>) => {
     const column = _.find(settingsStore.columns, { id }) as IWallColumn
@@ -113,8 +126,13 @@ export const WallColumn: FC = observer(() => {
         <VirtualScrollWall
           items={hidePinnedPost && posts[0]?.is_pinned ? posts.slice(1) : posts}
           className="column-list-content"
-          scrollToRef={scrollToRef}
+          loadMore={(e) => {
+            if (canLoadMore && offsetRef.current - e.stopIndex < 20) {
+              getPosts(true)
+            }
+          }}
           onScroll={onScroll}
+          scrollToRef={scrollToRef}
         />
       ) : (
         <PanelSpinner />
