@@ -12,7 +12,6 @@ import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, IWallColumn } from '@/store/settings-store'
-import { getOwner } from '@/utils/get-owner'
 import { ColumnHeader } from './common/column-header'
 
 export interface WallColumnSettings extends ColumnImageGridSettings {
@@ -62,7 +61,7 @@ export const WallColumn: FC = observer(() => {
       setPosts(items)
 
       // TODO: возможно, нет смысла устанавливать это каждый раз
-      setSubtitle('@' + getOwner(ownerId, profiles, groups)!.screen_name)
+      setSubtitle('@' + apiStore.getOwner(ownerId).screen_name)
     } catch (error) {
       if (error instanceof Error) {
         snackbarStore.showError(error.toString())

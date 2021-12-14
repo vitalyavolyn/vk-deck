@@ -4,6 +4,7 @@ import {
   LikesAddResponse,
   LikesDeleteParams,
   LikesDeleteResponse,
+  PhotosPhoto,
   WallWallpostAttachment,
   WallWallpostAttachmentType,
   WallWallpostFull,
@@ -40,15 +41,14 @@ import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { HasImageGridSettings } from '@/components/columns/common/column-image-grid-settings-form'
+import { MediaGrid } from '@/components/media-grid'
 import { TextProcessor } from '@/components/text-processor'
 import { useColumn } from '@/hooks/use-column'
-import { useElectron } from '@/hooks/use-electron'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ImageGridSize } from '@/store/settings-store'
 import { getInitials } from '@/utils/get-initials'
 import { getName } from '@/utils/get-name'
 import { numberFormatter } from '@/utils/number-formatter'
-import { photoToViewerPhoto } from '@/utils/photo-to-viewer-photo'
 import { shortRelativeTime } from '@/utils/short-relative-time'
 import { AsyncAvatar } from './async-avatar'
 import { DropdownMenu } from './dropdown-menu'
@@ -75,7 +75,6 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
 
     const contentRef = useRef<HTMLDivElement>(null)
     const { t } = useTranslation()
-    const { openViewer } = useElectron()
 
     const [likeState, setLikeState] = useState(!!data.likes?.user_likes)
     const [likeCount, setLikeCount] = useState(data.likes?.count)
@@ -174,18 +173,6 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
 
     const isAd = !!data.marked_as_ads
 
-    const openPhotosInViewer = (index = 0) => {
-      openViewer({
-        photos: photos.map(({ photo }) =>
-          photoToViewerPhoto(
-            photo!,
-            getOwner(photo?.user_id === 100 ? photo!.owner_id : photo!.user_id!),
-          ),
-        ),
-        index,
-      })
-    }
-
     return (
       <div
         className="wall-post-wrap"
@@ -258,34 +245,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
               <TextProcessor content={data.text || ''} />
             </div>
             {!!photos.length && mediaSize === ImageGridSize.medium && (
-              <div className={`wall-post-media wall-post-media-${Math.min(photos.length, 6)}`}>
-                {photos.slice(0, 6).map(({ photo }, i) => {
-                  if (!photo || !photo.sizes) return null // TODO: проблема тайпинга?
-
-                  const sortedSizes = photo.sizes.sort((a, b) => a.height - b.height)
-
-                  const minWidth = 240
-                  const filteredSizes = sortedSizes.filter((e) => e.width > minWidth)
-                  const { url } = filteredSizes.length
-                    ? filteredSizes[0]
-                    : sortedSizes[sortedSizes.length - 1]
-
-                  const isOverlayed = photos.length > 6 && i === 5
-
-                  return (
-                    <div
-                      key={`${photo?.owner_id}_${photo?.id}`}
-                      onClick={() => !isOverlayed && openPhotosInViewer(i)}
-                      className={classNames('img', {
-                        'has-more': isOverlayed,
-                      })}
-                      data-text={`+${photos.length - 5}`}
-                    >
-                      <img src={url} />
-                    </div>
-                  )
-                })}
-              </div>
+              <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
             )}
             <div className="wall-post-badges">
               {!!photos.length && mediaSize === ImageGridSize.badges && (
@@ -294,9 +254,10 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                   type={t('wallPost.mediaBadge.photo', {
                     count: photos.length,
                   })}
-                  onClick={() => {
-                    openPhotosInViewer()
-                  }}
+                  // TODO: get it back
+                  // onClick={() => {
+                  //   openPhotosInViewer()
+                  // }}
                 />
               )}
               {!!videos.length && (
