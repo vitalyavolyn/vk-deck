@@ -7,10 +7,12 @@ import {
 import { PanelSpinner } from '@vkontakte/vkui'
 import { differenceInSeconds } from 'date-fns'
 import _ from 'lodash'
+import { ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useColumn } from '@/hooks/use-column'
+import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ILikedPostsColumn } from '@/store/settings-store'
 import { ColumnHeader } from './common/column-header'
@@ -31,6 +33,9 @@ export const LikedPostsColumn: FC = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const offsetRef = useRef(0)
   const lastUpdate = useRef<Date | false>(false)
+  const scrollToRef = useRef<ScrollTo | null>(null)
+
+  const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
 
   const getPosts = async (withOffset = false) => {
     if (timerRef.current) {
@@ -82,8 +87,8 @@ export const LikedPostsColumn: FC = () => {
         onSettingsClick={() => {
           setShowSettings(!showSettings)
         }}
-        // TODO
-        // onClick={canScrollToTop ? scrollToTop : undefined}
+        onClick={triggerScroll}
+        clickable={canScroll}
       >
         {t`columns.likedPosts`}
       </ColumnHeader>
@@ -100,6 +105,8 @@ export const LikedPostsColumn: FC = () => {
             )
               getPosts(true)
           }}
+          onScroll={onScroll}
+          scrollToRef={scrollToRef}
         />
       ) : (
         <PanelSpinner />

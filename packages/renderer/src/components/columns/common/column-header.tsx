@@ -11,6 +11,7 @@ interface ColumnHeaderProps {
   onSettingsClick?(e: MouseEvent<HTMLDivElement>): void
   subtitle?: string
   onClick?(e: MouseEvent<HTMLDivElement>): void
+  clickable?: boolean
 }
 
 export const ColumnHeader: FC<ColumnHeaderProps> = ({
@@ -19,21 +20,25 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
   onSettingsClick,
   onClick,
   subtitle,
+  clickable,
 }) => {
   const _onClick = (e: MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement
     const isSettingsClick = target.closest('.column-settings-toggle')
     if (isSettingsClick) {
       if (onSettingsClick) onSettingsClick(e)
-    } else {
-      if (onClick) onClick(e)
+    } else if (clickable && onClick) {
+      onClick(e)
     }
   }
 
   const Icon = icon
 
   return (
-    <header className={classNames('column-header', { clickable: !!onClick })} onClick={_onClick}>
+    <header
+      className={classNames('column-header', { clickable: clickable && !!onClick })}
+      onClick={_onClick}
+    >
       <Icon width={26} height={26} className="column-icon" />
       <div className="column-title">
         <Title level="3" weight="semibold">

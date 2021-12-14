@@ -8,11 +8,12 @@ import {
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { OnScroll, ScrollTo } from 'react-cool-virtual'
+import { ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useColumn } from '@/hooks/use-column'
+import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, INewsfeedColumn } from '@/store/settings-store'
 import { ColumnHeader } from './common/column-header'
@@ -44,12 +45,13 @@ export const NewsfeedColumn: FC = observer(() => {
 
   const [feedItems, setFeedItems] = useState<NewsfeedItemWallpost[]>()
   const [showSettings, setShowSettings] = useState(false)
-  const [canScrollToTop, setCanScrollToTop] = useState(false)
 
   const scrollToRef = useRef<ScrollTo | null>(null)
   // TODO: setTimeout здесь якобы возвращает этот тип, а не число. неприятно.
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
+
+  const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
 
   /**
    * @see SettingsStore.wallColumns
@@ -135,10 +137,6 @@ export const NewsfeedColumn: FC = observer(() => {
     })
   }
 
-  const onScroll: OnScroll = ({ scrollOffset }) => {
-    setCanScrollToTop(scrollOffset > 0)
-  }
-
   const possibleSources = [
     { label: t`newsfeed.sources.feed`, value: '' },
     { label: t`newsfeed.sources.friends`, value: 'friends' },
@@ -155,12 +153,6 @@ export const NewsfeedColumn: FC = observer(() => {
     column.settings.source = source
   }
 
-  const scrollToTop = () => {
-    if (scrollToRef.current) {
-      scrollToRef.current({ offset: 0, smooth: true })
-    }
-  }
-
   return (
     <>
       <ColumnHeader
@@ -169,7 +161,8 @@ export const NewsfeedColumn: FC = observer(() => {
         onSettingsClick={() => {
           setShowSettings(!showSettings)
         }}
-        onClick={canScrollToTop ? scrollToTop : undefined}
+        onClick={triggerScroll}
+        clickable={canScroll}
       >
         {_.find(possibleSources, { value: settings.source })!.label}
       </ColumnHeader>

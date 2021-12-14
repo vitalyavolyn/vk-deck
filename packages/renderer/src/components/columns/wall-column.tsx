@@ -4,12 +4,13 @@ import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/m
 import { Checkbox, PanelSpinner } from '@vkontakte/vkui'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { OnScroll, ScrollTo } from 'react-cool-virtual'
+import { ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useColumn } from '@/hooks/use-column'
+import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, IWallColumn } from '@/store/settings-store'
 import { ColumnHeader } from './common/column-header'
@@ -34,11 +35,12 @@ export const WallColumn: FC = observer(() => {
 
   const [posts, setPosts] = useState<WallWallpostFull[]>()
   const [showSettings, setShowSettings] = useState(false)
-  const [canScrollToTop, setCanScrollToTop] = useState(false)
   const [subtitle, setSubtitle] = useState(ownerId.toString())
 
   const scrollToRef = useRef<ScrollTo | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+  const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
 
   const getPosts = async () => {
     if (timerRef.current) {
@@ -80,16 +82,6 @@ export const WallColumn: FC = observer(() => {
     }
   }, [])
 
-  const onScroll: OnScroll = ({ scrollOffset }) => {
-    setCanScrollToTop(scrollOffset > 0)
-  }
-
-  const scrollToTop = () => {
-    if (scrollToRef.current) {
-      scrollToRef.current({ offset: 0, smooth: true })
-    }
-  }
-
   const onChangeHidePinnedPost = (e: ChangeEvent<HTMLInputElement>) => {
     const column = _.find(settingsStore.columns, { id }) as IWallColumn
     column.settings.hidePinnedPost = e.target.checked
@@ -103,7 +95,8 @@ export const WallColumn: FC = observer(() => {
         onSettingsClick={() => {
           setShowSettings(!showSettings)
         }}
-        onClick={canScrollToTop ? scrollToTop : undefined}
+        onClick={triggerScroll}
+        clickable={canScroll}
       >
         {t`columns.wall`}
       </ColumnHeader>

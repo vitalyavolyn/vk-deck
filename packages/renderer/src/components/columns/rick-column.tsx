@@ -1,11 +1,13 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { UsersUserFull, WallWallpostFull } from '@vkontakte/api-schema-typescript'
 import { PanelSpinner } from '@vkontakte/vkui'
 import axios from 'axios'
+import { ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
+import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType } from '@/store/settings-store'
 import { ColumnHeader } from './common/column-header'
@@ -23,6 +25,10 @@ export const RickColumn: FC = () => {
   const [isReady, setIsReady] = useState(false)
   const [items, setItems] = useState<WallWallpostFull[]>([])
   const [showSettings, setShowSettings] = useState(false)
+
+  const scrollToRef = useRef<ScrollTo | null>(null)
+
+  const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
 
   const addLine = (lines: string[], ownerId: number) => {
     const [line, ...rest] = lines
@@ -54,12 +60,19 @@ export const RickColumn: FC = () => {
         onSettingsClick={() => {
           setShowSettings(!showSettings)
         }}
+        clickable={canScroll}
+        onClick={triggerScroll}
       >
         {t`columns.rick`}
       </ColumnHeader>
       <ColumnSettings show={showSettings} />
       {isReady ? (
-        <VirtualScrollWall className="column-list-content" items={items} />
+        <VirtualScrollWall
+          scrollToRef={scrollToRef}
+          onScroll={onScroll}
+          className="column-list-content"
+          items={items}
+        />
       ) : (
         <PanelSpinner />
       )}
