@@ -20,6 +20,8 @@ export interface Settings {
   columns: Column[]
   columnSize: ColumnSize
   blurAds: boolean
+  // TODO: возможность настроить размер
+  mediaQuickPreview: boolean
 }
 
 export interface BaseColumn {
@@ -76,6 +78,7 @@ export class SettingsStore implements Settings {
   columns: Column[] = []
   columnSize: ColumnSize = ColumnSize.medium
   blurAds = false
+  mediaQuickPreview = true
 
   // функции для обновления колонок, ключ - id колонки
   columnRefreshFns: Record<string, ColumnRefreshFn> = {}
@@ -134,6 +137,7 @@ export class SettingsStore implements Settings {
       columns: this.columns,
       columnSize: this.columnSize,
       blurAds: this.blurAds,
+      mediaQuickPreview: this.mediaQuickPreview,
     }
   }
 

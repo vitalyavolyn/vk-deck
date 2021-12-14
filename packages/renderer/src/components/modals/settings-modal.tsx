@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { ModalProps } from '@/components/modal-container'
 import { useStore } from '@/hooks/use-store'
-import { ColorScheme, ColumnSize } from '@/store/settings-store'
+import { ColorScheme, ColumnSize, Settings } from '@/store/settings-store'
 import { ModalHeader } from './modal-header'
 
 import './settings-modal.css'
@@ -26,8 +26,8 @@ export const SettingsModal: FC<ModalProps> = observer(() => {
     settingsStore.columnSize = Number(e.target.value) as ColumnSize
   }
 
-  const onBlurAdsChange = (e: ChangeEvent<HTMLInputElement>) => {
-    settingsStore.blurAds = e.target.checked
+  const toggleBooleanSetting = (name: keyof Settings, value: boolean) => {
+    settingsStore.load({ [name]: value })
   }
 
   return (
@@ -66,8 +66,17 @@ export const SettingsModal: FC<ModalProps> = observer(() => {
 
         <Checkbox
           checked={settingsStore.blurAds}
-          onChange={onBlurAdsChange}
+          onChange={(e) => {
+            toggleBooleanSetting('blurAds', e.target.checked)
+          }}
         >{t`settings.blurAds`}</Checkbox>
+
+        <Checkbox
+          checked={settingsStore.mediaQuickPreview}
+          onChange={(e) => {
+            toggleBooleanSetting('mediaQuickPreview', e.target.checked)
+          }}
+        >{t`settings.mediaQuickPreview`}</Checkbox>
       </FormLayout>
 
       <div className="logout-button-container">
