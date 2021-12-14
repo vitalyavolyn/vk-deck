@@ -116,6 +116,7 @@
             background-color: var(--link-background);
             border-radius: 0.375rem;
             color: unset;
+            overflow-wrap: anywhere;
             text-decoration: none;
 
             &:hover {
