@@ -59,7 +59,12 @@ const Account: FC<AccountProps> = ({ name, id, screenName, photo, isSelected, mo
     <RichCell
       before={
         <div className={classNames('account-avatar', { selected: isSelected })}>
-          <Avatar size={32} src={photo} />
+          <AsyncAvatar
+            gradientColor={(id % 6) + 1}
+            initials={getInitials(name)}
+            size={32}
+            src={photo}
+          />
           {isSelected && <Icon20CheckCircleFillGreen width={16} height={16} />}
         </div>
       }
