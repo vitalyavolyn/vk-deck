@@ -1,3 +1,31 @@
+.photo-popup {
+  position: fixed;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  pointer-events: none;
+
+  .spinner-wrap {
+    position: fixed;
+    padding: 30px;
+
+    .vkuiSpinner {
+      color: var(--text_primary);
+    }
+  }
+
+  .image-wrap {
+    z-index: 2;
+
+    img {
+      max-width: 350px;
+      max-height: 500px;
+    }
+  }
+}
+
 .media-grid {
   overflow: hidden;
   width: 100%;
