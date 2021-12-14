@@ -81,7 +81,9 @@ export class SettingsStore implements Settings {
   columnRefreshFns: Record<string, ColumnRefreshFn> = {}
 
   // информация о колонках-стенах
+  //
   // ownerId: id колонки
+  //
   // нужно для того, чтобы можно было быстро проверить,
   // есть ли колонка определенной страницы
   //

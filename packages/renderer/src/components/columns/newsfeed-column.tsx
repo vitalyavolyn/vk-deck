@@ -16,6 +16,7 @@ import { useColumn } from '@/hooks/use-column'
 import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, INewsfeedColumn } from '@/store/settings-store'
+import { getPostKey } from '@/utils/get-post-key'
 import { ColumnHeader } from './common/column-header'
 import { ColumnSettings } from './common/column-settings'
 
@@ -50,6 +51,8 @@ export const NewsfeedColumn: FC = observer(() => {
   // TODO: setTimeout здесь якобы возвращает этот тип, а не число. неприятно.
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
+  const [canLoadMore, setCanLoadMore] = useState(true)
+  const nextFromRef = useRef('')
 
   const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
 
@@ -66,7 +69,8 @@ export const NewsfeedColumn: FC = observer(() => {
     }
   }
 
-  const getPosts = async () => {
+  const getPosts = async (withOffset = false) => {
+    if (withOffset) setCanLoadMore(false)
     if (timerRef.current) {
       clearTimeout(timerRef.current)
       timerRef.current = null
@@ -80,23 +84,29 @@ export const NewsfeedColumn: FC = observer(() => {
           filters: 'post',
           fields: 'verified,screen_name,photo_50,sex',
           source_ids: settings.source,
-          start_time: startTimeRef.current,
+          start_time: withOffset ? 0 : startTimeRef.current,
+          start_from: withOffset ? nextFromRef.current : '',
         },
       )
 
-      const { items, groups, profiles } = response
+      const { items, groups, profiles, next_from: nextFrom } = response
 
-      const newItems = items?.filter((e) => e.date !== startTimeRef.current) || []
+      const newItems: NewsfeedItemWallpost[] =
+        items?.filter((e) => e.date !== startTimeRef.current) || []
+
       // пропускаем при первом обновлении
       if (startTimeRef.current) triggerWallColumns(newItems)
 
       apiStore.add('profiles', profiles)
       apiStore.add('groups', groups)
-      setFeedItems((oldItems) => {
-        return [...newItems, ...(oldItems || [])]
-      })
+      setFeedItems((old) =>
+        withOffset ? _.unionBy(old, newItems, getPostKey) : _.unionBy(newItems, old, getPostKey),
+      )
+
+      setCanLoadMore(true)
 
       startTimeRef.current = items?.[0]?.date || 0
+      nextFromRef.current = nextFrom!
     } catch (error) {
       if (error instanceof Error) {
         snackbarStore.showError(error.toString())
@@ -181,12 +191,16 @@ export const NewsfeedColumn: FC = observer(() => {
         </FormLayout>
       </ColumnSettings>
       {feedItems ? (
-        // TODO: infinite scroll
         <VirtualScrollWall
           items={feedItems.map((post) => newsfeedPostToWallPost(post))}
           className="column-list-content"
-          scrollToRef={scrollToRef}
+          loadMore={(e) => {
+            if (canLoadMore && feedItems.length - e.stopIndex < 20) {
+              getPosts(true)
+            }
+          }}
           onScroll={onScroll}
+          scrollToRef={scrollToRef}
         />
       ) : (
         <PanelSpinner />
