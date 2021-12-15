@@ -7,7 +7,6 @@ import {
 import { PanelSpinner } from '@vkontakte/vkui'
 import { differenceInSeconds } from 'date-fns'
 import _ from 'lodash'
-import { ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
@@ -34,9 +33,8 @@ export const LikedPostsColumn: FC = () => {
   // TODO: зачем вообще? можно просто true/false для тех же целей
   //  как в wall-column
   const lastUpdate = useRef<Date | false>(false)
-  const scrollToRef = useRef<ScrollTo | null>(null)
 
-  const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
+  const { canScroll, onScroll, triggerScroll, scrollToRef } = useScrollToTop()
 
   const getPosts = async (withOffset = false) => {
     if (timerRef.current) {

@@ -8,7 +8,6 @@ import {
 import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
@@ -47,14 +46,13 @@ export const NewsfeedColumn: FC = observer(() => {
   const [feedItems, setFeedItems] = useState<NewsfeedItemWallpost[]>()
   const [showSettings, setShowSettings] = useState(false)
 
-  const scrollToRef = useRef<ScrollTo | null>(null)
   // TODO: setTimeout здесь якобы возвращает этот тип, а не число. неприятно.
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
   const [canLoadMore, setCanLoadMore] = useState(true)
   const nextFromRef = useRef('')
 
-  const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
+  const { canScroll, onScroll, triggerScroll, scrollToRef } = useScrollToTop()
 
   /**
    * @see SettingsStore.wallColumns

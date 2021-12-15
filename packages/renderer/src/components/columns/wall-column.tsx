@@ -4,7 +4,6 @@ import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/m
 import { Checkbox, PanelSpinner } from '@vkontakte/vkui'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
@@ -41,9 +40,8 @@ export const WallColumn: FC = observer(() => {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const offsetRef = useRef(0)
-  const scrollToRef = useRef<ScrollTo | null>(null)
 
-  const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
+  const { canScroll, onScroll, triggerScroll, scrollToRef } = useScrollToTop()
 
   const getPosts = async (withOffset = false) => {
     if (withOffset) setCanLoadMore(false)

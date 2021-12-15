@@ -1,8 +1,7 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { UsersUserFull, WallWallpostFull } from '@vkontakte/api-schema-typescript'
 import { PanelSpinner } from '@vkontakte/vkui'
 import axios from 'axios'
-import { ScrollTo } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
@@ -26,9 +25,7 @@ export const RickColumn: FC = () => {
   const [items, setItems] = useState<WallWallpostFull[]>([])
   const [showSettings, setShowSettings] = useState(false)
 
-  const scrollToRef = useRef<ScrollTo | null>(null)
-
-  const { canScroll, onScroll, triggerScroll } = useScrollToTop(scrollToRef)
+  const { canScroll, onScroll, triggerScroll, scrollToRef } = useScrollToTop()
 
   const addLine = (lines: string[], ownerId: number) => {
     const [line, ...rest] = lines

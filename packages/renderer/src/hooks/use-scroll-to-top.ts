@@ -1,12 +1,13 @@
-import { MutableRefObject, useState } from 'react'
+import { useRef, useState } from 'react'
 import { OnScroll, ScrollTo } from 'react-cool-virtual'
 
-export const useScrollToTop = (scrollTo: MutableRefObject<ScrollTo | null>) => {
+export const useScrollToTop = () => {
+  const scrollToRef = useRef<ScrollTo | null>(null)
   const [canScroll, setCanScroll] = useState(false)
 
   const triggerScroll = () => {
-    if (scrollTo.current) {
-      scrollTo.current({ offset: 0, smooth: true })
+    if (scrollToRef.current) {
+      scrollToRef.current({ offset: 0, smooth: true })
     }
   }
 
@@ -18,5 +19,6 @@ export const useScrollToTop = (scrollTo: MutableRefObject<ScrollTo | null>) => {
     canScroll,
     onScroll,
     triggerScroll,
+    scrollToRef,
   }
 }
