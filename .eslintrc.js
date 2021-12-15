@@ -57,6 +57,7 @@ module.exports = {
         // warnOnUnassignedImports: true,
       },
     ],
+    'func-style': 'error',
 
     // unicorn - душнила
     'unicorn/prevent-abbreviations': 'off',

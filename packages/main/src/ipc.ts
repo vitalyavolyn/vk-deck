@@ -11,7 +11,7 @@ const closeViewer = () => {
   viewerWindow = undefined
 }
 
-export function initIpc(win: BrowserWindow): void {
+export const initIpc = (win: BrowserWindow): void => {
   ipcMain.on('create-browser-view', (e) => {
     const view = new BrowserView({
       webPreferences: {

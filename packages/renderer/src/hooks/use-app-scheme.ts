@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Scheme } from '@vkontakte/vkui'
 import { useStore } from '@/hooks/use-store'
 
-export function useAppScheme(): Scheme {
+export const useAppScheme = (): Scheme => {
   const { settingsStore } = useStore()
 
   const darkThemeMatch = window.matchMedia('(prefers-color-scheme: light)')

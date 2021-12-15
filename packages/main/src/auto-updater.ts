@@ -1,7 +1,7 @@
 import { BrowserWindow } from 'electron'
 import { autoUpdater, UpdateInfo } from 'electron-updater'
 
-export async function checkForUpdatesAndNotify(win: BrowserWindow): Promise<void> {
+export const checkForUpdatesAndNotify = async (win: BrowserWindow): Promise<void> => {
   try {
     autoUpdater.autoDownload = false
     autoUpdater.on('update-available', (info: UpdateInfo) => {
