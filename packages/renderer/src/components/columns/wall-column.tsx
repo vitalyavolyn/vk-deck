@@ -119,7 +119,7 @@ export const WallColumn: FC = observer(() => {
           >{t`wall.settings.hidePinnedPost`}</Checkbox>
         </div>
       </ColumnSettings>
-      {posts ? (
+      {posts.length ? (
         <VirtualScrollWall
           items={hidePinnedPost && posts[0]?.is_pinned ? posts.slice(1) : posts}
           className="column-list-content"

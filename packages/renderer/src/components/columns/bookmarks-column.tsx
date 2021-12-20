@@ -141,12 +141,11 @@ export const BookmarksColumn: FC = observer(() => {
           </FormItem>
         </FormLayout>
       </ColumnSettings>
-      {posts ? (
+      {posts.length ? (
         <VirtualScrollWall
           items={posts}
           className="column-list-content"
           loadMore={(e) => {
-            console.log(e.stopIndex, offsetRef.current, offsetRef.current - e.stopIndex)
             if (canLoadMore && offsetRef.current - e.stopIndex < 20) {
               getPosts(true)
             }
