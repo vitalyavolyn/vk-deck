@@ -8,7 +8,8 @@ interface TextProcessorProps {
 
 const linkRegex = '(https?://[\\w#%+.:=@~-]{1,256}.[\\d()a-z]{1,6}\\b[\\w#%&()+./:=?@~-]*)'
 const mentionRegex = '(\\[(?:club|public|id)(?:\\d+)\\|(?:.+?)\\])'
-const comboRegex = new RegExp(`(?:${linkRegex})|(?:${mentionRegex})`, 'gi')
+const hashtagRegex = '(#[^\\s!#$%&()*^]+)'
+const comboRegex = new RegExp(`(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`, 'gi')
 
 export const TextProcessor: FC<TextProcessorProps> = memo(({ content }) => {
   const children: ReactNode[] = []
@@ -31,6 +32,17 @@ export const TextProcessor: FC<TextProcessorProps> = memo(({ content }) => {
         <div className="link-highlight" key={index}>
           <a target="_blank" href={`https://vk.com/${type}${id}`}>
             {text}
+          </a>
+        </div>
+      )
+    } else if (new RegExp(hashtagRegex).test(part)) {
+      element = (
+        <div className="link-highlight" key={index}>
+          <a
+            target="_blank"
+            href={`https://vk.com/feed?section=search&c[q]=${encodeURIComponent(part)}`}
+          >
+            {part}
           </a>
         </div>
       )

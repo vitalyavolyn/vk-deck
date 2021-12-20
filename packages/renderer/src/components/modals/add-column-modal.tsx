@@ -30,9 +30,7 @@ const columns: [ColumnType, boolean, string?][] = [
 export type WithoutImageGridSettings<T extends ColumnImageGridSettings> = Omit<T, 'imageGridSize'>
 
 export interface AddColumn {
-  (type: ColumnType.newsfeed): void
   (type: ColumnType.wall, settings: WithoutImageGridSettings<WallColumnSettings>): void
-  (type: ColumnType.likedPosts): void
   (type: ColumnType): void
 }
 
