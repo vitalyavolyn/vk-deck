@@ -130,7 +130,12 @@
 
 .media-grid-large {
   width: auto;
+  height: 350px;
   border: none;
   margin: 8px -10px -8px;
   border-radius: 0;
+}
+
+.narrow-columns .media-grid-large {
+  height: 270px;
 }

@@ -7,15 +7,6 @@
     display: flex;
     column-gap: 8px;
 
-    &.blurred-ad {
-      filter: blur(3px);
-      transition: filter 0.1s;
-
-      &:hover {
-        filter: none;
-      }
-    }
-
     .wall-post-avatar {
       position: relative;
 
@@ -199,6 +190,17 @@
           }
         }
       }
+    }
+  }
+
+  &.blurred-ad > .wall-post,
+  &.blurred-ad > .media-grid {
+    /* TODO: Костыль для медиа вне поста. Плохо, что так наведение работает у фото и поста отдельно. */
+    filter: blur(3px);
+    transition: filter 0.1s;
+
+    &:hover {
+      filter: none;
     }
   }
 }

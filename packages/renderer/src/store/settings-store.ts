@@ -2,6 +2,7 @@ import { StorageSetParams, StorageSetResponse } from '@vkontakte/api-schema-type
 import _ from 'lodash'
 import { autorun, makeAutoObservable } from 'mobx'
 import { v4 as uuidv4 } from 'uuid'
+import { BookmarksColumnSettings } from '@/components/columns/bookmarks-column'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
 import { RootStore } from './root-store'
@@ -13,6 +14,7 @@ export enum ColumnType {
   rick = 'rick',
   wall = 'wall',
   likedPosts = 'likedPosts',
+  bookmarks = 'bookmarks',
 }
 
 export interface Settings {
@@ -59,7 +61,17 @@ export interface ILikedPostsColumn extends BaseColumn {
   settings: ColumnImageGridSettings
 }
 
-export type Column = INewsfeedColumn | IRickColumn | IWallColumn | ILikedPostsColumn
+export interface IBookmarksColumn extends BaseColumn {
+  type: ColumnType.bookmarks
+  settings: BookmarksColumnSettings
+}
+
+export type Column =
+  | INewsfeedColumn
+  | IRickColumn
+  | IWallColumn
+  | ILikedPostsColumn
+  | IBookmarksColumn
 
 export enum ColumnSize {
   narrow,

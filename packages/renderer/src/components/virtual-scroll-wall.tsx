@@ -41,13 +41,14 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
       <div ref={innerRef}>
         {scrollItems.map(({ index, measureRef }) => {
           const data = items[index]
-          return (
+
+          return data ? (
             <WallPost
               key={`${data.owner_id}_${data.id}`}
               data={items[index]}
               measureRef={measureRef}
             />
-          )
+          ) : undefined
         })}
       </div>
     </div>

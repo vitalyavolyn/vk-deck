@@ -49,6 +49,7 @@ translation:
     rick: Rick
     wall: Стена
     likedPosts: Понравившиеся записи
+    bookmarks: Закладки
 
   time:
     relativeDays: '{{d}}д'
@@ -118,6 +119,11 @@ translation:
 
   rick:
     subtitle: dQw4w9WgXcQ
+
+  bookmarks:
+    settings:
+      tag: Метка
+      clearTag: Не выбрана
 
   viewer:
     photoCounter: Фотография {{index}} из {{total}}

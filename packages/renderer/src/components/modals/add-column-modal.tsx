@@ -22,6 +22,7 @@ const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.newsfeed, false, 'addColumn.caption.newsfeed'],
   [ColumnType.wall, true],
   [ColumnType.likedPosts, false],
+  [ColumnType.bookmarks, false],
 
   // оставлять в конце
   [ColumnType.rick, false],
@@ -85,6 +86,7 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
         })
 
       case ColumnType.likedPosts:
+      case ColumnType.bookmarks:
         return settingsStore.columns.push({
           id: uuidv4(),
           type,

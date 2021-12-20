@@ -175,16 +175,14 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
 
     return (
       <div
-        className="wall-post-wrap"
+        className={classNames('wall-post-wrap', {
+          'blurred-ad': isAd && settingsStore.blurAds,
+        })}
         data-id={`${data.owner_id}_${data.id}`}
         ref={measureRef}
         {...rest}
       >
-        <div
-          className={classNames('wall-post', {
-            'blurred-ad': isAd && settingsStore.blurAds,
-          })}
-        >
+        <div className="wall-post">
           <div className="left">
             <div className="wall-post-avatar">
               <AsyncAvatar

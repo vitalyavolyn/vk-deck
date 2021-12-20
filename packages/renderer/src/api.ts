@@ -1,6 +1,7 @@
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
 import i18next from 'i18next'
+import _ from 'lodash'
 
 const instance = rateLimit(axios.create({ baseURL: 'https://api.vk.com' }), {
   maxRPS: 3,
@@ -33,15 +34,19 @@ export class Api {
     return !!this.token
   }
 
-  async call<T, R = Record<string, string | number>>(method: string, params?: R): Promise<T> {
+  async call<T, R extends object = Record<string, string | number>>(
+    method: string,
+    params?: R,
+  ): Promise<T> {
     const { v, lang, token } = this
+
     console.log('CALL', method, params)
 
     const completeParams = {
       v,
       lang,
       access_token: token,
-      ...params,
+      ..._.pickBy(params, (v) => v !== undefined),
     }
 
     const { data } = await instance.post<VKApiData<T>>(

@@ -1,7 +1,10 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
-import { WallGetParams, WallWallpostFull } from '@vkontakte/api-schema-typescript'
-import { WallGetExtendedResponse } from '@vkontakte/api-schema-typescript/dist/methods/wall'
-import { Checkbox, PanelSpinner } from '@vkontakte/vkui'
+import { FC, useEffect, useRef, useState } from 'react'
+import {
+  FaveGetExtendedResponse,
+  FaveGetParams,
+  WallWallpostFull,
+} from '@vkontakte/api-schema-typescript'
+import { FormItem, FormLayout, PanelSpinner, Select } from '@vkontakte/vkui'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
@@ -11,24 +14,18 @@ import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useColumn } from '@/hooks/use-column'
 import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
-import { ColumnImageGridSettings, ColumnType, IWallColumn } from '@/store/settings-store'
+import { ColumnImageGridSettings, ColumnType, IBookmarksColumn } from '@/store/settings-store'
 import { getPostKey } from '@/utils/get-post-key'
 import { ColumnHeader } from './common/column-header'
 
-export interface WallColumnSettings extends ColumnImageGridSettings {
-  ownerId: number
-  hidePinnedPost: boolean
-  // TODO: filter: suggests,postponed,owner,others
-  //  donut???
-  //  возможно, сделать для suggests/postponed отдельный вид колонок???
-  //  который использует этот компонент внутри
+export interface BookmarksColumnSettings extends ColumnImageGridSettings {
+  tagId?: number
 }
 
-const Icon = columnIcons[ColumnType.wall]
+const Icon = columnIcons[ColumnType.bookmarks]
 
-export const WallColumn: FC = observer(() => {
-  const { settings, id } = useColumn<IWallColumn>()
-  const { ownerId, hidePinnedPost } = settings
+export const BookmarksColumn: FC = observer(() => {
+  const { settings, id } = useColumn<IBookmarksColumn>()
 
   const { apiStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
@@ -36,7 +33,6 @@ export const WallColumn: FC = observer(() => {
   const [posts, setPosts] = useState<WallWallpostFull[]>([])
   const [showSettings, setShowSettings] = useState(false)
   const [canLoadMore, setCanLoadMore] = useState(true)
-  const [subtitle, setSubtitle] = useState(ownerId.toString())
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const offsetRef = useRef(0)
@@ -51,26 +47,28 @@ export const WallColumn: FC = observer(() => {
     }
 
     try {
-      const response = await apiStore.api.call<WallGetExtendedResponse, WallGetParams>('wall.get', {
-        owner_id: ownerId,
+      const response = await apiStore.api.call<FaveGetExtendedResponse, FaveGetParams>('fave.get', {
         count: 100,
+        // TODO: поддерживать и другое?
+        item_type: 'post',
         offset: withOffset ? offsetRef.current : 0,
         extended: 1,
         fields: 'verified,screen_name,photo_50',
+        tag_id: settings.tagId,
       })
 
       const { items, groups, profiles } = response
 
-      if (items.length && withOffset) setCanLoadMore(true)
+      if (items!.length && withOffset) setCanLoadMore(true)
 
       apiStore.add('profiles', profiles)
       apiStore.add('groups', groups)
-      setPosts((old) =>
-        withOffset ? _.unionBy(old, items, getPostKey) : _.unionBy(items, old, getPostKey),
-      )
 
-      // TODO: возможно, нет смысла устанавливать это каждый раз
-      setSubtitle('@' + apiStore.getOwner(ownerId).screen_name)
+      const posts = items!.map((e) => e.post) as WallWallpostFull[]
+
+      setPosts((old) =>
+        withOffset ? _.unionBy(old, posts, getPostKey) : _.unionBy(posts, old, getPostKey),
+      )
     } catch (error) {
       if (error instanceof Error) {
         snackbarStore.showError(error.toString())
@@ -90,40 +88,65 @@ export const WallColumn: FC = observer(() => {
   }, [])
 
   useEffect(() => {
+    if (timerRef.current) {
+      getPosts()
+      setPosts([])
+    }
+  }, [settings.tagId])
+
+  useEffect(() => {
     offsetRef.current = posts.length
   }, [posts])
 
-  const onChangeHidePinnedPost = (e: ChangeEvent<HTMLInputElement>) => {
-    const column = _.find(settingsStore.columns, { id }) as IWallColumn
-    column.settings.hidePinnedPost = e.target.checked
+  const changeTag = (tag?: number) => {
+    const column = _.find(settingsStore.columns, { id }) as IBookmarksColumn
+    column.settings.tagId = tag
   }
+
+  // TODO: попробовать удалить выбранный тег
+  const tag = _.find(apiStore.initData.faveTags, { id: settings.tagId })
 
   return (
     <>
       <ColumnHeader
         icon={Icon}
-        subtitle={subtitle}
+        subtitle={settings.tagId ? tag?.name ?? '???' : `@${apiStore.initData.user.screen_name}`}
         onSettingsClick={() => {
           setShowSettings(!showSettings)
         }}
         onClick={triggerScroll}
         clickable={canScroll}
       >
-        {t`columns.wall`}
+        {t`columns.bookmarks`}
       </ColumnHeader>
       <ColumnSettings show={showSettings} imageGridSettings>
-        <div style={{ padding: '8px 8px 0' }}>
-          <Checkbox
-            checked={hidePinnedPost}
-            onChange={onChangeHidePinnedPost}
-          >{t`wall.settings.hidePinnedPost`}</Checkbox>
-        </div>
+        <FormLayout>
+          <FormItem top={t`bookmarks.settings.tag`}>
+            <Select
+              value={settings.tagId ?? 'unset'}
+              options={[
+                {
+                  label: t`bookmarks.settings.clearTag`,
+                  value: 'unset',
+                },
+                ...apiStore.initData.faveTags.map((e) => ({
+                  label: e.name,
+                  value: e.id,
+                })),
+              ]}
+              onChange={(e) => {
+                changeTag(e.target.value === 'unset' ? undefined : Number(e.target.value))
+              }}
+            />
+          </FormItem>
+        </FormLayout>
       </ColumnSettings>
       {posts ? (
         <VirtualScrollWall
-          items={hidePinnedPost && posts[0]?.is_pinned ? posts.slice(1) : posts}
+          items={posts}
           className="column-list-content"
           loadMore={(e) => {
+            console.log(e.stopIndex, offsetRef.current, offsetRef.current - e.stopIndex)
             if (canLoadMore && offsetRef.current - e.stopIndex < 20) {
               getPosts(true)
             }

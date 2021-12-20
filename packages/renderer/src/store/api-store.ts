@@ -1,9 +1,10 @@
 import {
+  FaveTag,
   GroupsGroupFull,
   UsersUserFull,
   UsersUserXtrCounters,
+  NewsfeedList,
 } from '@vkontakte/api-schema-typescript'
-import { NewsfeedList } from '@vkontakte/api-schema-typescript/dist/objects/newsfeed/NewsfeedList'
 import { makeAutoObservable } from 'mobx'
 import { Api } from '@/api'
 import { RootStore } from './root-store'
@@ -12,6 +13,7 @@ interface UserData {
   user: UsersUserXtrCounters
   managedGroups: GroupsGroupFull[]
   newsfeedLists: NewsfeedList[]
+  faveTags: Required<FaveTag>[]
   settings: string
 }
 
