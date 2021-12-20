@@ -133,3 +133,7 @@ translation:
 
   viewer:
     photoCounter: Фотография {{index}} из {{total}}
+
+  poll:
+    anonymous: Анонимный опрос
+    public: Публичный опрос

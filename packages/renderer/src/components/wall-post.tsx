@@ -43,12 +43,10 @@ import {
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { Avatar } from '@vkontakte/vkui'
+import { RichTooltip } from '@vkontakte/vkui/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
-import { HasImageGridSettings } from '@/components/columns/common/column-image-grid-settings-form'
-import { MediaGrid } from '@/components/media-grid'
-import { TextProcessor } from '@/components/text-processor'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ImageGridSize } from '@/store/settings-store'
@@ -57,9 +55,13 @@ import { getName } from '@/utils/get-name'
 import { numberFormatter } from '@/utils/number-formatter'
 import { shortRelativeTime } from '@/utils/short-relative-time'
 import { AsyncAvatar } from './async-avatar'
+import { HasImageGridSettings } from './columns/common/column-image-grid-settings-form'
 import { DropdownMenu } from './dropdown-menu'
 import { DropdownMenuItem } from './dropdown-menu-item'
 import { MediaBadge } from './media-badge'
+import { MediaGrid } from './media-grid'
+import { Poll } from './poll'
+import { TextProcessor } from './text-processor'
 
 import './wall-post.css'
 
@@ -349,11 +351,13 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                 />
               )}
               {poll && (
-                <MediaBadge
-                  icon={<Icon16Poll />}
-                  type={t`wallPost.mediaBadge.poll`}
-                  subject={poll.question}
-                />
+                <RichTooltip content={<Poll data={poll} />}>
+                  <MediaBadge
+                    icon={<Icon16Poll />}
+                    type={t`wallPost.mediaBadge.poll`}
+                    subject={poll.question}
+                  />
+                </RichTooltip>
               )}
               {hasMap && (
                 <MediaBadge
