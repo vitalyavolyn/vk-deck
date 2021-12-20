@@ -105,6 +105,7 @@ translation:
       groups: Сообщества
     settings:
       source: Источник
+    unknownList: Неизвестный список
 
   wallSetup:
     placeholder: Поиск человека или группы

@@ -172,7 +172,7 @@ export const NewsfeedColumn: FC = observer(() => {
         onClick={triggerScroll}
         clickable={canScroll}
       >
-        {_.find(possibleSources, { value: settings.source })!.label}
+        {_.find(possibleSources, { value: settings.source })?.label ?? t`newsfeed.unknownList`}
       </ColumnHeader>
       <ColumnSettings show={showSettings} imageGridSettings>
         <FormLayout>
