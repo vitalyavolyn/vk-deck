@@ -98,7 +98,7 @@ export const MediaGrid: FC<MediaGridProps> = observer(({ photos }) => {
         {photos.slice(0, 6).map((photo, i) => {
           if (!photo || !photo.sizes) return null // TODO: проблема тайпинга?
 
-          const sortedSizes = photo.sizes.sort((a, b) => a.height - b.height)
+          const sortedSizes = photo.sizes.sort((a, b) => a.height * a.width - b.height * b.width)
 
           const minWidth = 240
           const filteredSizes = sortedSizes.filter((e) => e.width > minWidth)
