@@ -414,6 +414,9 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
             </div>
           </div>
         </div>
+        {!!photos.length && mediaSize === ImageGridSize.large && (
+          <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
+        )}
       </div>
     )
   },

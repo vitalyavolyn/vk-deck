@@ -33,7 +33,7 @@ export enum ImageGridSize {
   badges = 'badges',
   // TODO: small
   medium = 'medium',
-  // TODO: large
+  large = 'large',
 }
 
 export interface ColumnImageGridSettings {

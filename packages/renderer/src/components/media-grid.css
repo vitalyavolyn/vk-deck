@@ -127,3 +127,10 @@
     }
   }
 }
+
+.media-grid-large {
+  width: auto;
+  border: none;
+  margin: 8px -10px -8px;
+  border-radius: 0;
+}

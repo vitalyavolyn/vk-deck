@@ -8,6 +8,7 @@ import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ImageGridSize } from '@/store/settings-store'
 import { ReactComponent as Hidden } from '@assets/hidden.svg'
+import { ReactComponent as Large } from '@assets/large.svg'
 import { ReactComponent as Medium } from '@assets/medium.svg'
 
 import './column-image-grid-settings-form.css'
@@ -17,6 +18,7 @@ export type HasImageGridSettings = { settings: ColumnImageGridSettings }
 const images: [ImageGridSize, FC<SVGProps<SVGElement>>][] = [
   [ImageGridSize.badges, Hidden],
   [ImageGridSize.medium, Medium],
+  [ImageGridSize.large, Large],
 ]
 
 export const ColumnImageGridSettingsForm: FC = observer(() => {
