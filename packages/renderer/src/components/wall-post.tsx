@@ -1,5 +1,6 @@
 import { FC, HTMLAttributes, Ref, useEffect, useRef, useState } from 'react'
 import {
+  GroupsGroupFull,
   LikesAddParams,
   LikesAddResponse,
   LikesDeleteParams,
@@ -17,10 +18,12 @@ import {
   Icon16MarketOutline,
   Icon16Poll,
   Icon16RepostOutline,
+  Icon20CalendarOutline,
   Icon20CommentOutline,
   Icon20CopyOutline,
   Icon20DeleteOutline,
   Icon20DocumentOutline,
+  Icon20LightbulbStarOutline,
   Icon20Like,
   Icon20LikeOutline,
   Icon20More,
@@ -32,6 +35,9 @@ import {
   Icon20VideoOutline,
   Icon20View,
   Icon24PhotosStackOutline,
+  Icon24Podcast,
+  Icon24TextLiveOutline,
+  Icon28DonateOutline,
   Icon28LocationMapOutline,
   Icon28LogoVkOutline,
 } from '@vkontakte/icons'
@@ -98,11 +104,19 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
 
     const hasRepost = data.copy_history?.length
 
-    const getAttachments = (type: WallWallpostAttachmentType): WallWallpostAttachment[] =>
-      _.filter(data.attachments, { type })
+    const getAttachments = (type: WallWallpostAttachmentType | 'podcast') =>
+      _.filter(data.attachments, { type }) as WallWallpostAttachment[]
 
     const link = getAttachments('link')[0]?.link
     const poll = getAttachments('poll')[0]?.poll
+    const podcast = getAttachments('podcast')[0]?.podcast
+    const event = getAttachments('event')[0]?.event
+    const situationalTheme = getAttachments('situational_theme')[0]?.situational_theme
+    const donutLink = getAttachments('donut_link')[0]?.donut_link
+    // структура у них почти одна
+    const textlive =
+      getAttachments('textlive')[0]?.textlive || getAttachments('textpost')[0]?.textpost
+
     const photos = getAttachments('photo')
     const albumsCount = getAttachments('album').length
     const videos = getAttachments('video')
@@ -113,10 +127,27 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
     const hasMap = !!data?.geo
     const hasArticle = isArticleLink(link?.url)
 
+    const eventGroup = event && (apiStore.getOwner(-event.id) as GroupsGroupFull)
+
     const unsupportedAttachments = data.attachments
       ?.filter(
         (e) =>
-          !['link', 'poll', 'photo', 'video', 'audio', 'doc', 'market', 'album'].includes(e.type),
+          ![
+            'link',
+            'poll',
+            'photo',
+            'video',
+            'audio',
+            'doc',
+            'market',
+            'album',
+            'podcast',
+            'event',
+            'situational_theme',
+            'donut_link',
+            'textlive',
+            'textpost',
+          ].includes(e.type),
       )
       .map((e) => e.type)
 
@@ -302,6 +333,21 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                   href={link.url}
                 />
               )}
+              {!!podcast && (
+                <MediaBadge
+                  icon={<Icon24Podcast width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.podcast`}
+                  subject={podcast.title}
+                />
+              )}
+              {!!donutLink && (
+                <MediaBadge
+                  icon={<Icon28DonateOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.donutLink`}
+                  subject={donutLink.button.title}
+                  href={donutLink.button.action.url}
+                />
+              )}
               {poll && (
                 <MediaBadge
                   icon={<Icon16Poll />}
@@ -313,6 +359,29 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
                 <MediaBadge
                   icon={<Icon28LocationMapOutline width={16} height={16} />}
                   type={t`wallPost.mediaBadge.map`}
+                />
+              )}
+              {!!eventGroup && (
+                <MediaBadge
+                  icon={<Icon20CalendarOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.event`}
+                  subject={eventGroup.name}
+                />
+              )}
+              {!!situationalTheme && (
+                <MediaBadge
+                  icon={<Icon20LightbulbStarOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.situationalTheme`}
+                  subject={situationalTheme.title}
+                  href={situationalTheme.link}
+                />
+              )}
+              {!!textlive && (
+                <MediaBadge
+                  icon={<Icon24TextLiveOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.textlive`}
+                  subject={textlive.title}
+                  href={textlive.attach_url}
                 />
               )}
               {hasRepost && (

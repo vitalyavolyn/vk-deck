@@ -22,7 +22,7 @@ const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.newsfeed, false, 'addColumn.caption.newsfeed'],
   [ColumnType.wall, true],
   [ColumnType.likedPosts, false],
-  [ColumnType.bookmarks, false],
+  [ColumnType.bookmarks, false, 'addColumn.caption.bookmarks'],
 
   // оставлять в конце
   [ColumnType.rick, false],

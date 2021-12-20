@@ -43,6 +43,7 @@ translation:
       newsfeed: Новости, друзья, пользовательские списки
       # TODO:
       # wall: Посты на стене, предложка, отложенные
+      bookmarks: Можно выбрать определенную метку
 
   columns:
     newsfeed: Новости
@@ -98,6 +99,11 @@ translation:
       album_few: '{{count}} альбома'
       album_many: '{{count}} альбомов'
       map: Карта
+      podcast: Подкаст
+      event: Мероприятие
+      situationalTheme: Тренд # чего??
+      donutLink: Ссылка
+      textlive: Репортаж
 
   newsfeed:
     sources:

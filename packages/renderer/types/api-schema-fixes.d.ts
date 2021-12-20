@@ -1,4 +1,19 @@
-import { GroupsGroup, UsersUserFull } from '@vkontakte/api-schema-typescript'
+import { GroupsGroup, PhotosPhoto, UsersUserFull } from '@vkontakte/api-schema-typescript'
+import { PodcastCover } from '@vkontakte/api-schema-typescript/dist/objects/podcast/PodcastCover'
+
+interface TextliveBase {
+  attach_url: string
+  is_live: 1 | 0
+  online: number
+  text: string
+  textlive_id: number
+  textlive_owner_id: number
+  textpost_author_id: number
+  textpost_date: number
+  title: string
+  type: 'textlive' | 'textpost'
+  url: string
+}
 
 declare module '@vkontakte/api-schema-typescript' {
   interface NewsfeedItemWallpost {
@@ -28,5 +43,73 @@ declare module '@vkontakte/api-schema-typescript' {
   interface WallWallpostFull {
     // есть, когда пост создан удалением страницы
     final_post?: 0 | 1
+  }
+
+  interface WallWallpostAttachment {
+    podcast?: {
+      artist: string
+      date: number
+      duration: number
+      id: number
+      is_explicit: boolean
+      is_focus_track: boolean
+      no_search: 0 | 1
+      owner_id: number
+      podcast_info: {
+        cover: PodcastCover
+        description: string
+        is_favorite: boolean
+        plays: number
+      }
+      short_videos_allowed: boolean
+      stories_allowed: boolean
+      stories_cover_allowed: boolean
+      title: string
+      track_code: string
+      url: string
+    }
+    situational_theme?: {
+      can_delete: boolean
+      can_edit: boolean
+      category: string
+      cover_photo: PhotosPhoto
+      date: number
+      date_start: number
+      description: string
+      friends_posted: [] // TODO че там?
+      friends_posted_count: []
+      id: number
+      is_anonymous: boolean
+      link: string
+      owner_id: number
+      publications_count: number
+      squared_cover_photo: PhotosPhoto
+      title: string
+      views_count: number
+    }
+    donut_link?: {
+      action: {
+        target: 'internal'
+        type: 'open_url'
+        url: string
+      }
+      button: {
+        action: {
+          target: 'internal'
+          type: 'open_url'
+          url: string
+        }
+        title: string
+      }
+      donors: {
+        count: number
+        friends: [] // TODO: че там?
+        friends_count: number
+      }
+      owner_id: number
+      text: string
+    }
+    textlive?: TextliveBase & { is_live: 0 | 1; type: 'textlive' }
+    textpost?: TextliveBase & { type: 'textpost' }
   }
 }
