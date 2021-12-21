@@ -17,6 +17,7 @@ export interface PollProps {
   data: PollsPoll
 }
 
+// TODO: фоновые изображения
 export const Poll: FC<PollProps> = ({ data: initialData }) => {
   const { apiStore } = useStore()
   const { t } = useTranslation()
@@ -108,7 +109,7 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
                 </div>
               )
             )}
-            <div className="poll-options-option-progress-bar"></div>
+            <div className="poll-options-option-progress-bar" />
           </div>
         ))}
       </div>
