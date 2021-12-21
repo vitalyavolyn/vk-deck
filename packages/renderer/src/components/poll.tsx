@@ -40,9 +40,11 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
     setData(poll)
   }
 
+  console.log(data)
+
   const hasVoted = !!data.answer_ids?.length
-  const isClosed = !!data.end_date && data.end_date * 1000 < Date.now()
-  const clickable = data.can_vote && !hasVoted && !isClosed
+  const isClosed = !!data.end_date && !data.can_vote
+  const clickable = !hasVoted && !isClosed
 
   return (
     <div
