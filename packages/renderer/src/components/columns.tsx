@@ -11,7 +11,7 @@ export const Columns: FC = observer(() => {
   const { settingsStore } = useStore()
 
   return (
-    <div
+    <main
       className={classNames('columns', {
         'narrow-columns': settingsStore.columnSize === ColumnSize.narrow,
         'wide-columns': settingsStore.columnSize === ColumnSize.wide,
@@ -20,6 +20,6 @@ export const Columns: FC = observer(() => {
       {settingsStore.columns.map((e) => (
         <ColumnContainer columnId={e.id} key={e.id} />
       ))}
-    </div>
+    </main>
   )
 })

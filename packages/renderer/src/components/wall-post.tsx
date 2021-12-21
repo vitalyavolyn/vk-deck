@@ -63,7 +63,7 @@ import { MediaBadge } from './media-badge'
 
 import './wall-post.css'
 
-export interface WallPostProps extends HTMLAttributes<HTMLDivElement> {
+export interface WallPostProps extends HTMLAttributes<HTMLElement> {
   data: WallWallpostFull
 }
 
@@ -72,7 +72,7 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
 /**
  * Показывает запись по объекту записи на стене
  */
-export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> = observer(
+export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = observer(
   ({ data, measureRef, ...rest }) => {
     const { settings } = useColumn<Partial<HasImageGridSettings>>()
     const mediaSize = settings?.imageGridSize || ImageGridSize.medium
@@ -205,7 +205,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
     const isAd = !!data.marked_as_ads
 
     return (
-      <div
+      <article
         className={classNames('wall-post-wrap', {
           'blurred-ad': isAd && settingsStore.blurAds,
         })}
@@ -484,7 +484,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLDivElement> }> 
         {!!photos.length && mediaSize === ImageGridSize.large && (
           <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
         )}
-      </div>
+      </article>
     )
   },
 )

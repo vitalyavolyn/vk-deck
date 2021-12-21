@@ -55,7 +55,7 @@ export const Navbar: FC<NavbarProps> = observer(
 
     return (
       <Panel id="nav">
-        <div className="navbar">
+        <nav className="navbar">
           <Tappable
             onClick={onComposeButtonClick}
             activeMode="opacity"
@@ -99,7 +99,7 @@ export const Navbar: FC<NavbarProps> = observer(
               onClick={() => window.open(`https://vk.com/id${user.id}`)}
             />
           </div>
-        </div>
+        </nav>
       </Panel>
     )
   },

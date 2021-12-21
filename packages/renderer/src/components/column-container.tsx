@@ -31,9 +31,9 @@ export const ColumnContainer: FC<ColumnContainerProps> = ({ columnId }) => {
 
   return (
     <Context.Provider value={column}>
-      <div className="column" data-id={columnId}>
+      <section className="column" data-id={columnId}>
         {Component && <Component />}
-      </div>
+      </section>
     </Context.Provider>
   )
 }
