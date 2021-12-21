@@ -1,6 +1,6 @@
 .poll {
   display: flex;
-  max-width: 50vw;
+  max-width: min(50vw, 400px);
   min-height: 200px;
   flex-direction: column;
   align-items: center;
