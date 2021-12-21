@@ -137,7 +137,10 @@ translation:
   poll:
     anonymous: Анонимный опрос
     public: Публичный опрос
+    votedCount_zero: Никто не проголосовал
     votedCount_one: Проголосовал {{count}} человек
     votedCount_few: Проголосовали {{count}} человека
     votedCount_many: Проголосовали {{count}} человек
     vote: Проголосовать
+    disableUnvote: переголосовать нельзя
+    closed: завершён

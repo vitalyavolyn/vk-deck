@@ -17,7 +17,6 @@ export interface PollProps {
   data: PollsPoll
 }
 
-// TODO: иногда в опросах нельзя голосовать
 export const Poll: FC<PollProps> = ({ data: initialData }) => {
   const { apiStore } = useStore()
   const { t } = useTranslation()
@@ -26,13 +25,9 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
 
   const ownerName = getName(apiStore.getOwner(data.author_id ?? data.owner_id))
 
-  console.log(data)
-
   const pollTypeString = data.anonymous ? 'poll.anonymous' : 'poll.public'
 
   const photos = data.friends?.map((e) => apiStore.getOwner(e.id)).map((e) => e.photo_50!)
-
-  const hasVoted = !!data.answer_ids?.length
 
   const vote = async (id?: number) => {
     const poll = await apiStore.api.call<PollsGetByIdResponse, PollsAddVoteParams>('execute.vote', {
@@ -44,7 +39,10 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
     setData(poll)
   }
 
-  // TODO: multichoice
+  const hasVoted = !!data.answer_ids?.length
+  const isClosed = data.closed || data.end_date * 1000 < Date.now()
+  const clickable = data.can_vote && !hasVoted && !isClosed
+
   return (
     <div
       className={classNames('poll', {
@@ -55,66 +53,66 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
           // TODO: картинки
           '--color-1': '#' + data.background?.points?.[0].color,
           '--color-2': '#' + data.background?.points?.[1].color,
+          '--angle': data.background?.angle + 'deg',
         } as CSSProperties
       }
     >
       <div className="poll-header">
         <div className="poll-question">{data.question}</div>
         <div className="poll-owner">{ownerName}</div>
-        <div className="poll-type">{t(pollTypeString)}</div>
+        <div className="poll-type">
+          {t(pollTypeString)}
+          {data.disable_unvote && <span className="disable-unvote">{t`poll.disableUnvote`}</span>}
+          {isClosed && <span className="poll-closed">{t`poll.closed`}</span>}
+        </div>
       </div>
       <div className="poll-options">
-        {data.answers.map((e) => {
-          const clickable = data.can_vote && !hasVoted
+        {data.answers.map((e) => (
+          <div
+            className={classNames('poll-options-option', {
+              clickable,
+            })}
+            style={
+              {
+                '--rate': e.rate + '%',
+              } as CSSProperties
+            }
+            key={e.id}
+            onClick={() => {
+              if (!clickable) return
 
-          return (
-            <div
-              className={classNames('poll-options-option', {
-                clickable,
-                voted: hasVoted,
-              })}
-              style={
-                {
-                  '--rate': e.rate + '%',
-                } as CSSProperties
-              }
-              key={e.id}
-              onClick={() => {
-                if (!clickable) return
-
-                if (data.multiple) {
-                  setSelectedOptions(
-                    !selectedOptions.includes(e.id)
-                      ? [...selectedOptions, e.id]
-                      : selectedOptions.filter((id) => id !== e.id),
-                  )
-                } else {
-                  vote(e.id)
-                }
-              }}
-            >
-              <div className="poll-options-option-text">
-                {e.text}
-                <span className="votes-count">{e.votes}</span>
-              </div>
-              {hasVoted ? (
-                <div className="poll-options-option-percent">
-                  {data.answer_ids?.includes(e.id) && <Icon16Done />}
-                  {e.rate}%
-                </div>
-              ) : (
-                data.multiple && (
-                  <div className="poll-options-option-checkbox">
-                    {selectedOptions.includes(e.id) ? <Icon20CheckBoxOn /> : <Icon20CheckBoxOff />}
-                  </div>
+              if (data.multiple) {
+                setSelectedOptions(
+                  !selectedOptions.includes(e.id)
+                    ? [...selectedOptions, e.id]
+                    : selectedOptions.filter((id) => id !== e.id),
                 )
-              )}
-              <div className="poll-options-option-progress-bar"></div>
+              } else {
+                vote(e.id)
+              }
+            }}
+          >
+            <div className="poll-options-option-text">
+              {e.text}
+              <span className="votes-count">{e.votes}</span>
             </div>
-          )
-        })}
+            {!clickable ? (
+              <div className="poll-options-option-percent">
+                {data.answer_ids?.includes(e.id) && <Icon16Done />}
+                {e.rate}%
+              </div>
+            ) : (
+              data.multiple && (
+                <div className="poll-options-option-checkbox">
+                  {selectedOptions.includes(e.id) ? <Icon20CheckBoxOn /> : <Icon20CheckBoxOff />}
+                </div>
+              )
+            )}
+            <div className="poll-options-option-progress-bar"></div>
+          </div>
+        ))}
       </div>
-      {!!selectedOptions.length && !hasVoted && (
+      {!!selectedOptions.length && clickable && (
         <div className="poll-vote-button">
           <Button onClick={() => vote()}>{t`poll.vote`}</Button>
         </div>
