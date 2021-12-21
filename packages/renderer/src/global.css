@@ -12,6 +12,7 @@ body {
   --link-hover-color: white;
 
   background-color: var(--background_page);
+  overflow-y: hidden;
 }
 
 body[scheme='vkcom_dark'] {
