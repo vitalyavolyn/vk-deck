@@ -1,6 +1,12 @@
-import { CSSProperties, FC } from 'react'
-import { PollsPoll } from '@vkontakte/api-schema-typescript'
+import { CSSProperties, FC, useState } from 'react'
+import {
+  PollsAddVoteParams,
+  PollsGetByIdResponse,
+  PollsPoll,
+} from '@vkontakte/api-schema-typescript'
+import { Icon16Done } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
+import { UsersStack } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { useStore } from '@/hooks/use-store'
 import { getName } from '@/utils/get-name'
@@ -11,15 +17,33 @@ export interface PollProps {
   data: PollsPoll
 }
 
-export const Poll: FC<PollProps> = ({ data }) => {
+// TODO: иногда в опросах нельзя голосовать
+export const Poll: FC<PollProps> = ({ data: initialData }) => {
   const { apiStore } = useStore()
   const { t } = useTranslation()
-  const ownerName = getName(apiStore.getOwner(data.owner_id))
+  const [data, setData] = useState(initialData)
+
+  const ownerName = getName(apiStore.getOwner(data.author_id ?? data.owner_id))
 
   console.log(data)
 
   const pollTypeString = data.anonymous ? 'poll.anonymous' : 'poll.public'
 
+  const photos = data.friends?.map((e) => apiStore.getOwner(e.id)).map((e) => e.photo_50!)
+
+  const hasVoted = !!data.answer_ids?.length
+
+  const vote = async (id: number) => {
+    const poll = await apiStore.api.call<PollsGetByIdResponse, PollsAddVoteParams>('execute.vote', {
+      answer_ids: [id].toString(),
+      owner_id: data.owner_id,
+      poll_id: data.id,
+    })
+
+    setData(poll)
+  }
+
+  // TODO: multichoice
   return (
     <div
       className={classNames('poll', {
@@ -38,13 +62,41 @@ export const Poll: FC<PollProps> = ({ data }) => {
         <div className="poll-type">{t(pollTypeString)}</div>
       </div>
       <div className="poll-options">
-        {data.answers.map((e) => (
-          <div className="poll-options-option" key={e.id}>
-            <div className="poll-options-option-text">{e.text}</div>
-          </div>
-        ))}
+        {data.answers.map((e) => {
+          const clickable = data.can_vote && !hasVoted
+
+          return (
+            <div
+              className={classNames('poll-options-option', {
+                clickable,
+                voted: hasVoted,
+              })}
+              style={
+                {
+                  '--rate': e.rate + '%',
+                } as CSSProperties
+              }
+              key={e.id}
+              onClick={() => {
+                clickable && vote(e.id)
+              }}
+            >
+              <div className="poll-options-option-text">
+                {e.text}
+                <span className="votes-count">{e.votes}</span>
+              </div>
+              <div className="poll-options-option-percent">
+                {data.answer_ids?.includes(e.id) && <Icon16Done />}
+                {e.rate}%
+              </div>
+              <div className="poll-options-option-progress-bar"></div>
+            </div>
+          )
+        })}
       </div>
-      <div className="poll-footer"></div>
+      <div className="poll-footer">
+        <UsersStack photos={photos}>{t('poll.votedCount', { count: data.votes })}</UsersStack>
+      </div>
     </div>
   )
 }

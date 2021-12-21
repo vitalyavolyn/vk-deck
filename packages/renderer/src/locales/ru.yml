@@ -137,3 +137,6 @@ translation:
   poll:
     anonymous: Анонимный опрос
     public: Публичный опрос
+    votedCount_one: Проголосовал {{count}} человек
+    votedCount_few: Проголосовали {{count}} человека
+    votedCount_many: Проголосовали {{count}} человек
