@@ -8,6 +8,7 @@
   padding: 6px 16px 16px;
   border-radius: 10px;
   color: var(--text_primary);
+  gap: 14px;
 
   --text_primary: white;
 
@@ -20,7 +21,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 30px 40px;
+    padding: 30px 40px 20px;
     text-align: center;
 
     .poll-question {
@@ -81,6 +82,12 @@
         }
       }
 
+      &-checkbox {
+        display: flex;
+        align-items: center;
+        padding-right: 8px;
+      }
+
       &-percent {
         display: flex;
         padding: 6px 10px 8px 0;
@@ -101,12 +108,8 @@
     }
   }
 
-  .poll-footer {
-    padding-top: 16px;
-
-    .vkuiUsersStack {
-      color: var(--text_primary);
-      opacity: 0.85;
-    }
+  .poll-footer .vkuiUsersStack {
+    color: var(--text_primary);
+    opacity: 0.85;
   }
 }

@@ -140,3 +140,4 @@ translation:
     votedCount_one: Проголосовал {{count}} человек
     votedCount_few: Проголосовали {{count}} человека
     votedCount_many: Проголосовали {{count}} человек
+    vote: Проголосовать

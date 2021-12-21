@@ -4,9 +4,9 @@ import {
   PollsGetByIdResponse,
   PollsPoll,
 } from '@vkontakte/api-schema-typescript'
-import { Icon16Done } from '@vkontakte/icons'
+import { Icon16Done, Icon20CheckBoxOff, Icon20CheckBoxOn } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
-import { UsersStack } from '@vkontakte/vkui'
+import { Button, UsersStack } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { useStore } from '@/hooks/use-store'
 import { getName } from '@/utils/get-name'
@@ -22,6 +22,7 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
   const { apiStore } = useStore()
   const { t } = useTranslation()
   const [data, setData] = useState(initialData)
+  const [selectedOptions, setSelectedOptions] = useState<number[]>([])
 
   const ownerName = getName(apiStore.getOwner(data.author_id ?? data.owner_id))
 
@@ -33,9 +34,9 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
 
   const hasVoted = !!data.answer_ids?.length
 
-  const vote = async (id: number) => {
+  const vote = async (id?: number) => {
     const poll = await apiStore.api.call<PollsGetByIdResponse, PollsAddVoteParams>('execute.vote', {
-      answer_ids: [id].toString(),
+      answer_ids: (id ?? selectedOptions).toString(),
       owner_id: data.owner_id,
       poll_id: data.id,
     })
@@ -79,22 +80,45 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
               }
               key={e.id}
               onClick={() => {
-                clickable && vote(e.id)
+                if (!clickable) return
+
+                if (data.multiple) {
+                  setSelectedOptions(
+                    !selectedOptions.includes(e.id)
+                      ? [...selectedOptions, e.id]
+                      : selectedOptions.filter((id) => id !== e.id),
+                  )
+                } else {
+                  vote(e.id)
+                }
               }}
             >
               <div className="poll-options-option-text">
                 {e.text}
                 <span className="votes-count">{e.votes}</span>
               </div>
-              <div className="poll-options-option-percent">
-                {data.answer_ids?.includes(e.id) && <Icon16Done />}
-                {e.rate}%
-              </div>
+              {hasVoted ? (
+                <div className="poll-options-option-percent">
+                  {data.answer_ids?.includes(e.id) && <Icon16Done />}
+                  {e.rate}%
+                </div>
+              ) : (
+                data.multiple && (
+                  <div className="poll-options-option-checkbox">
+                    {selectedOptions.includes(e.id) ? <Icon20CheckBoxOn /> : <Icon20CheckBoxOff />}
+                  </div>
+                )
+              )}
               <div className="poll-options-option-progress-bar"></div>
             </div>
           )
         })}
       </div>
+      {!!selectedOptions.length && !hasVoted && (
+        <div className="poll-vote-button">
+          <Button onClick={() => vote()}>{t`poll.vote`}</Button>
+        </div>
+      )}
       <div className="poll-footer">
         <UsersStack photos={photos}>{t('poll.votedCount', { count: data.votes })}</UsersStack>
       </div>
