@@ -95,11 +95,12 @@ export const NewsfeedSearchColumn: FC = observer(() => {
   }, [])
 
   useEffect(() => {
-    if (timerRef.current) {
-      startTimeRef.current = 0
-      getPosts()
-      setFeedItems([])
-    }
+    // TODO: тут был иф, без которого поиск запускается дважды?
+    //  если я сделаю обязательное заполнение запроса перед добавлением,
+    //  можно вернуть
+    startTimeRef.current = 0
+    getPosts()
+    setFeedItems([])
   }, [settings.query])
 
   const updateQuery = _.debounce((q: string) => (settings.query = q), 300)
@@ -138,6 +139,7 @@ export const NewsfeedSearchColumn: FC = observer(() => {
         />
       ) : (
         // TODO: плейсхолдер, если нет запроса?
+        //  либо не позволять добавлять колонку без запроса
         <PanelSpinner />
       )}
     </>
