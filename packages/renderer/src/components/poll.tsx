@@ -51,6 +51,7 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
       })}
       style={
         {
+          // TODO: картинки
           '--color-1': '#' + data.background?.points?.[0].color,
           '--color-2': '#' + data.background?.points?.[1].color,
         } as CSSProperties
