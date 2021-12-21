@@ -4,6 +4,7 @@ import { autorun, makeAutoObservable } from 'mobx'
 import { v4 as uuidv4 } from 'uuid'
 import { BookmarksColumnSettings } from '@/components/columns/bookmarks-column'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
+import { NewsfeedSearchColumnSettings } from '@/components/columns/newsfeed-search-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
 import { RootStore } from './root-store'
 
@@ -15,6 +16,7 @@ export enum ColumnType {
   wall = 'wall',
   likedPosts = 'likedPosts',
   bookmarks = 'bookmarks',
+  newsfeedSearch = 'newsfeedSearch',
 }
 
 export interface Settings {
@@ -66,12 +68,18 @@ export interface IBookmarksColumn extends BaseColumn {
   settings: BookmarksColumnSettings
 }
 
+export interface INewsfeedSearchColumn extends BaseColumn {
+  type: ColumnType.newsfeedSearch
+  settings: NewsfeedSearchColumnSettings
+}
+
 export type Column =
   | INewsfeedColumn
   | IRickColumn
   | IWallColumn
   | ILikedPostsColumn
   | IBookmarksColumn
+  | INewsfeedSearchColumn
 
 export enum ColumnSize {
   narrow,

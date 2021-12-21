@@ -23,6 +23,7 @@ const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.wall, true],
   [ColumnType.likedPosts, false],
   [ColumnType.bookmarks, false, 'addColumn.caption.bookmarks'],
+  [ColumnType.newsfeedSearch, false],
 
   // оставлять в конце
   [ColumnType.rick, false],
@@ -39,7 +40,7 @@ export interface SetupProps {
   addColumn: AddColumn
 }
 
-const defaultImageGridSettings: ColumnImageGridSettings = {
+export const defaultImageGridSettings: ColumnImageGridSettings = {
   imageGridSize: ImageGridSize.medium,
 }
 
@@ -66,6 +67,16 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
           settings: {
             ...defaultImageGridSettings,
             source: '',
+          },
+        })
+
+      case ColumnType.newsfeedSearch:
+        return settingsStore.columns.push({
+          id: uuidv4(),
+          type,
+          settings: {
+            ...defaultImageGridSettings,
+            query: '',
           },
         })
 

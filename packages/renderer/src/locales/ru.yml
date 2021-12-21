@@ -51,6 +51,7 @@ translation:
     wall: Стена
     likedPosts: Понравившиеся записи
     bookmarks: Закладки
+    newsfeedSearch: Глобальный поиск
 
   time:
     relativeDays: '{{d}}д'
@@ -130,6 +131,9 @@ translation:
     settings:
       tag: Метка
       clearTag: Не выбрана
+
+  newsfeedSearch:
+    placeholder: Введите запрос
 
   viewer:
     photoCounter: Фотография {{index}} из {{total}}

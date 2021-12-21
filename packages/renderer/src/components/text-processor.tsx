@@ -1,4 +1,10 @@
 import { FC, memo, ReactNode } from 'react'
+import _ from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
+import { defaultImageGridSettings } from '@/components/modals/add-column-modal'
+import { useColumn } from '@/hooks/use-column'
+import { useStore } from '@/hooks/use-store'
+import { BaseColumn, ColumnType } from '@/store/settings-store'
 
 interface TextProcessorProps {
   content: string
@@ -13,6 +19,8 @@ const comboRegex = new RegExp(`(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtag
 
 export const TextProcessor: FC<TextProcessorProps> = memo(({ content }) => {
   const children: ReactNode[] = []
+  const { settingsStore } = useStore()
+  const { id } = useColumn<BaseColumn>()
 
   for (const [index, part] of content.split(comboRegex).entries()) {
     let element
@@ -39,8 +47,19 @@ export const TextProcessor: FC<TextProcessorProps> = memo(({ content }) => {
       element = (
         <div className="link-highlight" key={index}>
           <a
-            target="_blank"
-            href={`https://vk.com/feed?section=search&c[q]=${encodeURIComponent(part)}`}
+            href="#"
+            onClick={() => {
+              const currentIndex = _.findIndex(settingsStore.columns, { id })
+
+              settingsStore.columns.splice(currentIndex + 1, 0, {
+                id: uuidv4(),
+                type: ColumnType.newsfeedSearch,
+                settings: {
+                  ...defaultImageGridSettings,
+                  query: part,
+                },
+              })
+            }}
           >
             {part}
           </a>

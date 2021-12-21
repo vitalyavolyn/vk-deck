@@ -28,7 +28,10 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
 
   const pollTypeString = data.anonymous ? 'poll.anonymous' : 'poll.public'
 
-  const photos = data.friends?.map((e) => apiStore.getOwner(e.id)).map((e) => e.photo_50!)
+  const photos = data.friends
+    ?.map((e) => apiStore.getOwner(e.id))
+    .map((e) => (e ? e.photo_50 : undefined))
+    .filter(Boolean) as string[]
 
   const vote = async (id?: number) => {
     const poll = await apiStore.api.call<PollsGetByIdResponse, PollsAddVoteParams>('execute.vote', {
@@ -39,8 +42,6 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
 
     setData(poll)
   }
-
-  console.log(data)
 
   const hasVoted = !!data.answer_ids?.length
   const isClosed = !!data.end_date && !data.can_vote

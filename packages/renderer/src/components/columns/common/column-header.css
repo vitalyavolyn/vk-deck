@@ -23,6 +23,14 @@
     .vkuiSubhead {
       color: var(--text_secondary);
     }
+
+    .vkuiInput {
+      margin-right: 6px;
+
+      input {
+        height: 38px;
+      }
+    }
   }
 
   .column-settings-toggle {

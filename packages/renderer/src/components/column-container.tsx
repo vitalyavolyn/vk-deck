@@ -5,6 +5,7 @@ import { ColumnType } from '@/store/settings-store'
 import { BookmarksColumn } from './columns/bookmarks-column'
 import { LikedPostsColumn } from './columns/liked-posts-column'
 import { NewsfeedColumn } from './columns/newsfeed-column'
+import { NewsfeedSearchColumn } from './columns/newsfeed-search-column'
 import { RickColumn } from './columns/rick-column'
 import { WallColumn } from './columns/wall-column'
 
@@ -16,6 +17,7 @@ const columnComponents = {
   [ColumnType.wall]: WallColumn,
   [ColumnType.likedPosts]: LikedPostsColumn,
   [ColumnType.bookmarks]: BookmarksColumn,
+  [ColumnType.newsfeedSearch]: NewsfeedSearchColumn,
 }
 
 interface ColumnContainerProps {

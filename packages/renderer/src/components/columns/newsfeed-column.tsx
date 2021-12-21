@@ -131,20 +131,6 @@ export const NewsfeedColumn: FC = observer(() => {
     }
   }, [settings.source])
 
-  // помогает с двойными запросами в режиме разработки
-  // выделю это в хук, принимающий реф с таймером
-  //
-  // TODO: при обновлении внутреннего компонента
-  //  лента перестает обновляться
-  if (import.meta.hot) {
-    import.meta.hot.on('vite:beforeUpdate', () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current)
-        timerRef.current = null
-      }
-    })
-  }
-
   const possibleSources = [
     { label: t`newsfeed.sources.feed`, value: '' },
     { label: t`newsfeed.sources.friends`, value: 'friends' },
