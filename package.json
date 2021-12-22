@@ -82,9 +82,9 @@
     "vite": "^2.7.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.16.3",
+    "@babel/runtime": "^7.16.5",
     "@types/lodash": "^4.14.178",
-    "@vkontakte/icons": "^1.138.0",
+    "@vkontakte/icons": "^1.139.0",
     "@vkontakte/vk-bridge": "^2.4.8",
     "@vkontakte/vkjs": "^0.22.1",
     "@vkontakte/vkui": "^4.23.0",
@@ -94,14 +94,14 @@
     "electron-context-menu": "^3.1.1",
     "electron-updater": "^4.6.1",
     "electron-window-state": "^5.0.3",
-    "i18next": "^21.6.0",
+    "i18next": "^21.6.3",
     "lodash": "^4.17.21",
-    "mobx": "^6.3.8",
+    "mobx": "^6.3.9",
     "mobx-react-lite": "^3.2.2",
     "react": "^17.0.2",
     "react-cool-virtual": "^0.5.5",
     "react-dom": "^17.0.2",
-    "react-i18next": "^11.14.3",
+    "react-i18next": "^11.15.1",
     "uuid": "^8.3.2"
   }
 }
