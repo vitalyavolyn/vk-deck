@@ -8,24 +8,42 @@ import { BaseColumn, ColumnType } from '@/store/settings-store'
 
 interface TextProcessorProps {
   content: string
+  // TODO: может, просто всегда сделать true? так нельзя разве что в сообщениях
+  parseInternalLinks?: boolean
 }
 
 // TODO: refactor (делает дело, но странно выглядит)
 
 const linkRegex = '(https?://[\\w#%+.:=@~-]{1,256}.[\\d()a-z]{1,6}\\b[\\w#%&()+./:=?@~-]*)'
 const mentionRegex = '(\\[(?:club|public|id)(?:\\d+)\\|(?:.+?)\\])'
+const internalLinkRegex = '(\\[(?:https?:\\/\\/)?vk\\.com(?:\\/.*)\\|(?:.+?)\\])'
 const hashtagRegex = '(#[^\\s!#$%&()*:^[\\]]+)'
-const comboRegex = new RegExp(`(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`, 'gi')
 
-export const TextProcessor: FC<TextProcessorProps> = memo(({ content }) => {
+export const TextProcessor: FC<TextProcessorProps> = memo(({ content, parseInternalLinks }) => {
   const children: ReactNode[] = []
   const { settingsStore } = useStore()
   const { id } = useColumn<BaseColumn>()
+  const comboRegex = parseInternalLinks
+    ? new RegExp(
+        `(?:${internalLinkRegex})|(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`,
+        'gi',
+      )
+    : new RegExp(`(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`, 'gi')
 
   for (const [index, part] of content.split(comboRegex).entries()) {
     let element
 
-    if (new RegExp(linkRegex).test(part)) {
+    if (parseInternalLinks && new RegExp(internalLinkRegex).test(part)) {
+      const [, path, text] = /\[(?:https?:\/\/)?vk\.com(\/.*)\|(.+?)]/i.exec(part)!
+
+      element = (
+        <div className="link-highlight" key={index}>
+          <a target="_blank" href={`https://vk.com/${path}`}>
+            {text}
+          </a>
+        </div>
+      )
+    } else if (new RegExp(linkRegex).test(part)) {
       element = (
         <div className="link-highlight" key={index}>
           <a target="_blank" href={part}>

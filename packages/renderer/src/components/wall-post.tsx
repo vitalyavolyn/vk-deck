@@ -273,7 +273,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
               </div>
             )}
             <div className="wall-post-content" ref={contentRef}>
-              <TextProcessor content={data.text || ''} />
+              <TextProcessor content={data.text || ''} parseInternalLinks />
             </div>
             {!!photos.length && mediaSize === ImageGridSize.medium && (
               <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
