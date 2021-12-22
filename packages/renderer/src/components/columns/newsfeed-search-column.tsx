@@ -7,8 +7,6 @@ import {
 import { Input, PanelSpinner } from '@vkontakte/vkui'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { useTranslation } from 'react-i18next'
-import { ColumnSettings } from '@/components/columns/common/column-settings'
 import { columnIcons } from '@/components/navbar'
 import { VirtualScrollWall } from '@/components/virtual-scroll-wall'
 import { useColumn } from '@/hooks/use-column'
@@ -17,9 +15,10 @@ import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, INewsfeedSearchColumn } from '@/store/settings-store'
 import { getPostKey } from '@/utils/get-post-key'
 import { ColumnHeader } from './common/column-header'
+import { ColumnSettings } from './common/column-settings'
 
 export interface NewsfeedSearchColumnSettings extends ColumnImageGridSettings {
-  query?: string
+  query: string
 }
 
 const Icon = columnIcons[ColumnType.newsfeedSearch]
@@ -28,7 +27,6 @@ export const NewsfeedSearchColumn: FC = observer(() => {
   const { settings, id } = useColumn<INewsfeedSearchColumn>()
 
   const { apiStore, snackbarStore, settingsStore } = useStore()
-  const { t } = useTranslation()
 
   const [feedItems, setFeedItems] = useState<WallWallpostFull[]>([])
   const [showSettings, setShowSettings] = useState(false)
@@ -41,7 +39,6 @@ export const NewsfeedSearchColumn: FC = observer(() => {
   const { canScroll, onScroll, triggerScroll, scrollToRef } = useScrollToTop()
 
   const getPosts = async (withOffset = false) => {
-    if (!settings.query) return
     if (withOffset) setCanLoadMore(false)
     if (timerRef.current) {
       clearTimeout(timerRef.current)
@@ -118,10 +115,19 @@ export const NewsfeedSearchColumn: FC = observer(() => {
         <Input
           className="search-input"
           defaultValue={settings.query}
-          onChange={(e) => {
+          onBlur={(e) => {
+            if (!e.target.value) {
+              e.target.value = settings.query
+              return
+            }
+
             updateQuery(e.target.value)
           }}
-          placeholder={t`newsfeedSearch.placeholder`}
+          onKeyDown={(e) => {
+            if (['Escape', 'Enter'].includes(e.key)) {
+              e.currentTarget.blur()
+            }
+          }}
         />
       </ColumnHeader>
       <ColumnSettings show={showSettings} imageGridSettings />
@@ -138,8 +144,7 @@ export const NewsfeedSearchColumn: FC = observer(() => {
           scrollToRef={scrollToRef}
         />
       ) : (
-        // TODO: плейсхолдер, если нет запроса?
-        //  либо не позволять добавлять колонку без запроса
+        // TODO: а если ничего не найдется?
         <PanelSpinner />
       )}
     </>

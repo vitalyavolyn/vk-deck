@@ -14,7 +14,7 @@ interface TextProcessorProps {
 
 const linkRegex = '(https?://[\\w#%+.:=@~-]{1,256}.[\\d()a-z]{1,6}\\b[\\w#%&()+./:=?@~-]*)'
 const mentionRegex = '(\\[(?:club|public|id)(?:\\d+)\\|(?:.+?)\\])'
-const hashtagRegex = '(#[^\\s!#$%&()*^]+)'
+const hashtagRegex = '(#[^\\s!#$%&()*:^[\\]]+)'
 const comboRegex = new RegExp(`(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`, 'gi')
 
 export const TextProcessor: FC<TextProcessorProps> = memo(({ content }) => {

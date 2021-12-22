@@ -132,7 +132,7 @@ translation:
       tag: Метка
       clearTag: Не выбрана
 
-  newsfeedSearch:
+  newsfeedSearchSetup:
     placeholder: Введите запрос
 
   viewer:

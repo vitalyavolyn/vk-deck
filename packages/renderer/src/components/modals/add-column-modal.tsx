@@ -3,7 +3,9 @@ import { classNames } from '@vkontakte/vkjs'
 import { Avatar, List, RichCell } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
+import { NewsfeedSearchColumnSetup } from '@/components/column-setup/newsfeed-search-column-setup'
 import { WallColumnSetup } from '@/components/column-setup/wall-column-setup'
+import { NewsfeedSearchColumnSettings } from '@/components/columns/newsfeed-search-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
 import { ModalProps } from '@/components/modal-container'
 import { columnIcons } from '@/components/navbar'
@@ -23,7 +25,7 @@ const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.wall, true],
   [ColumnType.likedPosts, false],
   [ColumnType.bookmarks, false, 'addColumn.caption.bookmarks'],
-  [ColumnType.newsfeedSearch, false],
+  [ColumnType.newsfeedSearch, true],
 
   // оставлять в конце
   [ColumnType.rick, false],
@@ -33,6 +35,10 @@ export type WithoutImageGridSettings<T extends ColumnImageGridSettings> = Omit<T
 
 export interface AddColumn {
   (type: ColumnType.wall, settings: WithoutImageGridSettings<WallColumnSettings>): void
+  (
+    type: ColumnType.newsfeedSearch,
+    settings: WithoutImageGridSettings<NewsfeedSearchColumnSettings>,
+  ): void
   (type: ColumnType): void
 }
 
@@ -70,22 +76,13 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
           },
         })
 
-      case ColumnType.newsfeedSearch:
-        return settingsStore.columns.push({
-          id: uuidv4(),
-          type,
-          settings: {
-            ...defaultImageGridSettings,
-            query: '',
-          },
-        })
-
       case ColumnType.rick:
         return settingsStore.columns.push({
           id: uuidv4(),
           type,
         })
 
+      case ColumnType.newsfeedSearch:
       case ColumnType.wall:
         return settingsStore.columns.push({
           id: uuidv4(),
@@ -155,6 +152,18 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
             onBackButtonClick={() => setSelectedColumn(null)}
           >{t`columns.wall`}</ModalHeader>
           <WallColumnSetup addColumn={addColumn} />
+        </div>
+      )}
+      {(selectedColumn === 'newsfeedSearch' || animatingColumn === 'newsfeedSearch') && (
+        <div
+          className={classNames('modal add-column-modal', {
+            'second-screen-active': !!selectedColumn,
+          })}
+        >
+          <ModalHeader
+            onBackButtonClick={() => setSelectedColumn(null)}
+          >{t`columns.newsfeedSearch`}</ModalHeader>
+          <NewsfeedSearchColumnSetup addColumn={addColumn} />
         </div>
       )}
     </>
