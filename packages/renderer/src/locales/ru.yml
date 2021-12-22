@@ -73,6 +73,10 @@ translation:
       copyLink: Копировать ссылку
       openInBrowser: Открыть в браузере
       delete: Удалить
+      addBookmark: Добавить в закладки
+      removeBookmark: Убрать из закладок
+      addBookmarkSuccess: Пост добавлен в закладки
+      removeBookmarkSuccess: Пост удален из закладок
     linkCopied: Ссылка скопирована
     ad: Реклама
     verified: Подтвержденная страница

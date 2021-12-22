@@ -15,13 +15,13 @@ import './poll.css'
 
 export interface PollProps {
   data: PollsPoll
+  updateData: (poll: PollsPoll) => void
 }
 
 // TODO: фоновые изображения
-export const Poll: FC<PollProps> = ({ data: initialData }) => {
+export const Poll: FC<PollProps> = ({ data, updateData }) => {
   const { apiStore } = useStore()
   const { t } = useTranslation()
-  const [data, setData] = useState(initialData)
   const [selectedOptions, setSelectedOptions] = useState<number[]>([])
 
   const ownerName = getName(apiStore.getOwner(data.author_id ?? data.owner_id))
@@ -40,7 +40,7 @@ export const Poll: FC<PollProps> = ({ data: initialData }) => {
       poll_id: data.id,
     })
 
-    setData(poll)
+    updateData(poll)
   }
 
   const hasVoted = !!data.answer_ids?.length

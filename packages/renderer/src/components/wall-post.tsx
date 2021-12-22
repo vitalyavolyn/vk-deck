@@ -1,11 +1,16 @@
-import { FC, HTMLAttributes, Ref, useEffect, useRef, useState } from 'react'
+import { FC, HTMLAttributes, Ref, useEffect, useRef } from 'react'
 import {
+  FaveAddPostParams,
+  FaveAddPostResponse,
+  FaveRemovePostParams,
+  FaveRemovePostResponse,
   GroupsGroupFull,
   LikesAddParams,
   LikesAddResponse,
   LikesDeleteParams,
   LikesDeleteResponse,
   PhotosPhoto,
+  PollsPoll,
   WallWallpostAttachment,
   WallWallpostAttachmentType,
   WallWallpostFull,
@@ -13,6 +18,7 @@ import {
 import {
   Icon12User,
   Icon16ArticleOutline,
+  Icon16BookmarkOutline,
   Icon16Done,
   Icon16LinkOutline,
   Icon16MarketOutline,
@@ -67,6 +73,7 @@ import './wall-post.css'
 
 export interface WallPostProps extends HTMLAttributes<HTMLElement> {
   data: WallWallpostFull
+  updateData?: (data: WallWallpostFull) => void
 }
 
 const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
@@ -75,7 +82,7 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
  * Показывает запись по объекту записи на стене
  */
 export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = observer(
-  ({ data, measureRef, ...rest }) => {
+  ({ data, measureRef, updateData, ...rest }) => {
     const { settings } = useColumn<Partial<HasImageGridSettings>>()
     const mediaSize = settings?.imageGridSize || ImageGridSize.medium
     const { apiStore, snackbarStore, settingsStore } = useStore()
@@ -83,9 +90,6 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
 
     const contentRef = useRef<HTMLDivElement>(null)
     const { t } = useTranslation()
-
-    const [likeState, setLikeState] = useState(!!data.likes?.user_likes)
-    const [likeCount, setLikeCount] = useState(data.likes?.count)
 
     useEffect(() => {
       if (contentRef.current) {
@@ -168,29 +172,34 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
         item_id: data.id!,
       }
 
+      const updateLikeState = (state: boolean) =>
+        updateData?.(_.set({ ...data }, 'likes.user_likes', state))
+      const updateLikeCount = (count: number) =>
+        updateData?.(_.set({ ...data }, 'likes.count', count))
+
       // следующие две ветки почти одинаковые, как-то тупо
-      if (!likeState) {
-        setLikeState(true)
+      if (!data.likes?.user_likes) {
+        updateLikeState(true)
         try {
           const { likes } = await api.call<LikesAddResponse, LikesAddParams>('likes.add', params)
-          setLikeCount(likes)
+          updateLikeCount(likes)
         } catch (error) {
           console.error(error)
           if (error instanceof Error) snackbarStore.showError(error.toString())
-          setLikeState(false)
+          updateLikeState(false)
         }
       } else {
-        setLikeState(false)
+        updateLikeState(false)
         try {
           const { likes } = await api.call<LikesDeleteResponse, LikesDeleteParams>(
             'likes.delete',
             params,
           )
-          setLikeCount(likes)
+          updateLikeCount(likes)
         } catch (error) {
           console.error(error)
           if (error instanceof Error) snackbarStore.showError(error.toString())
-          setLikeState(true)
+          updateLikeState(true)
         }
       }
 
@@ -351,7 +360,19 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                 />
               )}
               {poll && (
-                <RichTooltip content={<Poll data={poll} />}>
+                <RichTooltip
+                  content={
+                    <Poll
+                      data={poll}
+                      updateData={(poll: PollsPoll) => {
+                        const pollIndex = _.findIndex(data.attachments, { type: 'poll' })
+                        updateData?.(
+                          _.set({ ...data }, `attachments.${pollIndex}`, { type: 'poll', poll }),
+                        )
+                      }}
+                    />
+                  }
+                >
                   <MediaBadge
                     icon={<Icon16Poll />}
                     type={t`wallPost.mediaBadge.poll`}
@@ -409,17 +430,17 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                 <div
                   title={t`wallPost.actions.like`}
                   className={classNames('wall-post-action-item', 'action-like', {
-                    'user-likes': likeState,
+                    'user-likes': !!data.likes?.user_likes,
                   })}
                   // TODO: likes.can_like (0 при удалении страницы, например)
                   onClick={onLikeClick}
                 >
-                  {likeState ? (
+                  {data.likes?.user_likes ? (
                     <Icon20Like width={18} height={18} />
                   ) : (
                     <Icon20LikeOutline width={18} height={18} />
                   )}
-                  {numberFormatter(likeCount)}
+                  {numberFormatter(data.likes?.count)}
                 </div>
                 <div
                   className="wall-post-action-item action-comment"
@@ -448,6 +469,47 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                     >
                       <Icon20CopyOutline width={16} height={16} />
                       {t`wallPost.actions.copyLink`}
+                    </DropdownMenuItem>,
+                    <DropdownMenuItem
+                      key="favorite"
+                      onClick={async () => {
+                        await (data.is_favorite
+                          ? apiStore.api.call<FaveRemovePostResponse, FaveRemovePostParams>(
+                              'fave.removePost',
+                              {
+                                id: data.id!,
+                                owner_id: data.owner_id!,
+                              },
+                            )
+                          : apiStore.api.call<FaveAddPostResponse, FaveAddPostParams>(
+                              'fave.addPost',
+                              {
+                                id: data.id!,
+                                owner_id: data.owner_id!,
+                                access_key: data.access_key,
+                              },
+                            ))
+
+                        updateData?.({ ...data, is_favorite: !data.is_favorite })
+                        snackbarStore.show(
+                          data.is_favorite
+                            ? t`wallPost.actions.removeBookmarkSuccess`
+                            : t`wallPost.actions.addBookmarkSuccess`,
+                        )
+
+                        // обновляем колонки с закладками
+                        // TODO: почти такое же есть выше. может, выделить в метод SettingsStore?
+                        for (const column of settingsStore.columns) {
+                          if (column.type === ColumnType.bookmarks) {
+                            settingsStore.refreshColumn(column.id)
+                          }
+                        }
+                      }}
+                    >
+                      <Icon16BookmarkOutline />
+                      {!data.is_favorite
+                        ? t`wallPost.actions.addBookmark`
+                        : t`wallPost.actions.removeBookmark`}
                     </DropdownMenuItem>,
                     <DropdownMenuItem key="open" onClick={() => window.open(postUrl)}>
                       <Icon28LogoVkOutline width={16} height={16} />

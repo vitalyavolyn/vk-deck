@@ -13,6 +13,7 @@ import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, IWallColumn } from '@/store/settings-store'
 import { getPostKey } from '@/utils/get-post-key'
+import { updatePostInArray } from '@/utils/update-post-in-array'
 import { ColumnHeader } from './common/column-header'
 
 export interface WallColumnSettings extends ColumnImageGridSettings {
@@ -130,6 +131,11 @@ export const WallColumn: FC = observer(() => {
           }}
           onScroll={onScroll}
           scrollToRef={scrollToRef}
+          wallPostProps={{
+            updateData: (post: WallWallpostFull) => {
+              setPosts(updatePostInArray(posts, post))
+            },
+          }}
         />
       ) : (
         <PanelSpinner />

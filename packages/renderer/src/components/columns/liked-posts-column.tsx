@@ -15,6 +15,7 @@ import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ILikedPostsColumn } from '@/store/settings-store'
 import { getPostKey } from '@/utils/get-post-key'
+import { updatePostInArray } from '@/utils/update-post-in-array'
 import { ColumnHeader } from './common/column-header'
 import { ColumnSettings } from './common/column-settings'
 
@@ -106,6 +107,11 @@ export const LikedPostsColumn: FC = () => {
           }}
           onScroll={onScroll}
           scrollToRef={scrollToRef}
+          wallPostProps={{
+            updateData: (post: WallWallpostFull) => {
+              setPosts(updatePostInArray(posts, post))
+            },
+          }}
         />
       ) : (
         <PanelSpinner />

@@ -16,6 +16,7 @@ import { useScrollToTop } from '@/hooks/use-scroll-to-top'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, INewsfeedColumn } from '@/store/settings-store'
 import { getPostKey } from '@/utils/get-post-key'
+import { updatePostInArray } from '@/utils/update-post-in-array'
 import { ColumnHeader } from './common/column-header'
 import { ColumnSettings } from './common/column-settings'
 
@@ -43,7 +44,7 @@ export const NewsfeedColumn: FC = observer(() => {
   const { apiStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
 
-  const [feedItems, setFeedItems] = useState<NewsfeedItemWallpost[]>()
+  const [feedItems, setFeedItems] = useState<WallWallpostFull[]>()
   const [showSettings, setShowSettings] = useState(false)
 
   // TODO: setTimeout здесь якобы возвращает этот тип, а не число. неприятно.
@@ -57,9 +58,9 @@ export const NewsfeedColumn: FC = observer(() => {
   /**
    * @see SettingsStore.wallColumns
    */
-  const triggerWallColumns = (newItems: NewsfeedItemWallpost[]) => {
+  const triggerWallColumns = (newItems: WallWallpostFull[]) => {
     for (const item of newItems) {
-      const columnId = settingsStore.wallColumns[item.source_id]
+      const columnId = settingsStore.wallColumns[item.owner_id!]
 
       if (columnId) {
         settingsStore.refreshColumn(columnId)
@@ -89,14 +90,16 @@ export const NewsfeedColumn: FC = observer(() => {
 
       const { items, groups, profiles, next_from: nextFrom } = response
 
-      const newItems: NewsfeedItemWallpost[] =
+      const newItems: WallWallpostFull[] = (
         items?.filter((e) => e.date !== startTimeRef.current) || []
+      ).map((post) => newsfeedPostToWallPost(post))
 
       // пропускаем при первом обновлении
       if (startTimeRef.current) triggerWallColumns(newItems)
 
       apiStore.add('profiles', profiles)
       apiStore.add('groups', groups)
+
       setFeedItems((old) =>
         withOffset ? _.unionBy(old, newItems, getPostKey) : _.unionBy(newItems, old, getPostKey),
       )
@@ -176,7 +179,7 @@ export const NewsfeedColumn: FC = observer(() => {
       </ColumnSettings>
       {feedItems ? (
         <VirtualScrollWall
-          items={feedItems.map((post) => newsfeedPostToWallPost(post))}
+          items={feedItems}
           className="column-list-content"
           loadMore={(e) => {
             if (canLoadMore && feedItems.length - e.stopIndex < 20) {
@@ -185,6 +188,11 @@ export const NewsfeedColumn: FC = observer(() => {
           }}
           onScroll={onScroll}
           scrollToRef={scrollToRef}
+          wallPostProps={{
+            updateData: (post: WallWallpostFull) => {
+              setFeedItems(updatePostInArray(feedItems, post))
+            },
+          }}
         />
       ) : (
         <PanelSpinner />
