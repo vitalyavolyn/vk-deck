@@ -30,16 +30,15 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
   const { t } = useTranslation()
   const { settingsStore } = useStore()
 
-  const getColumnIndex = () => _.findIndex(settingsStore.columns, { id: columnId })
+  const columnIndex = _.findIndex(settingsStore.columns, { id: columnId })
 
   const moveColumn = (direction: -1 | 1) => {
-    const from = getColumnIndex()
-    const to = from + direction
-    settingsStore.swapColumns(from, to)
+    const to = columnIndex + direction
+    settingsStore.swapColumns(columnIndex, to)
   }
 
   const deleteColumn = () => {
-    settingsStore.columns.splice(getColumnIndex(), 1)
+    settingsStore.columns.splice(columnIndex, 1)
   }
 
   return (
@@ -48,10 +47,18 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
       {imageGridSettings && <ColumnImageGridSettingsForm />}
       <div className="column-actions">
         <div className="move-buttons">
-          <IconButton onClick={() => moveColumn(-1)} title={t`columnSettings.moveLeft`}>
+          <IconButton
+            onClick={() => moveColumn(-1)}
+            title={t`columnSettings.moveLeft`}
+            disabled={columnIndex === 0}
+          >
             <Icon16ChevronLeft />
           </IconButton>
-          <IconButton onClick={() => moveColumn(1)} title={t`columnSettings.moveRight`}>
+          <IconButton
+            onClick={() => moveColumn(1)}
+            title={t`columnSettings.moveRight`}
+            disabled={columnIndex === settingsStore.columns.length - 1}
+          >
             <Icon16Chevron />
           </IconButton>
         </div>
