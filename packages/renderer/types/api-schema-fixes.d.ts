@@ -71,6 +71,7 @@ declare module '@vkontakte/api-schema-typescript' {
     offset?: number
     count?: number
     extended?: 1 | 0
+    fields?: string
   }
 
   interface WallWallpostFull {

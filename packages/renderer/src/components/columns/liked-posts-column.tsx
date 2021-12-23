@@ -49,7 +49,12 @@ export const LikedPostsColumn: FC = () => {
       const { items, groups, profiles } = await apiStore.api.call<
         FaveGetPostsExtendedResponse,
         FaveGetPostsParams
-      >('fave.getPosts', { extended: 1, count: 100, offset: withOffset ? offsetRef.current : 0 })
+      >('fave.getPosts', {
+        extended: 1,
+        count: 100,
+        fields: 'verified,screen_name,photo_50',
+        offset: withOffset ? offsetRef.current : 0,
+      })
 
       apiStore.add('profiles', profiles)
       apiStore.add('groups', groups)
