@@ -99,7 +99,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
           el.classList.add('overflow')
         }
       }
-    }, [contentRef])
+    }, [contentRef, data.text])
 
     const owner = getOwner(data.from_id!)
 
