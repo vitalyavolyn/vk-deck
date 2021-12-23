@@ -130,7 +130,7 @@ export const NewsfeedSearchColumn: FC = observer(() => {
           }}
         />
       </ColumnHeader>
-      <ColumnSettings show={showSettings} imageGridSettings />
+      <ColumnSettings show={showSettings} />
       {feedItems.length ? (
         <VirtualScrollWall
           items={feedItems}

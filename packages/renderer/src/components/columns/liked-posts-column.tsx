@@ -92,7 +92,7 @@ export const LikedPostsColumn: FC = () => {
       >
         {t`columns.likedPosts`}
       </ColumnHeader>
-      <ColumnSettings show={showSettings} imageGridSettings />
+      <ColumnSettings show={showSettings} />
       {posts.length ? (
         <VirtualScrollWall
           items={posts}

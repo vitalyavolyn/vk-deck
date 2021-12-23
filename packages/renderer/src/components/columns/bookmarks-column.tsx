@@ -120,7 +120,7 @@ export const BookmarksColumn: FC = observer(() => {
       >
         {t`columns.bookmarks`}
       </ColumnHeader>
-      <ColumnSettings show={showSettings} imageGridSettings>
+      <ColumnSettings show={showSettings}>
         <FormLayout>
           <FormItem top={t`bookmarks.settings.tag`}>
             <Select

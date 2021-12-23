@@ -112,7 +112,7 @@ export const WallColumn: FC = observer(() => {
       >
         {t`columns.wall`}
       </ColumnHeader>
-      <ColumnSettings show={showSettings} imageGridSettings>
+      <ColumnSettings show={showSettings}>
         <div style={{ padding: '8px 8px 0' }}>
           <Checkbox
             checked={hidePinnedPost}

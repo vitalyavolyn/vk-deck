@@ -163,7 +163,7 @@ export const NewsfeedColumn: FC = observer(() => {
       >
         {_.find(possibleSources, { value: settings.source })?.label ?? t`newsfeed.unknownList`}
       </ColumnHeader>
-      <ColumnSettings show={showSettings} imageGridSettings>
+      <ColumnSettings show={showSettings}>
         <FormLayout>
           <FormItem top={t`newsfeed.settings.source`}>
             <Select

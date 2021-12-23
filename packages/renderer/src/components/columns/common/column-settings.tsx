@@ -17,16 +17,10 @@ import './column-settings.css'
 
 interface ColumnSettingsProps extends HTMLAttributes<HTMLDivElement> {
   show: boolean
-  imageGridSettings?: boolean
 }
 
-export const ColumnSettings: FC<ColumnSettingsProps> = ({
-  children,
-  show,
-  imageGridSettings,
-  ...rest
-}) => {
-  const { id: columnId } = useColumn()
+export const ColumnSettings: FC<ColumnSettingsProps> = ({ children, show, ...rest }) => {
+  const { id: columnId, settings } = useColumn()
   const { t } = useTranslation()
   const { settingsStore } = useStore()
 
@@ -45,7 +39,7 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
   return (
     <div className={classNames('column-settings', { hidden: !show })} {...rest}>
       {children}
-      {imageGridSettings && <ColumnImageGridSettingsForm />}
+      {'imageGridSize' in settings && <ColumnImageGridSettingsForm />}
       <div className="column-actions">
         <div className="move-buttons">
           <IconButton
