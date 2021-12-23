@@ -1,5 +1,7 @@
 import { FC, memo, ReactNode } from 'react'
 import _ from 'lodash'
+import * as punycode from 'punycode/'
+import tlds from 'tlds'
 import { v4 as uuidv4 } from 'uuid'
 import { defaultImageGridSettings } from '@/components/modals/add-column-modal'
 import { useColumn } from '@/hooks/use-column'
@@ -14,7 +16,11 @@ interface TextProcessorProps {
 
 // TODO: refactor (делает дело, но странно выглядит)
 
-const linkRegex = '(https?://[\\w#%+.:=@~-]{1,256}.[\\d()a-z]{1,6}\\b[\\w#%&()+./:=?@~-]*)'
+const tldsRegexPart = _.uniq(tlds.flatMap((e) => [e, punycode.toUnicode(e)]))
+  .sort((a, b) => b.length - a.length)
+  .join('|')
+
+const linkRegex = `((?:https?:\\/\\/)?[\\w\\p{Alpha}#%+.:=@~-]{1,256}\\.(?:${tldsRegexPart})(?:\\/[\\w\\p{Alpha}#%&+./:=?@~-]*)*)(?!\\p{Alpha})`
 const mentionRegex = '(\\[(?:club|public|id)(?:\\d+)\\|(?:.+?)\\])'
 const internalLinkRegex = '(\\[(?:https?:\\/\\/)?vk\\.com(?:\\/.*)\\|(?:.+?)\\])'
 const hashtagRegex = '(#[^\\s!#$%&()*:^[\\]]+)'
@@ -26,9 +32,9 @@ export const TextProcessor: FC<TextProcessorProps> = memo(({ content, parseInter
   const comboRegex = parseInternalLinks
     ? new RegExp(
         `(?:${internalLinkRegex})|(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`,
-        'gi',
+        'giu',
       )
-    : new RegExp(`(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`, 'gi')
+    : new RegExp(`(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`, 'giu')
 
   for (const [index, part] of content.split(comboRegex).entries()) {
     let element
@@ -43,10 +49,10 @@ export const TextProcessor: FC<TextProcessorProps> = memo(({ content, parseInter
           </a>
         </div>
       )
-    } else if (new RegExp(linkRegex).test(part)) {
+    } else if (new RegExp(linkRegex, 'giu').test(part)) {
       element = (
         <div className="link-highlight" key={index}>
-          <a target="_blank" href={part}>
+          <a target="_blank" href={!/^https?:\/\//i.test(part) ? `http://${part}` : part}>
             {part.replace(/(.{40}).+/, '$1..')}
           </a>
         </div>

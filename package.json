@@ -84,6 +84,7 @@
   "dependencies": {
     "@babel/runtime": "^7.16.5",
     "@types/lodash": "^4.14.178",
+    "@types/punycode": "^2.1.0",
     "@vkontakte/icons": "^1.139.0",
     "@vkontakte/vk-bridge": "^2.4.8",
     "@vkontakte/vkjs": "^0.22.1",
@@ -98,10 +99,12 @@
     "lodash": "^4.17.21",
     "mobx": "^6.3.9",
     "mobx-react-lite": "^3.2.2",
+    "punycode": "^2.1.1",
     "react": "^17.0.2",
     "react-cool-virtual": "^0.5.5",
     "react-dom": "^17.0.2",
     "react-i18next": "^11.15.1",
+    "tlds": "^1.227.0",
     "uuid": "^8.3.2"
   }
 }
