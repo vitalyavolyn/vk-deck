@@ -23,7 +23,6 @@ import {
   Icon16LinkOutline,
   Icon16MarketOutline,
   Icon16Poll,
-  Icon16RepostOutline,
   Icon20CalendarOutline,
   Icon20CommentOutline,
   Icon20CopyOutline,
@@ -53,6 +52,7 @@ import { RichTooltip } from '@vkontakte/vkui/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
+import { SmallWallPost } from '@/components/small-wall-post'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ImageGridSize } from '@/store/settings-store'
@@ -74,6 +74,7 @@ import './wall-post.css'
 export interface WallPostProps extends HTMLAttributes<HTMLElement> {
   data: WallWallpostFull
   updateData?: (data: WallWallpostFull) => void
+  small?: boolean
 }
 
 const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
@@ -82,7 +83,7 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
  * Показывает запись по объекту записи на стене
  */
 export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = observer(
-  ({ data, measureRef, updateData, ...rest }) => {
+  ({ data, measureRef, updateData, small, ...rest }) => {
     const { settings } = useColumn<Partial<HasImageGridSettings>>()
     const mediaSize = settings?.imageGridSize || ImageGridSize.medium
     const { apiStore, snackbarStore, settingsStore } = useStore()
@@ -213,7 +214,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
 
     const postUrl = `https://vk.com/wall${data.owner_id}_${data.id}`
 
-    const isAd = !!data.marked_as_ads
+    const isAd = !!data.marked_as_ads || data.header?.type === 'ads'
 
     return (
       <article
@@ -225,30 +226,32 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
         {...rest}
       >
         <div className="wall-post">
-          <div className="left">
-            <div className="wall-post-avatar">
-              <AsyncAvatar
-                gradientColor={(owner.id % 6) + 1}
-                size={36}
-                src={owner.photo_50}
-                initials={getInitials(owner)}
-              />
-              {/* TODO: попробовать новый `badge` в Avatar */}
-              {isAd && (
-                <Icon20RoubleCircleFillBlue
-                  width={16}
-                  height={16}
-                  className="ad-icon badge"
-                  title={t`wallPost.ad`}
+          {!small && (
+            <div className="left">
+              <div className="wall-post-avatar">
+                <AsyncAvatar
+                  gradientColor={(owner.id % 6) + 1}
+                  size={36}
+                  src={owner.photo_50}
+                  initials={getInitials(owner)}
                 />
-              )}
-              {!!owner.verified && (
-                <Avatar title={t`wallPost.verified`} size={16} className="badge verified-badge">
-                  <Icon16Done width={12} height={12} className="verified-icon" />
-                </Avatar>
-              )}
+                {/* TODO: попробовать новый `badge` в Avatar */}
+                {isAd && (
+                  <Icon20RoubleCircleFillBlue
+                    width={16}
+                    height={16}
+                    className="ad-icon badge"
+                    title={t`wallPost.ad`}
+                  />
+                )}
+                {!!owner.verified && (
+                  <Avatar title={t`wallPost.verified`} size={16} className="badge verified-badge">
+                    <Icon16Done width={12} height={12} className="verified-icon" />
+                  </Avatar>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           <div className="wall-post-main">
             <header className="wall-post-header">
               <a className="wall-post-author" title={`${getName(owner)} @${owner.screen_name}`}>
@@ -261,17 +264,20 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                     <Icon20PinOutline className="pin" width={12} height={12} />
                   </span>
                 )}
-                <a
-                  className="time"
-                  href={postUrl}
-                  target="_blank"
-                  title={date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
-                >
-                  {shortRelativeTime(date)}
-                </a>
+                {!small && (
+                  <a
+                    className="time"
+                    href={postUrl}
+                    target="_blank"
+                    title={date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
+                  >
+                    {shortRelativeTime(date)}
+                  </a>
+                )}
               </div>
             </header>
             {data.post_source?.data === 'profile_photo' && (
+              // если репостнуть новую фотографию, это будет и на репосте
               <div className="wall-post-source">{t`wallPost.photoUpdated`}</div>
             )}
             {data.final_post && (
@@ -287,264 +293,270 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             {!!photos.length && mediaSize === ImageGridSize.medium && (
               <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
             )}
-            <div className="wall-post-badges">
-              {!!photos.length && mediaSize === ImageGridSize.badges && (
-                <MediaBadge
-                  icon={<Icon20PictureOutline width={16} height={16} />}
-                  type={t('wallPost.mediaBadge.photo', {
-                    count: photos.length,
-                  })}
-                  // TODO: get it back
-                  // onClick={() => {
-                  //   openPhotosInViewer()
-                  // }}
-                />
-              )}
-              {!!videos.length && (
-                <MediaBadge
-                  icon={<Icon20VideoOutline width={16} height={16} />}
-                  type={t('wallPost.mediaBadge.video', {
-                    count: videos.length,
-                  })}
-                  subject={videos.length === 1 ? videos[0].video!.title : undefined}
-                />
-              )}
-              {!!audiosCount && (
-                <MediaBadge
-                  icon={<Icon20MusicOutline width={16} height={16} />}
-                  type={t('wallPost.mediaBadge.audio', { count: audiosCount })}
-                />
-              )}
-              {!!docsCount && (
-                <MediaBadge
-                  icon={<Icon20DocumentOutline width={16} height={16} />}
-                  type={t('wallPost.mediaBadge.doc', { count: docsCount })}
-                />
-              )}
-              {!!albumsCount && (
-                <MediaBadge
-                  icon={<Icon24PhotosStackOutline width={16} height={16} />}
-                  type={t('wallPost.mediaBadge.album', { count: albumsCount })}
-                />
-              )}
-              {!!productsCount && (
-                <MediaBadge
-                  icon={<Icon16MarketOutline />}
-                  type={t('wallPost.mediaBadge.product', {
-                    count: productsCount,
-                  })}
-                />
-              )}
-              {link && (
-                <MediaBadge
-                  icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
-                  type={hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`}
-                  subject={hasArticle ? link.title : new URL(link.url).hostname}
-                  title={hasArticle ? link.title : link.url}
-                  href={link.url}
-                />
-              )}
-              {!!podcast && (
-                <MediaBadge
-                  icon={<Icon24Podcast width={16} height={16} />}
-                  type={t`wallPost.mediaBadge.podcast`}
-                  subject={podcast.title}
-                />
-              )}
-              {!!donutLink && (
-                <MediaBadge
-                  icon={<Icon28DonateOutline width={16} height={16} />}
-                  type={t`wallPost.mediaBadge.donutLink`}
-                  subject={donutLink.button.title}
-                  href={donutLink.button.action.url}
-                />
-              )}
-              {poll && (
-                <RichTooltip
-                  content={
-                    <Poll
-                      data={poll}
-                      updateData={(poll: PollsPoll) => {
-                        const pollIndex = _.findIndex(data.attachments, { type: 'poll' })
-                        updateData?.(
-                          _.set({ ...data }, `attachments.${pollIndex}`, { type: 'poll', poll }),
-                        )
-                      }}
+            {!small && (
+              <>
+                {hasRepost && <SmallWallPost data={data.copy_history![0]} />}
+                <div className="wall-post-badges">
+                  {!!photos.length && mediaSize === ImageGridSize.badges && (
+                    <MediaBadge
+                      icon={<Icon20PictureOutline width={16} height={16} />}
+                      type={t('wallPost.mediaBadge.photo', {
+                        count: photos.length,
+                      })}
+                      // TODO: get it back
+                      // onClick={() => {
+                      //   openPhotosInViewer()
+                      // }}
                     />
-                  }
-                >
-                  <MediaBadge
-                    icon={<Icon16Poll />}
-                    type={t`wallPost.mediaBadge.poll`}
-                    subject={poll.question}
-                  />
-                </RichTooltip>
-              )}
-              {hasMap && (
-                <MediaBadge
-                  icon={<Icon28LocationMapOutline width={16} height={16} />}
-                  type={t`wallPost.mediaBadge.map`}
-                />
-              )}
-              {!!eventGroup && (
-                <MediaBadge
-                  icon={<Icon20CalendarOutline width={16} height={16} />}
-                  type={t`wallPost.mediaBadge.event`}
-                  subject={eventGroup.name}
-                />
-              )}
-              {!!situationalTheme && (
-                <MediaBadge
-                  icon={<Icon20LightbulbStarOutline width={16} height={16} />}
-                  type={t`wallPost.mediaBadge.situationalTheme`}
-                  subject={situationalTheme.title}
-                  href={situationalTheme.link}
-                />
-              )}
-              {!!textlive && (
-                <MediaBadge
-                  icon={<Icon24TextLiveOutline width={16} height={16} />}
-                  type={t`wallPost.mediaBadge.textlive`}
-                  subject={textlive.title}
-                  href={textlive.attach_url}
-                />
-              )}
-              {hasRepost && (
-                <MediaBadge
-                  icon={<Icon16RepostOutline />}
-                  type={t`wallPost.mediaBadge.repost`}
-                  subject={getName(getOwner(data.copy_history![0]!.owner_id!)!)}
-                />
-              )}
-            </div>
-            {data.signer_id && (
-              // TODO: ссылка?
-              <div className="wall-post-signer">
-                <Icon12User />
-                {getName(getOwner(data.signer_id))}
-              </div>
-            )}
-            {/* TODO: источник? */}
-            <div className="wall-post-footer">
-              <div className="wall-post-actions">
-                <div
-                  title={t`wallPost.actions.like`}
-                  className={classNames('wall-post-action-item', 'action-like', {
-                    'user-likes': !!data.likes?.user_likes,
-                  })}
-                  // TODO: likes.can_like (0 при удалении страницы, например)
-                  onClick={onLikeClick}
-                >
-                  {data.likes?.user_likes ? (
-                    <Icon20Like width={18} height={18} />
-                  ) : (
-                    <Icon20LikeOutline width={18} height={18} />
                   )}
-                  {numberFormatter(data.likes?.count)}
-                </div>
-                <div
-                  className="wall-post-action-item action-comment"
-                  title={t`wallPost.actions.comment`}
-                  // TODO: comments.can_post
-                  // TODO: открывать блок для быстрого комментария?
-                >
-                  <Icon20CommentOutline width={18} height={18} />
-                  {numberFormatter(data.comments?.count)}
-                </div>
-                <div
-                  className="wall-post-action-item action-share"
-                  title={t`wallPost.actions.share`}
-                >
-                  <Icon20ShareOutline width={18} height={18} />
-                  {numberFormatter(data.reposts?.count)}
-                </div>
-                <DropdownMenu
-                  items={[
-                    <DropdownMenuItem
-                      key="copy"
-                      onClick={async () => {
-                        await navigator.clipboard.writeText(postUrl)
-                        snackbarStore.show(t`wallPost.linkCopied`)
-                      }}
-                    >
-                      <Icon20CopyOutline width={16} height={16} />
-                      {t`wallPost.actions.copyLink`}
-                    </DropdownMenuItem>,
-                    <DropdownMenuItem
-                      key="favorite"
-                      onClick={async () => {
-                        await (data.is_favorite
-                          ? apiStore.api.call<FaveRemovePostResponse, FaveRemovePostParams>(
-                              'fave.removePost',
-                              {
-                                id: data.id!,
-                                owner_id: data.owner_id!,
-                              },
+                  {!!videos.length && (
+                    <MediaBadge
+                      icon={<Icon20VideoOutline width={16} height={16} />}
+                      type={t('wallPost.mediaBadge.video', {
+                        count: videos.length,
+                      })}
+                      subject={videos.length === 1 ? videos[0].video!.title : undefined}
+                    />
+                  )}
+                  {!!audiosCount && (
+                    <MediaBadge
+                      icon={<Icon20MusicOutline width={16} height={16} />}
+                      type={t('wallPost.mediaBadge.audio', { count: audiosCount })}
+                    />
+                  )}
+                  {!!docsCount && (
+                    <MediaBadge
+                      icon={<Icon20DocumentOutline width={16} height={16} />}
+                      type={t('wallPost.mediaBadge.doc', { count: docsCount })}
+                    />
+                  )}
+                  {!!albumsCount && (
+                    <MediaBadge
+                      icon={<Icon24PhotosStackOutline width={16} height={16} />}
+                      type={t('wallPost.mediaBadge.album', { count: albumsCount })}
+                    />
+                  )}
+                  {!!productsCount && (
+                    <MediaBadge
+                      icon={<Icon16MarketOutline />}
+                      type={t('wallPost.mediaBadge.product', {
+                        count: productsCount,
+                      })}
+                    />
+                  )}
+                  {link && (
+                    <MediaBadge
+                      icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
+                      type={
+                        hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`
+                      }
+                      subject={hasArticle ? link.title : new URL(link.url).hostname}
+                      title={hasArticle ? link.title : link.url}
+                      href={link.url}
+                    />
+                  )}
+                  {!!podcast && (
+                    <MediaBadge
+                      icon={<Icon24Podcast width={16} height={16} />}
+                      type={t`wallPost.mediaBadge.podcast`}
+                      subject={podcast.title}
+                    />
+                  )}
+                  {!!donutLink && (
+                    <MediaBadge
+                      icon={<Icon28DonateOutline width={16} height={16} />}
+                      type={t`wallPost.mediaBadge.donutLink`}
+                      subject={donutLink.button.title}
+                      href={donutLink.button.action.url}
+                    />
+                  )}
+                  {poll && (
+                    <RichTooltip
+                      content={
+                        <Poll
+                          data={poll}
+                          updateData={(poll: PollsPoll) => {
+                            const pollIndex = _.findIndex(data.attachments, { type: 'poll' })
+                            updateData?.(
+                              _.set({ ...data }, `attachments.${pollIndex}`, {
+                                type: 'poll',
+                                poll,
+                              }),
                             )
-                          : apiStore.api.call<FaveAddPostResponse, FaveAddPostParams>(
-                              'fave.addPost',
-                              {
-                                id: data.id!,
-                                owner_id: data.owner_id!,
-                                access_key: data.access_key,
-                              },
-                            ))
-
-                        updateData?.({ ...data, is_favorite: !data.is_favorite })
-                        snackbarStore.show(
-                          data.is_favorite
-                            ? t`wallPost.actions.removeBookmarkSuccess`
-                            : t`wallPost.actions.addBookmarkSuccess`,
-                        )
-
-                        // обновляем колонки с закладками
-                        // TODO: почти такое же есть выше. может, выделить в метод SettingsStore?
-                        for (const column of settingsStore.columns) {
-                          if (column.type === ColumnType.bookmarks) {
-                            settingsStore.refreshColumn(column.id)
-                          }
-                        }
-                      }}
+                          }}
+                        />
+                      }
                     >
-                      <Icon16BookmarkOutline />
-                      {!data.is_favorite
-                        ? t`wallPost.actions.addBookmark`
-                        : t`wallPost.actions.removeBookmark`}
-                    </DropdownMenuItem>,
-                    <DropdownMenuItem key="open" onClick={() => window.open(postUrl)}>
-                      <Icon28LogoVkOutline width={16} height={16} />
-                      {t`wallPost.actions.openInBrowser`}
-                    </DropdownMenuItem>,
-                    !!data.can_delete && (
-                      <DropdownMenuItem
-                        key="delete"
-                        onClick={() => {
-                          // TODO
-                          navigator.clipboard.writeText(postUrl)
-                        }}
-                        style={{ color: 'var(--destructive)' }}
-                      >
-                        <Icon20DeleteOutline width={16} height={16} />
-                        {t`wallPost.actions.delete`}
-                      </DropdownMenuItem>
-                    ),
-                  ]}
-                >
-                  <div
-                    className="wall-post-action-item action-menu"
-                    title={t`wallPost.actions.menu`}
-                  >
-                    <Icon20More width={18} height={18} />
-                  </div>
-                </DropdownMenu>
-              </div>
-              {data.views && (
-                <div className="wall-post-action-item views">
-                  <Icon20View width={18} height={18} />
-                  {numberFormatter(data.views?.count)}
+                      <MediaBadge
+                        icon={<Icon16Poll />}
+                        type={t`wallPost.mediaBadge.poll`}
+                        subject={poll.question}
+                      />
+                    </RichTooltip>
+                  )}
+                  {hasMap && (
+                    <MediaBadge
+                      icon={<Icon28LocationMapOutline width={16} height={16} />}
+                      type={t`wallPost.mediaBadge.map`}
+                    />
+                  )}
+                  {!!eventGroup && (
+                    <MediaBadge
+                      icon={<Icon20CalendarOutline width={16} height={16} />}
+                      type={t`wallPost.mediaBadge.event`}
+                      subject={eventGroup.name}
+                    />
+                  )}
+                  {!!situationalTheme && (
+                    <MediaBadge
+                      icon={<Icon20LightbulbStarOutline width={16} height={16} />}
+                      type={t`wallPost.mediaBadge.situationalTheme`}
+                      subject={situationalTheme.title}
+                      href={situationalTheme.link}
+                    />
+                  )}
+                  {!!textlive && (
+                    <MediaBadge
+                      icon={<Icon24TextLiveOutline width={16} height={16} />}
+                      type={t`wallPost.mediaBadge.textlive`}
+                      subject={textlive.title}
+                      href={textlive.attach_url}
+                    />
+                  )}
                 </div>
-              )}
-            </div>
+                {data.signer_id && (
+                  // TODO: ссылка?
+                  <div className="wall-post-signer">
+                    <Icon12User />
+                    {getName(getOwner(data.signer_id))}
+                  </div>
+                )}
+                {/* TODO: источник? */}
+                <div className="wall-post-footer">
+                  <div className="wall-post-actions">
+                    <div
+                      title={t`wallPost.actions.like`}
+                      className={classNames('wall-post-action-item', 'action-like', {
+                        'user-likes': !!data.likes?.user_likes,
+                      })}
+                      // TODO: likes.can_like (0 при удалении страницы, например)
+                      onClick={onLikeClick}
+                    >
+                      {data.likes?.user_likes ? (
+                        <Icon20Like width={18} height={18} />
+                      ) : (
+                        <Icon20LikeOutline width={18} height={18} />
+                      )}
+                      {numberFormatter(data.likes?.count)}
+                    </div>
+                    <div
+                      className="wall-post-action-item action-comment"
+                      title={t`wallPost.actions.comment`}
+                      // TODO: comments.can_post
+                      // TODO: открывать блок для быстрого комментария?
+                    >
+                      <Icon20CommentOutline width={18} height={18} />
+                      {numberFormatter(data.comments?.count)}
+                    </div>
+                    <div
+                      className="wall-post-action-item action-share"
+                      title={t`wallPost.actions.share`}
+                    >
+                      <Icon20ShareOutline width={18} height={18} />
+                      {numberFormatter(data.reposts?.count)}
+                    </div>
+                    <DropdownMenu
+                      items={[
+                        <DropdownMenuItem
+                          key="copy"
+                          onClick={async () => {
+                            await navigator.clipboard.writeText(postUrl)
+                            snackbarStore.show(t`wallPost.linkCopied`)
+                          }}
+                        >
+                          <Icon20CopyOutline width={16} height={16} />
+                          {t`wallPost.actions.copyLink`}
+                        </DropdownMenuItem>,
+                        <DropdownMenuItem
+                          key="favorite"
+                          onClick={async () => {
+                            await (data.is_favorite
+                              ? apiStore.api.call<FaveRemovePostResponse, FaveRemovePostParams>(
+                                  'fave.removePost',
+                                  {
+                                    id: data.id!,
+                                    owner_id: data.owner_id!,
+                                  },
+                                )
+                              : apiStore.api.call<FaveAddPostResponse, FaveAddPostParams>(
+                                  'fave.addPost',
+                                  {
+                                    id: data.id!,
+                                    owner_id: data.owner_id!,
+                                    access_key: data.access_key,
+                                  },
+                                ))
+
+                            updateData?.({
+                              ...data,
+                              is_favorite: !data.is_favorite,
+                            })
+                            snackbarStore.show(
+                              data.is_favorite
+                                ? t`wallPost.actions.removeBookmarkSuccess`
+                                : t`wallPost.actions.addBookmarkSuccess`,
+                            )
+
+                            // обновляем колонки с закладками
+                            // TODO: почти такое же есть выше. может, выделить в метод SettingsStore?
+                            for (const column of settingsStore.columns) {
+                              if (column.type === ColumnType.bookmarks) {
+                                settingsStore.refreshColumn(column.id)
+                              }
+                            }
+                          }}
+                        >
+                          <Icon16BookmarkOutline />
+                          {!data.is_favorite
+                            ? t`wallPost.actions.addBookmark`
+                            : t`wallPost.actions.removeBookmark`}
+                        </DropdownMenuItem>,
+                        <DropdownMenuItem key="open" onClick={() => window.open(postUrl)}>
+                          <Icon28LogoVkOutline width={16} height={16} />
+                          {t`wallPost.actions.openInBrowser`}
+                        </DropdownMenuItem>,
+                        !!data.can_delete && (
+                          <DropdownMenuItem
+                            key="delete"
+                            onClick={() => {
+                              // TODO
+                              navigator.clipboard.writeText(postUrl)
+                            }}
+                            style={{ color: 'var(--destructive)' }}
+                          >
+                            <Icon20DeleteOutline width={16} height={16} />
+                            {t`wallPost.actions.delete`}
+                          </DropdownMenuItem>
+                        ),
+                      ]}
+                    >
+                      <div
+                        className="wall-post-action-item action-menu"
+                        title={t`wallPost.actions.menu`}
+                      >
+                        <Icon20More width={18} height={18} />
+                      </div>
+                    </DropdownMenu>
+                  </div>
+                  {data.views && (
+                    <div className="wall-post-action-item views">
+                      <Icon20View width={18} height={18} />
+                      {numberFormatter(data.views?.count)}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
         {!!photos.length && mediaSize === ImageGridSize.large && (

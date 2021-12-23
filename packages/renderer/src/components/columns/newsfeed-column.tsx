@@ -92,7 +92,7 @@ export const NewsfeedColumn: FC = observer(() => {
 
       const newItems: WallWallpostFull[] = (
         items?.filter((e) => e.date !== startTimeRef.current) || []
-      ).map((post) => newsfeedPostToWallPost(post))
+      ).map((post) => newsfeedPostToWallPost(post as NewsfeedItemWallpost))
 
       // пропускаем при первом обновлении
       if (startTimeRef.current) triggerWallColumns(newItems)

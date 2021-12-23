@@ -1,4 +1,9 @@
-import { GroupsGroup, PhotosPhoto, UsersUserFull } from '@vkontakte/api-schema-typescript'
+import {
+  GroupsGroup,
+  PhotosPhoto,
+  PhotosPhotoSizes,
+  UsersUserFull,
+} from '@vkontakte/api-schema-typescript'
 import { PodcastCover } from '@vkontakte/api-schema-typescript/dist/objects/podcast/PodcastCover'
 
 interface TextliveBase {
@@ -15,9 +20,37 @@ interface TextliveBase {
   url: string
 }
 
+interface WallPostHeaderDescription {
+  text: string
+}
+
+interface WallPostHeaderAds {
+  type: 'ads'
+  ads: {
+    date: number
+    description: WallPostHeaderDescription
+    source_id: number
+  }
+}
+
+interface WallPostHeaderCustomDescription {
+  custom_description: {
+    date: number
+    source_id: number
+    description?: WallPostHeaderDescription
+    overlay_image?: {
+      sizes: PhotosPhotoSizes
+    }
+  }
+  type: 'custom_description'
+}
+
+type WallPostHeader = WallPostHeaderAds | WallPostHeaderCustomDescription
+
 declare module '@vkontakte/api-schema-typescript' {
   interface NewsfeedItemWallpost {
     can_delete?: 0 | 1
+    header?: WallPostHeader
   }
 
   // эти поля есть только при использовании fields, но если что, то я сам виноват
@@ -43,6 +76,11 @@ declare module '@vkontakte/api-schema-typescript' {
   interface WallWallpostFull {
     // есть, когда пост создан удалением страницы
     final_post?: 0 | 1
+    header?: WallPostHeader
+  }
+
+  interface WallWallpost {
+    header?: WallPostHeader
   }
 
   interface WallWallpostAttachment {

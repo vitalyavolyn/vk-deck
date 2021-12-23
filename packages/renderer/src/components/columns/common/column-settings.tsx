@@ -30,15 +30,16 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
   const { t } = useTranslation()
   const { settingsStore } = useStore()
 
-  const columnIndex = _.findIndex(settingsStore.columns, { id: columnId })
+  const columnIndex = () => _.findIndex(settingsStore.columns, { id: columnId })
 
   const moveColumn = (direction: -1 | 1) => {
-    const to = columnIndex + direction
-    settingsStore.swapColumns(columnIndex, to)
+    const from = columnIndex()
+    const to = from + direction
+    settingsStore.swapColumns(from, to)
   }
 
   const deleteColumn = () => {
-    settingsStore.columns.splice(columnIndex, 1)
+    settingsStore.columns.splice(columnIndex(), 1)
   }
 
   return (
@@ -50,14 +51,14 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({
           <IconButton
             onClick={() => moveColumn(-1)}
             title={t`columnSettings.moveLeft`}
-            disabled={columnIndex === 0}
+            disabled={columnIndex() === 0}
           >
             <Icon16ChevronLeft />
           </IconButton>
           <IconButton
             onClick={() => moveColumn(1)}
             title={t`columnSettings.moveRight`}
-            disabled={columnIndex === settingsStore.columns.length - 1}
+            disabled={columnIndex() === settingsStore.columns.length - 1}
           >
             <Icon16Chevron />
           </IconButton>
