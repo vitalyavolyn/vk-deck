@@ -10,6 +10,7 @@ import {
   Icon28LikeOutline,
   Icon28BookmarkOutline,
   Icon28SearchOutline,
+  Icon28CommentOutline,
 } from '@vkontakte/icons'
 import { Icon28NewsfeedOutlineProps } from '@vkontakte/icons/dist/28/newsfeed_outline'
 import { Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
@@ -42,6 +43,7 @@ export const columnIcons: Record<ColumnType, FC<IconProps>> = {
   [ColumnType.likedPosts]: Icon28LikeOutline,
   [ColumnType.bookmarks]: Icon28BookmarkOutline,
   [ColumnType.newsfeedSearch]: Icon28SearchOutline,
+  [ColumnType.wallPost]: Icon28CommentOutline,
 }
 
 export const Navbar: FC<NavbarProps> = observer(

@@ -3,6 +3,10 @@
   padding: 8px 10px;
   border-bottom: 1px solid var(--image_border);
 
+  &.clickable {
+    cursor: pointer;
+  }
+
   .wall-post {
     display: flex;
     column-gap: 8px;
@@ -95,9 +99,12 @@
       .wall-post-content {
         position: relative;
         overflow: hidden;
-        max-height: 10em;
         overflow-wrap: break-word;
         white-space: pre-wrap;
+
+        &:not(.full-size) {
+          max-height: 10em;
+        }
 
         .link-highlight {
           display: inline-block;

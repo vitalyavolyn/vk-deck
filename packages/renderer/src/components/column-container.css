@@ -9,3 +9,17 @@
     overflow-y: auto;
   }
 }
+
+.column-container {
+  display: flex;
+  flex-basis: var(--column-width);
+  flex-flow: column wrap;
+  flex-shrink: 0;
+  border-right: 1px solid var(--image_border);
+  border-left: 1px solid var(--image_border);
+  overflow-x: hidden;
+
+  .column {
+    transform: translateX(calc(var(--column-width) * -1 * var(--index)));
+  }
+}

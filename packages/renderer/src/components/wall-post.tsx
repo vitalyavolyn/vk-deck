@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, Ref, useEffect, useRef } from 'react'
+import { FC, HTMLAttributes, Ref, MouseEvent, useEffect, useRef } from 'react'
 import {
   FaveAddPostParams,
   FaveAddPostResponse,
@@ -52,7 +52,6 @@ import { RichTooltip } from '@vkontakte/vkui/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
-import { SmallWallPost } from '@/components/small-wall-post'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ImageGridSize } from '@/store/settings-store'
@@ -67,6 +66,7 @@ import { DropdownMenuItem } from './dropdown-menu-item'
 import { MediaBadge } from './media-badge'
 import { MediaGrid } from './media-grid'
 import { Poll } from './poll'
+import { SmallWallPost } from './small-wall-post'
 import { TextProcessor } from './text-processor'
 
 import './wall-post.css'
@@ -75,6 +75,7 @@ export interface WallPostProps extends HTMLAttributes<HTMLElement> {
   data: WallWallpostFull
   updateData?: (data: WallWallpostFull) => void
   small?: boolean
+  fullSize?: boolean
 }
 
 const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
@@ -83,7 +84,7 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
  * Показывает запись по объекту записи на стене
  */
 export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = observer(
-  ({ data, measureRef, updateData, small, ...rest }) => {
+  ({ data, measureRef, updateData, small, fullSize, ...rest }) => {
     const { settings } = useColumn<Partial<HasImageGridSettings>>()
     const mediaSize = settings?.imageGridSize || ImageGridSize.medium
     const { apiStore, snackbarStore, settingsStore } = useStore()
@@ -95,7 +96,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     useEffect(() => {
       if (contentRef.current) {
         const el = contentRef.current
-        if (el.scrollHeight > el.clientHeight) {
+        if (el.scrollHeight > el.clientHeight && !fullSize) {
           el.classList.add('overflow')
         }
       }
@@ -216,14 +217,25 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
 
     const isAd = !!data.marked_as_ads || data.header?.type === 'ads'
 
+    const _onClick = (e: MouseEvent<HTMLElement>) => {
+      const clickable = ['.wall-post-actions', '.media-grid', 'a', '.poll']
+      for (const clickableSelector of clickable) {
+        if ((e.target as HTMLElement).closest(clickableSelector)) return
+      }
+
+      rest.onClick?.(e)
+    }
+
     return (
       <article
         className={classNames('wall-post-wrap', {
           'blurred-ad': isAd && settingsStore.blurAds,
+          clickable: !!rest.onClick,
         })}
         data-id={`${data.owner_id}_${data.id}`}
         ref={measureRef}
         {...rest}
+        onClick={_onClick}
       >
         <div className="wall-post">
           {!small && (
@@ -287,7 +299,12 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                 })}
               </div>
             )}
-            <div className="wall-post-content" ref={contentRef}>
+            <div
+              className={classNames('wall-post-content', {
+                'full-size': fullSize,
+              })}
+              ref={contentRef}
+            >
               <TextProcessor content={data.text || ''} parseInternalLinks />
             </div>
             {!!photos.length && mediaSize === ImageGridSize.medium && (

@@ -1,0 +1,5 @@
+.comments-header {
+  padding: 8px 10px;
+  color: var(--text_secondary);
+  font-weight: bold;
+}

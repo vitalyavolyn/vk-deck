@@ -39,7 +39,7 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({ children, show, ...res
   return (
     <div className={classNames('column-settings', { hidden: !show })} {...rest}>
       {children}
-      {'imageGridSize' in settings && <ColumnImageGridSettingsForm />}
+      {settings && 'imageGridSize' in settings && <ColumnImageGridSettingsForm />}
       <div className="column-actions">
         <div className="move-buttons">
           <IconButton
