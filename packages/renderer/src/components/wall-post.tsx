@@ -14,6 +14,9 @@ import {
   WallWallpostAttachment,
   WallWallpostAttachmentType,
   WallWallpostFull,
+  WallCommentAttachment,
+  WallCommentAttachmentType,
+  BaseStickerNew,
 } from '@vkontakte/api-schema-typescript'
 import {
   Icon12User,
@@ -52,6 +55,7 @@ import { RichTooltip } from '@vkontakte/vkui/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
+import { Sticker } from '@/components/sticker'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType, ImageGridSize } from '@/store/settings-store'
@@ -112,8 +116,9 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
 
     const hasRepost = data.copy_history?.length
 
-    const getAttachments = (type: WallWallpostAttachmentType | 'podcast') =>
-      _.filter(data.attachments, { type }) as WallWallpostAttachment[]
+    const getAttachments = (
+      type: WallWallpostAttachmentType | WallCommentAttachmentType | 'podcast',
+    ) => _.filter(data.attachments, { type }) as (WallWallpostAttachment & WallCommentAttachment)[]
 
     const link = getAttachments('link')[0]?.link
     const poll = getAttachments('poll')[0]?.poll
@@ -124,6 +129,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     // структура у них почти одна
     const textlive =
       getAttachments('textlive')[0]?.textlive || getAttachments('textpost')[0]?.textpost
+    const sticker = getAttachments('sticker')[0]?.sticker as BaseStickerNew
 
     const photos = getAttachments('photo')
     const albumsCount = getAttachments('album').length
@@ -307,6 +313,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             >
               <TextProcessor content={data.text || ''} parseInternalLinks />
             </div>
+            {sticker && <Sticker sticker={sticker} />}
             {!!photos.length && mediaSize === ImageGridSize.medium && (
               <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
             )}

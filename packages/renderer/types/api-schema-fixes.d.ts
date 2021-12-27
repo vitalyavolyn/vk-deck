@@ -3,8 +3,8 @@ import {
   PhotosPhoto,
   PhotosPhotoSizes,
   UsersUserFull,
+  PodcastCover,
 } from '@vkontakte/api-schema-typescript'
-import { PodcastCover } from '@vkontakte/api-schema-typescript/dist/objects/podcast/PodcastCover'
 
 interface TextliveBase {
   attach_url: string
