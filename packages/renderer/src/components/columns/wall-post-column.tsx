@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import {
   WallGetByIdExtendedResponse,
   WallGetByIdParams,
@@ -9,7 +9,7 @@ import {
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { Icon28ArrowLeftOutline } from '@vkontakte/icons'
-import { FixedLayout, PanelSpinner, Separator, WriteBar, WriteBarIcon } from '@vkontakte/vkui'
+import { PanelSpinner, WriteBar, WriteBarIcon } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from '@/components/async-avatar'
 import { WithColumnStack } from '@/components/column-container'
@@ -47,13 +47,12 @@ const commentToWallPost = (comment: WallWallComment): WallWallpostFull => {
   /* eslint-enable camelcase */
 }
 
+// TODO: прикрепление картинок
 export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
   const { apiStore } = useStore()
   const { columnStack } = useColumn<WithColumnStack>()
   const { t } = useTranslation()
 
-  const fixedLayoutInnerElRef = useRef<HTMLDivElement | null>(null)
-  const [bottomPadding, setBottomPadding] = useState(0)
   const [postData, setPostData] = useState<WallWallpostFull | undefined>(post)
   // const [isAttachmentsShown, setIsAttachmentsShown] = useState(false)
   const [text, setText] = useState('')
@@ -122,23 +121,6 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
     }
   }, [])
 
-  const updateBottomPadding = () => {
-    const el = fixedLayoutInnerElRef.current
-    if (el) {
-      const height = el.offsetHeight
-      if (height !== bottomPadding) {
-        setBottomPadding(height)
-      }
-    }
-  }
-
-  /* useEffect(
-    () => {
-      // TODO: возможно, это слишком часто, каккие-нибудь зависимости все же нужны
-      updateBottomPadding()
-    } ,[isAttachmentsShown] ,
-  ) */
-
   return (
     <>
       <ColumnHeader onIconClick={() => columnStack.pop()} icon={Icon28ArrowLeftOutline}>
@@ -174,52 +156,31 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
         ) : (
           postData && <PanelSpinner />
         )}
-
-        {!!postData?.comments?.can_post && (
-          <>
-            <div style={{ height: bottomPadding }} />
-
-            <FixedLayout vertical="bottom">
-              <div ref={fixedLayoutInnerElRef}>
-                <Separator wide />
-                {/* isAttachmentsShown && (
-              // TODO
-              <div>
-                <Div>Интерфейс прикрепления</Div>
-                <Separator wide />
-              </div>
-            ) */}
-                <WriteBar
-                  className="comment-input"
-                  /* before={
-                <WriteBarIcon
-                  mode="attach"
-                  onClick={() => setIsAttachmentsShown(!isAttachmentsShown)}
-                  count={isAttachmentsShown ? undefined : 5}
-                />
-              } */
-                  before={
-                    <WriteBarIcon aria-label="send as">
-                      <AsyncAvatar
-                        initials={getInitials(user)}
-                        gradientColor={(user.id % 6) + 1}
-                        size={32}
-                        src={user.photo_50}
-                        title={getName(user)}
-                      />
-                    </WriteBarIcon>
-                  }
-                  after={<>{text.length > 0 && <WriteBarIcon disabled={true} mode="send" />}</>}
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  onHeightChange={() => updateBottomPadding()}
-                  placeholder={t`wallPostColumn.commentPlaceholder`}
-                />
-              </div>
-            </FixedLayout>
-          </>
-        )}
       </div>
+      {!!postData?.comments?.can_post && (
+        <>
+          <div style={{ position: 'sticky' }}>
+            <WriteBar
+              className="comment-input"
+              before={
+                <WriteBarIcon aria-label="send as">
+                  <AsyncAvatar
+                    initials={getInitials(user)}
+                    gradientColor={(user.id % 6) + 1}
+                    size={32}
+                    src={user.photo_50}
+                    title={getName(user)}
+                  />
+                </WriteBarIcon>
+              }
+              after={<>{text.length > 0 && <WriteBarIcon disabled={true} mode="send" />}</>}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder={t`wallPostColumn.commentPlaceholder`}
+            />
+          </div>
+        </>
+      )}
     </>
   )
 }
