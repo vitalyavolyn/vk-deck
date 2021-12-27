@@ -109,6 +109,17 @@
           max-height: 10em;
         }
 
+        &.overflow::after {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(to bottom, transparent 70%, var(--background_content));
+          content: '';
+          pointer-events: none;
+        }
+
         .link-highlight {
           display: inline-block;
 
@@ -125,17 +136,6 @@
               color: var(--link-hover-color);
             }
           }
-        }
-
-        &.overflow::after {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(to bottom, transparent 70%, var(--background_content));
-          content: '';
-          pointer-events: none;
         }
       }
 
@@ -203,6 +203,10 @@
     }
   }
 
+  &.full-size .media-grid {
+    height: unset;
+  }
+
   &.blurred-ad > .wall-post,
   &.blurred-ad > .media-grid {
     /* TODO: Костыль для медиа вне поста. Плохо, что так наведение работает у фото и поста отдельно. */
@@ -212,5 +216,9 @@
     &:hover {
       filter: none;
     }
+  }
+
+  &.thread-item {
+    padding-left: 28px;
   }
 }

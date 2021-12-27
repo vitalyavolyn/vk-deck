@@ -19,7 +19,7 @@ interface ColumnSettingsProps extends HTMLAttributes<HTMLDivElement> {
   show: boolean
 }
 
-export const ColumnSettings: FC<ColumnSettingsProps> = ({ children, show, ...rest }) => {
+export const ColumnSettings: FC<ColumnSettingsProps> = ({ children, show, ...restProps }) => {
   const { id: columnId, settings } = useColumn()
   const { t } = useTranslation()
   const { settingsStore } = useStore()
@@ -37,7 +37,7 @@ export const ColumnSettings: FC<ColumnSettingsProps> = ({ children, show, ...res
   }
 
   return (
-    <div className={classNames('column-settings', { hidden: !show })} {...rest}>
+    <div className={classNames('column-settings', { hidden: !show })} {...restProps}>
       {children}
       {settings && 'imageGridSize' in settings && <ColumnImageGridSettingsForm />}
       <div className="column-actions">

@@ -20,7 +20,7 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   onScroll,
   loadMore,
   wallPostProps,
-  ...rest
+  ...restProps
 }) => {
   const { columnStack } = useColumn<WithColumnStack>()
 
@@ -44,7 +44,7 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   }, [])
 
   return (
-    <div {...rest} ref={outerRef}>
+    <div {...restProps} ref={outerRef}>
       <div ref={innerRef}>
         {scrollItems.map(({ index, measureRef }) => {
           const data = items[index]

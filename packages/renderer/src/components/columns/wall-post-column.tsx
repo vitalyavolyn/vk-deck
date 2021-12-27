@@ -148,9 +148,18 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
               </div>
             )}
             {comments
-              .map((comment) => commentToWallPost(comment))
-              .map((fakePost) => (
-                <WallPost data={fakePost} key={fakePost.id} fullSize />
+              .map((comment) => ({
+                post: commentToWallPost(comment),
+                thread: comment.thread,
+              }))
+              .map(({ post: fakePost, thread }) => (
+                <>
+                  <WallPost data={fakePost} key={fakePost.id} fullSize />
+                  {thread?.items?.map(commentToWallPost).map((fakePost) => (
+                    <WallPost data={fakePost} key={fakePost.id} fullSize className="thread-item" />
+                    // TODO: "load more"
+                  ))}
+                </>
               ))}
           </>
         ) : (

@@ -12,11 +12,11 @@ interface SmallWallPostProps extends HTMLAttributes<HTMLElement> {
 }
 
 // TODO: rename to `Repost`?
-export const SmallWallPost: FC<SmallWallPostProps> = ({ data, ...rest }) => {
+export const SmallWallPost: FC<SmallWallPostProps> = ({ data, ...restProps }) => {
   const { columnStack } = useColumn<WithColumnStack>()
 
   return (
-    <div className="small-wall-post" {...rest}>
+    <div className="small-wall-post" {...restProps}>
       <WallPost
         data={data}
         small

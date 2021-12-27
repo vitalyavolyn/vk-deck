@@ -88,7 +88,7 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
  * Показывает запись по объекту записи на стене
  */
 export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = observer(
-  ({ data, measureRef, updateData, small, fullSize, ...rest }) => {
+  ({ data, measureRef, updateData, small, fullSize, className, ...restProps }) => {
     const { settings } = useColumn<Partial<HasImageGridSettings>>()
     const mediaSize = settings?.imageGridSize || ImageGridSize.medium
     const { apiStore, snackbarStore, settingsStore } = useStore()
@@ -161,6 +161,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             'donut_link',
             'textlive',
             'textpost',
+            'sticker',
           ].includes(e.type),
       )
       .map((e) => e.type)
@@ -229,18 +230,19 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
         if ((e.target as HTMLElement).closest(clickableSelector)) return
       }
 
-      rest.onClick?.(e)
+      restProps.onClick?.(e)
     }
 
     return (
       <article
-        className={classNames('wall-post-wrap', {
+        className={classNames('wall-post-wrap', className, {
           'blurred-ad': isAd && settingsStore.blurAds,
-          clickable: !!rest.onClick,
+          clickable: !!restProps.onClick,
+          'full-size': fullSize,
         })}
         data-id={`${data.owner_id}_${data.id}`}
         ref={measureRef}
-        {...rest}
+        {...restProps}
         onClick={_onClick}
       >
         <div className="wall-post">

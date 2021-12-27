@@ -20,7 +20,7 @@ export const MediaBadge: FC<MediaBadgeProps> = ({
   href,
   onClick,
   getRootRef,
-  ...rest
+  ...restProps
 }) => {
   const linkProps = href
     ? {
@@ -30,7 +30,7 @@ export const MediaBadge: FC<MediaBadgeProps> = ({
     : {}
 
   return (
-    <a className="media-badge" {...linkProps} onClick={onClick} ref={getRootRef} {...rest}>
+    <a className="media-badge" {...linkProps} onClick={onClick} ref={getRootRef} {...restProps}>
       {icon} {type} {subject && <b title={title || subject}>{subject}</b>}
     </a>
   )
