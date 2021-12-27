@@ -54,8 +54,7 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
               key={`${data.owner_id}_${data.id}`}
               data={items[index]}
               measureRef={measureRef}
-              onClick={(e) => {
-                console.log(e)
+              onClick={() => {
                 columnStack?.push(<WallPostColumn post={data} />)
               }}
               {...wallPostProps}
