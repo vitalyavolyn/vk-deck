@@ -50,7 +50,7 @@ import {
   Icon28LogoVkOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
-import { Avatar } from '@vkontakte/vkui'
+import { Avatar, Div } from '@vkontakte/vkui'
 import { RichTooltip } from '@vkontakte/vkui/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
@@ -119,6 +119,10 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     }, [contentRef, data.text])
 
     const owner = getOwner(data.from_id!)
+
+    if (!owner && comment && data.from_id === 0) {
+      return <Div style={{ color: 'var(--text_secondary)' }}>{t`wallPost.deletedComment`}</Div>
+    }
 
     if (!owner) {
       console.log('no owner', data)

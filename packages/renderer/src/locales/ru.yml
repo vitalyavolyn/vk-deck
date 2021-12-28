@@ -66,6 +66,7 @@ translation:
     photoUpdated: Фотография страницы обновлена
     deletedPage_male: Удалил страницу
     deletedPage_female: Удалила страницу
+    deletedComment: Комментарий удалён пользователем или руководителем страницы
     actions:
       like: Нравится
       comment: Комментарии
