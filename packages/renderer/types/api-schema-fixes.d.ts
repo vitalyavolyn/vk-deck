@@ -151,4 +151,8 @@ declare module '@vkontakte/api-schema-typescript' {
     textlive?: TextliveBase & { is_live: 0 | 1; type: 'textlive' }
     textpost?: TextliveBase & { type: 'textpost' }
   }
+
+  interface WallGraffiti {
+    url: string
+  }
 }

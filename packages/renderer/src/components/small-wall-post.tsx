@@ -20,7 +20,8 @@ export const SmallWallPost: FC<SmallWallPostProps> = ({ data, ...restProps }) =>
       <WallPost
         data={data}
         small
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation()
           columnStack?.push(<WallPostColumn post={data} />)
         }}
       />

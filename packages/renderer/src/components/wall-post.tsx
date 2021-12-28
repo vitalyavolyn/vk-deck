@@ -80,6 +80,8 @@ export interface WallPostProps extends HTMLAttributes<HTMLElement> {
   updateData?: (data: WallWallpostFull) => void
   small?: boolean
   fullSize?: boolean
+  threadItem?: boolean
+  comment?: boolean
 }
 
 const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
@@ -88,7 +90,17 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
  * Показывает запись по объекту записи на стене
  */
 export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = observer(
-  ({ data, measureRef, updateData, small, fullSize, className, ...restProps }) => {
+  ({
+    data,
+    measureRef,
+    updateData,
+    small,
+    fullSize,
+    className,
+    threadItem,
+    comment,
+    ...restProps
+  }) => {
     const { settings } = useColumn<Partial<HasImageGridSettings>>()
     const mediaSize = settings?.imageGridSize || ImageGridSize.medium
     const { apiStore, snackbarStore, settingsStore } = useStore()
@@ -130,6 +142,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     const textlive =
       getAttachments('textlive')[0]?.textlive || getAttachments('textpost')[0]?.textpost
     const sticker = getAttachments('sticker')[0]?.sticker as BaseStickerNew
+    const graffiti = getAttachments('graffiti')[0]?.graffiti
 
     const photos = getAttachments('photo')
     const albumsCount = getAttachments('album').length
@@ -162,6 +175,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             'textlive',
             'textpost',
             'sticker',
+            'graffiti',
           ].includes(e.type),
       )
       .map((e) => e.type)
@@ -176,7 +190,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
       const { api } = apiStore
 
       const params = {
-        type: 'post',
+        type: comment ? 'comment' : 'post',
         owner_id: data.owner_id,
         item_id: data.id!,
       }
@@ -225,7 +239,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     const isAd = !!data.marked_as_ads || data.header?.type === 'ads'
 
     const _onClick = (e: MouseEvent<HTMLElement>) => {
-      const clickable = ['.wall-post-actions', '.media-grid', 'a', '.poll']
+      const clickable = ['.wall-post-actions', '.media-grid', 'a', '.poll', '.dropdown-menu']
       for (const clickableSelector of clickable) {
         if ((e.target as HTMLElement).closest(clickableSelector)) return
       }
@@ -239,6 +253,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
           'blurred-ad': isAd && settingsStore.blurAds,
           clickable: !!restProps.onClick,
           'full-size': fullSize,
+          'thread-item': threadItem,
         })}
         data-id={`${data.owner_id}_${data.id}`}
         ref={measureRef}
@@ -251,7 +266,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
               <div className="wall-post-avatar">
                 <AsyncAvatar
                   gradientColor={(owner.id % 6) + 1}
-                  size={36}
+                  size={threadItem ? 24 : 36}
                   src={owner.photo_50}
                   initials={getInitials(owner)}
                 />
@@ -316,6 +331,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
               <TextProcessor content={data.text || ''} parseInternalLinks />
             </div>
             {sticker && <Sticker sticker={sticker} />}
+            {graffiti && <img src={graffiti.url} style={{ width: '60%' }} />}
             {!!photos.length && mediaSize === ImageGridSize.medium && (
               <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
             )}
@@ -503,50 +519,52 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                           <Icon20CopyOutline width={16} height={16} />
                           {t`wallPost.actions.copyLink`}
                         </DropdownMenuItem>,
-                        <DropdownMenuItem
-                          key="favorite"
-                          onClick={async () => {
-                            await (data.is_favorite
-                              ? apiStore.api.call<FaveRemovePostResponse, FaveRemovePostParams>(
-                                  'fave.removePost',
-                                  {
-                                    id: data.id!,
-                                    owner_id: data.owner_id!,
-                                  },
-                                )
-                              : apiStore.api.call<FaveAddPostResponse, FaveAddPostParams>(
-                                  'fave.addPost',
-                                  {
-                                    id: data.id!,
-                                    owner_id: data.owner_id!,
-                                    access_key: data.access_key,
-                                  },
-                                ))
+                        !comment && (
+                          <DropdownMenuItem
+                            key="favorite"
+                            onClick={async () => {
+                              await (data.is_favorite
+                                ? apiStore.api.call<FaveRemovePostResponse, FaveRemovePostParams>(
+                                    'fave.removePost',
+                                    {
+                                      id: data.id!,
+                                      owner_id: data.owner_id!,
+                                    },
+                                  )
+                                : apiStore.api.call<FaveAddPostResponse, FaveAddPostParams>(
+                                    'fave.addPost',
+                                    {
+                                      id: data.id!,
+                                      owner_id: data.owner_id!,
+                                      access_key: data.access_key,
+                                    },
+                                  ))
 
-                            updateData?.({
-                              ...data,
-                              is_favorite: !data.is_favorite,
-                            })
-                            snackbarStore.show(
-                              data.is_favorite
-                                ? t`wallPost.actions.removeBookmarkSuccess`
-                                : t`wallPost.actions.addBookmarkSuccess`,
-                            )
+                              updateData?.({
+                                ...data,
+                                is_favorite: !data.is_favorite,
+                              })
+                              snackbarStore.show(
+                                data.is_favorite
+                                  ? t`wallPost.actions.removeBookmarkSuccess`
+                                  : t`wallPost.actions.addBookmarkSuccess`,
+                              )
 
-                            // обновляем колонки с закладками
-                            // TODO: почти такое же есть выше. может, выделить в метод SettingsStore?
-                            for (const column of settingsStore.columns) {
-                              if (column.type === ColumnType.bookmarks) {
-                                settingsStore.refreshColumn(column.id)
+                              // обновляем колонки с закладками
+                              // TODO: почти такое же есть выше. может, выделить в метод SettingsStore?
+                              for (const column of settingsStore.columns) {
+                                if (column.type === ColumnType.bookmarks) {
+                                  settingsStore.refreshColumn(column.id)
+                                }
                               }
-                            }
-                          }}
-                        >
-                          <Icon16BookmarkOutline />
-                          {!data.is_favorite
-                            ? t`wallPost.actions.addBookmark`
-                            : t`wallPost.actions.removeBookmark`}
-                        </DropdownMenuItem>,
+                            }}
+                          >
+                            <Icon16BookmarkOutline />
+                            {!data.is_favorite
+                              ? t`wallPost.actions.addBookmark`
+                              : t`wallPost.actions.removeBookmark`}
+                          </DropdownMenuItem>
+                        ),
                         <DropdownMenuItem key="open" onClick={() => window.open(postUrl)}>
                           <Icon28LogoVkOutline width={16} height={16} />
                           {t`wallPost.actions.openInBrowser`}

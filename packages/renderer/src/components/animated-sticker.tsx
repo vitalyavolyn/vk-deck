@@ -11,7 +11,6 @@ export const AnimatedSticker: FC<AnimatedStickerProps> = ({ sticker }) => {
     lottie.loadAnimation({
       container,
       path: sticker.animation_url,
-      renderer: 'svg',
       autoplay: true,
       loop: true,
       rendererSettings: {

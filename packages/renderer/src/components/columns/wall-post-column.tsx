@@ -8,8 +8,9 @@ import {
   WallWallpostAttachment,
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
-import { Icon28ArrowLeftOutline } from '@vkontakte/icons'
-import { PanelSpinner, WriteBar, WriteBarIcon } from '@vkontakte/vkui'
+import { Icon28ArrowLeftOutline, Icon28ChevronDownOutline } from '@vkontakte/icons'
+import { CellButton, PanelSpinner, Spinner, WriteBar, WriteBarIcon } from '@vkontakte/vkui'
+import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from '@/components/async-avatar'
 import { WithColumnStack } from '@/components/column-container'
@@ -57,6 +58,7 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
   // const [isAttachmentsShown, setIsAttachmentsShown] = useState(false)
   const [text, setText] = useState('')
   const [comments, setComments] = useState<WallWallComment[] | null>(null)
+  const [loadingThreads, setLoadingThreads] = useState<Record<string, boolean>>({})
 
   const { user } = apiStore.initData
 
@@ -67,7 +69,7 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
         WallGetByIdParams
       >('wall.getById', {
         extended: 1,
-        posts: postId!,
+        posts: postId ?? `${post?.owner_id}_${post?.id}`,
         fields,
       })
 
@@ -98,7 +100,7 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
         extended: 1,
         count: 100,
         need_likes: 1,
-        thread_items_count: 10,
+        thread_items_count: 5,
         fields,
       })
 
@@ -116,9 +118,9 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
   }, [postData])
 
   useEffect(() => {
-    if (!post && postId) {
-      fetchPostData()
-    }
+    // if (!post && postId) {
+    fetchPostData()
+    // }
   }, [])
 
   return (
@@ -152,13 +154,86 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
                 post: commentToWallPost(comment),
                 thread: comment.thread,
               }))
-              .map(({ post: fakePost, thread }) => (
+              .map(({ post: fakePost, thread }, commentIndex) => (
                 <Fragment key={fakePost.id}>
-                  <WallPost data={fakePost} fullSize />
-                  {thread?.items?.map(commentToWallPost).map((fakePost) => (
-                    <WallPost data={fakePost} key={fakePost.id} fullSize className="thread-item" />
-                    // TODO: "load more"
+                  <WallPost
+                    data={fakePost}
+                    fullSize
+                    comment
+                    updateData={(data) => {
+                      // TODO: так низя
+                      comments[commentIndex] = _.merge({}, comments[commentIndex], data)
+                      setComments(comments)
+                    }}
+                  />
+                  {thread?.items?.map(commentToWallPost).map((fakePost, threadIndex) => (
+                    <WallPost
+                      data={fakePost}
+                      key={fakePost.id}
+                      fullSize
+                      comment
+                      threadItem
+                      updateData={(data) => {
+                        _.set(comments, `[${commentIndex}].thread.items[${threadIndex}]`, data)
+                        setComments(comments)
+                      }}
+                    />
                   ))}
+                  {Number(thread?.count) > Number(thread?.items?.length) && (
+                    <CellButton
+                      onClick={async () => {
+                        if (loadingThreads[fakePost.id!]) return
+
+                        setLoadingThreads((old) => ({
+                          ...old,
+                          [fakePost.id!]: true,
+                        }))
+
+                        const { items } = await apiStore.api.call<
+                          WallGetCommentsExtendedResponse,
+                          WallGetCommentsParams
+                        >('wall.getComments', {
+                          owner_id: postData?.owner_id,
+                          post_id: postData?.id,
+                          offset: thread?.items?.length,
+                          count: 100,
+                          extended: 1,
+                          fields,
+                          need_likes: 1,
+                          comment_id: fakePost.id,
+                        })
+
+                        setComments((comments) =>
+                          comments!.map((e) =>
+                            e.id !== fakePost.id
+                              ? e
+                              : _.merge({}, e, {
+                                  thread: { items: [...e.thread!.items!, ...items] },
+                                }),
+                          ),
+                        )
+
+                        setLoadingThreads((old) => ({
+                          ...old,
+                          [fakePost.id!]: false,
+                        }))
+                      }}
+                      before={
+                        loadingThreads[fakePost.id!] ? (
+                          <Spinner
+                            size="regular"
+                            style={{
+                              padding: '12px 16px 12px 4px',
+                              width: 'auto',
+                            }}
+                          />
+                        ) : (
+                          <Icon28ChevronDownOutline />
+                        )
+                      }
+                      className="load-more-comments"
+                    >{t`wallPostColumn.loadMoreComments`}</CellButton>
+                  )}
                 </Fragment>
               ))}
           </>

@@ -125,6 +125,7 @@ translation:
     commentsCount_one: '{{count}} комментарий'
     commentsCount_few: '{{count}} комментария'
     commentsCount_many: '{{count}} комментариев'
+    loadMoreComments: Загрузить ещё
 
   wallSetup:
     placeholder: Поиск человека или группы
