@@ -1,5 +1,7 @@
 import { FC, Fragment, useEffect, useState } from 'react'
 import {
+  WallCreateCommentParams,
+  WallCreateCommentResponse,
   WallGetByIdExtendedResponse,
   WallGetByIdParams,
   WallGetCommentsExtendedResponse,
@@ -59,6 +61,7 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
   const [text, setText] = useState('')
   const [comments, setComments] = useState<WallWallComment[] | null>(null)
   const [loadingThreads, setLoadingThreads] = useState<Record<string, boolean>>({})
+  const [sendingComment, setSendingComment] = useState<boolean>(false)
 
   const { user } = apiStore.initData
 
@@ -122,6 +125,23 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
     fetchPostData()
     // }
   }, [])
+
+  const sendComment = async () => {
+    setSendingComment(true)
+
+    // TODO: trycatch
+    await apiStore.api.call<WallCreateCommentResponse, WallCreateCommentParams>(
+      'wall.createComment',
+      {
+        owner_id: postData?.owner_id,
+        post_id: postData!.id!,
+        message: text,
+      },
+    )
+
+    setText('')
+    fetchComments()
+  }
 
   return (
     <>
@@ -257,7 +277,18 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
                   />
                 </WriteBarIcon>
               }
-              after={<>{text.length > 0 && <WriteBarIcon disabled={true} mode="send" />}</>}
+              after={
+                <>
+                  {text.length > 0 && (
+                    <WriteBarIcon
+                      // TODO: enter
+                      onClick={sendComment}
+                      disabled={sendingComment}
+                      mode="send"
+                    />
+                  )}
+                </>
+              }
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder={t`wallPostColumn.commentPlaceholder`}
