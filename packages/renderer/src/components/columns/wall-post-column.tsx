@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, Fragment, useEffect, useState } from 'react'
 import {
   WallGetByIdExtendedResponse,
   WallGetByIdParams,
@@ -153,13 +153,13 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
                 thread: comment.thread,
               }))
               .map(({ post: fakePost, thread }) => (
-                <>
-                  <WallPost data={fakePost} key={fakePost.id} fullSize />
+                <Fragment key={fakePost.id}>
+                  <WallPost data={fakePost} fullSize />
                   {thread?.items?.map(commentToWallPost).map((fakePost) => (
                     <WallPost data={fakePost} key={fakePost.id} fullSize className="thread-item" />
                     // TODO: "load more"
                   ))}
-                </>
+                </Fragment>
               ))}
           </>
         ) : (
