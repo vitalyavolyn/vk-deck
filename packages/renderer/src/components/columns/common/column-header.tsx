@@ -11,6 +11,7 @@ interface ColumnHeaderProps {
   onSettingsClick?(e: MouseEvent<HTMLDivElement>): void
   subtitle?: string
   onClick?(e: MouseEvent<HTMLDivElement>): void
+  onIconClick?(e: MouseEvent<HTMLDivElement>): void
   clickable?: boolean
 }
 
@@ -19,6 +20,7 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
   icon,
   onSettingsClick,
   onClick,
+  onIconClick,
   subtitle,
   clickable,
 }) => {
@@ -39,7 +41,13 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
       className={classNames('column-header', { clickable: clickable && !!onClick })}
       onClick={_onClick}
     >
-      <Icon width={26} height={26} className="column-icon" />
+      <Icon
+        width={26}
+        height={26}
+        className="column-icon"
+        onClick={onIconClick}
+        style={{ cursor: onIconClick ? 'pointer' : undefined }}
+      />
       <div className="column-title">
         <Title level="3" weight="semibold">
           {children}

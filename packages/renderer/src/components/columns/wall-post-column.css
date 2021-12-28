@@ -1,0 +1,27 @@
+.comments-header {
+  padding: 8px 10px;
+  color: var(--text_secondary);
+  font-weight: bold;
+}
+
+.comment-input {
+  border-top: 1px solid var(--image_border);
+  border-bottom: 1px solid var(--image_border);
+
+  .vkuiWriteBar__form {
+    align-items: flex-start;
+  }
+
+  .vkuiWriteBar__textarea {
+    font-size: 14px !important;
+  }
+}
+
+.vkuiCellButton.load-more-comments {
+  width: calc(100% - 20px);
+  margin-left: 20px;
+
+  .vkuiTitle {
+    font-size: 1em !important;
+  }
+}

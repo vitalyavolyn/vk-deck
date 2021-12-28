@@ -52,6 +52,7 @@ translation:
     likedPosts: Понравившиеся записи
     bookmarks: Закладки
     newsfeedSearch: Глобальный поиск
+    wallPost: Пост
 
   time:
     relativeDays: '{{d}}д'
@@ -118,6 +119,13 @@ translation:
     settings:
       source: Источник
     unknownList: Неизвестный список
+
+  wallPostColumn:
+    commentPlaceholder: Комментарий…
+    commentsCount_one: '{{count}} комментарий'
+    commentsCount_few: '{{count}} комментария'
+    commentsCount_many: '{{count}} комментариев'
+    loadMoreComments: Загрузить ещё
 
   wallSetup:
     placeholder: Поиск человека или группы

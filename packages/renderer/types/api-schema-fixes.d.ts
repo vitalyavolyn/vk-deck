@@ -3,8 +3,8 @@ import {
   PhotosPhoto,
   PhotosPhotoSizes,
   UsersUserFull,
+  PodcastCover,
 } from '@vkontakte/api-schema-typescript'
-import { PodcastCover } from '@vkontakte/api-schema-typescript/dist/objects/podcast/PodcastCover'
 
 interface TextliveBase {
   attach_url: string
@@ -150,5 +150,9 @@ declare module '@vkontakte/api-schema-typescript' {
     }
     textlive?: TextliveBase & { is_live: 0 | 1; type: 'textlive' }
     textpost?: TextliveBase & { type: 'textpost' }
+  }
+
+  interface WallGraffiti {
+    url: string
   }
 }

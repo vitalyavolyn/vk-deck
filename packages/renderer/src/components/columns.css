@@ -17,15 +17,10 @@
     width: var(--column-width);
     height: 100%;
     flex: 0 0 auto;
-    border-right: 1px solid var(--image_border);
-    transition: width 0.1s;
+    transition: width 0.1s, transform 0.2s;
   }
 }
 
 .vkuiSplitCol--spaced .columns {
   column-gap: var(--spaced-columns-gap);
-
-  .column {
-    border-left: 1px solid var(--image_border);
-  }
 }

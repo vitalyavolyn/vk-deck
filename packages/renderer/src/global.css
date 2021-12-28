@@ -48,6 +48,11 @@ body[scheme='vkcom_dark'] {
   }
 }
 
+.column .vkuiFixedLayout {
+  /* why */
+  width: var(--column-width) !important;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 8px;

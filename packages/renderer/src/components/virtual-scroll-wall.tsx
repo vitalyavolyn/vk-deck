@@ -1,6 +1,9 @@
 import { FC, HTMLAttributes, MutableRefObject, useEffect } from 'react'
 import { WallWallpostFull } from '@vkontakte/api-schema-typescript'
 import useVirtual, { LoadMore, OnScroll, ScrollTo } from 'react-cool-virtual'
+import { WithColumnStack } from '@/components/column-container'
+import { WallPostColumn } from '@/components/columns/wall-post-column'
+import { useColumn } from '@/hooks/use-column'
 import { WallPost, WallPostProps } from './wall-post'
 
 interface VirtualScrollWallProps extends Pick<HTMLAttributes<HTMLDivElement>, 'className'> {
@@ -17,8 +20,10 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   onScroll,
   loadMore,
   wallPostProps,
-  ...rest
+  ...restProps
 }) => {
+  const { columnStack } = useColumn<WithColumnStack>()
+
   const {
     outerRef,
     innerRef,
@@ -39,7 +44,7 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
   }, [])
 
   return (
-    <div {...rest} ref={outerRef}>
+    <div {...restProps} ref={outerRef}>
       <div ref={innerRef}>
         {scrollItems.map(({ index, measureRef }) => {
           const data = items[index]
@@ -49,6 +54,9 @@ export const VirtualScrollWall: FC<VirtualScrollWallProps> = ({
               key={`${data.owner_id}_${data.id}`}
               data={items[index]}
               measureRef={measureRef}
+              onClick={() => {
+                columnStack?.push(<WallPostColumn post={data} />)
+              }}
               {...wallPostProps}
             />
           ) : undefined

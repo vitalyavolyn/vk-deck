@@ -17,6 +17,7 @@ export enum ColumnType {
   likedPosts = 'likedPosts',
   bookmarks = 'bookmarks',
   newsfeedSearch = 'newsfeedSearch',
+  wallPost = 'wallPost',
 }
 
 export interface Settings {
@@ -73,6 +74,10 @@ export interface INewsfeedSearchColumn extends BaseColumn {
   settings: NewsfeedSearchColumnSettings
 }
 
+export interface IWallPostColumn extends BaseColumn {
+  type: ColumnType.wallPost
+}
+
 export type Column =
   | INewsfeedColumn
   | IRickColumn
@@ -80,6 +85,7 @@ export type Column =
   | ILikedPostsColumn
   | IBookmarksColumn
   | INewsfeedSearchColumn
+  | IWallPostColumn
 
 export enum ColumnSize {
   narrow,
