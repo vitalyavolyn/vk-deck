@@ -1,0 +1,124 @@
+#page-preview {
+  .vkuiModalPage__content-wrap {
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .profile-link {
+    color: var(--text_primary);
+
+    &.cover-foreground {
+      color: white;
+    }
+  }
+}
+
+.info-block {
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+  gap: 2px;
+
+  &:not(:last-child) {
+    margin-bottom: 4px;
+  }
+
+  &.online-status {
+    color: var(--text_secondary);
+
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+/*
+  Да, это просто стили из VKUI (с измнененными цветами)
+
+  Gradient на данный момент выглядит плохо на vkcom_dark, потому что разработчики
+  не добавили поддержку vkcom_* тем в них
+*/
+
+body[scheme='vkcom_light'] .vkuiGradient--md-tint.vkuiGradient--to-top {
+  background: linear-gradient(
+    to top,
+    #f0f2f5,
+    rgb(240 242 245 / 98%),
+    rgb(240 242 245 / 94%),
+    rgb(240 242 245 / 88%),
+    rgb(240 242 245 / 80%),
+    rgb(240 242 245 / 71%),
+    rgb(240 242 245 / 61%),
+    rgb(240 242 245 / 50%),
+    rgb(240 242 245 / 39%),
+    rgb(240 242 245 / 29%),
+    rgb(240 242 245 / 20%),
+    rgb(240 242 245 / 12%),
+    rgb(240 242 245 / 6%),
+    rgb(240 242 245 / 2%),
+    rgb(240 242 245 / 0%)
+  );
+}
+
+body[scheme='vkcom_light'] .vkuiGradient--md-tint.vkuiGradient--to-bottom {
+  background: linear-gradient(
+    to bottom,
+    #f0f2f5,
+    rgb(240 242 245 / 98%),
+    rgb(240 242 245 / 94%),
+    rgb(240 242 245 / 88%),
+    rgb(240 242 245 / 80%),
+    rgb(240 242 245 / 71%),
+    rgb(240 242 245 / 61%),
+    rgb(240 242 245 / 50%),
+    rgb(240 242 245 / 39%),
+    rgb(240 242 245 / 29%),
+    rgb(240 242 245 / 20%),
+    rgb(240 242 245 / 12%),
+    rgb(240 242 245 / 6%),
+    rgb(240 242 245 / 2%),
+    rgb(240 242 245 / 0%)
+  );
+}
+
+body[scheme='vkcom_dark'] .vkuiGradient--md-tint.vkuiGradient--to-top {
+  background: linear-gradient(
+    to top,
+    #292929,
+    rgb(41 41 41 / 98%),
+    rgb(41 41 41 / 94%),
+    rgb(41 41 41 / 88%),
+    rgb(41 41 41 / 80%),
+    rgb(41 41 41 / 71%),
+    rgb(41 41 41 / 61%),
+    rgb(41 41 41 / 50%),
+    rgb(41 41 41 / 39%),
+    rgb(41 41 41 / 29%),
+    rgb(41 41 41 / 20%),
+    rgb(41 41 41 / 12%),
+    rgb(41 41 41 / 6%),
+    rgb(41 41 41 / 2%),
+    rgb(41 41 41 / 0%)
+  );
+}
+
+body[scheme='vkcom_dark'] .vkuiGradient--md-tint.vkuiGradient--to-bottom {
+  background: linear-gradient(
+    to bottom,
+    #232324,
+    rgb(41 41 41 / 98%),
+    rgb(41 41 41 / 94%),
+    rgb(41 41 41 / 88%),
+    rgb(41 41 41 / 80%),
+    rgb(41 41 41 / 71%),
+    rgb(41 41 41 / 61%),
+    rgb(41 41 41 / 50%),
+    rgb(41 41 41 / 39%),
+    rgb(41 41 41 / 29%),
+    rgb(41 41 41 / 20%),
+    rgb(41 41 41 / 12%),
+    rgb(41 41 41 / 6%),
+    rgb(41 41 41 / 2%),
+    rgb(41 41 41 / 0%)
+  );
+}

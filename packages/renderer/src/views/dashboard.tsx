@@ -21,7 +21,7 @@ const scrollToColumn = (id: string) => {
 
 export const Dashboard: FC = observer(() => {
   const { viewWidth } = useAdaptivity()
-  const { snackbarStore, settingsStore } = useStore()
+  const { snackbarStore, settingsStore, uiStore } = useStore()
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
   const [activeSidePanel, setActiveSidePanel] = useState<SidePanelName | undefined>()
 
@@ -61,7 +61,7 @@ export const Dashboard: FC = observer(() => {
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
 
   return (
-    <SplitLayout>
+    <SplitLayout modal={uiStore.modal}>
       <SplitCol fixed width="64px" maxWidth="64px" style={{ zIndex: 1 }}>
         <Navbar
           onColumnClick={scrollToColumn}

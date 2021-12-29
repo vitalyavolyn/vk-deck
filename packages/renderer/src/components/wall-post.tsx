@@ -68,6 +68,7 @@ import { DropdownMenu } from './dropdown-menu'
 import { DropdownMenuItem } from './dropdown-menu-item'
 import { MediaBadge } from './media-badge'
 import { MediaGrid } from './media-grid'
+import { PagePreviewModal } from './modals/page-preview-modal'
 import { Poll } from './poll'
 import { SmallWallPost } from './small-wall-post'
 import { Sticker } from './sticker'
@@ -103,7 +104,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
   }) => {
     const { settings } = useColumn<Partial<HasImageGridSettings>>()
     const mediaSize = settings?.imageGridSize || ImageGridSize.medium
-    const { apiStore, snackbarStore, settingsStore } = useStore()
+    const { apiStore, snackbarStore, settingsStore, uiStore } = useStore()
     const { getOwner } = apiStore
 
     const contentRef = useRef<HTMLDivElement>(null)
@@ -251,6 +252,10 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
       restProps.onClick?.(e)
     }
 
+    const openOwnerModal = () => {
+      uiStore.showModal(<PagePreviewModal pageId={data.from_id!} {...uiStore.modalProps} />)
+    }
+
     return (
       <article
         className={classNames('wall-post-wrap', className, {
@@ -293,7 +298,11 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
           )}
           <div className="wall-post-main">
             <header className="wall-post-header">
-              <a className="wall-post-author" title={`${getName(owner)} @${owner.screen_name}`}>
+              <a
+                className="wall-post-author"
+                title={`${getName(owner)} @${owner.screen_name}`}
+                onClick={openOwnerModal}
+              >
                 <span className="full-name">{getName(owner)}</span>
                 <span className="screen-name">@{owner.screen_name}</span>
               </a>
@@ -471,11 +480,17 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                   )}
                 </div>
                 {data.signer_id && (
-                  // TODO: ссылка?
-                  <div className="wall-post-signer">
+                  <a
+                    className="wall-post-signer"
+                    onClick={() => {
+                      uiStore.showModal(
+                        <PagePreviewModal pageId={data.signer_id!} {...uiStore.modalProps} />,
+                      )
+                    }}
+                  >
                     <Icon12User />
                     {getName(getOwner(data.signer_id))}
-                  </div>
+                  </a>
                 )}
                 {/* TODO: источник? */}
                 <div className="wall-post-footer">

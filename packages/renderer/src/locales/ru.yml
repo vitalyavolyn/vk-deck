@@ -161,3 +161,17 @@ translation:
     vote: Проголосовать
     disableUnvote: переголосовать нельзя
     closed: завершён
+
+  pagePreview:
+    # TODO: 1 подписчиков??
+    subscribers: '{{num}} подписчиков'
+    online: онлайн
+    online_recently_male: был в сети недавно
+    online_recently_female: была в сети недавно
+    online_last_week_male: был в сети на этой неделе
+    online_last_week_female: была в сети на этой неделе
+    online_last_month_male: был в сети в этом месяце
+    online_last_month_female: была в сети в этом месяце
+    online_long_ago_male: был в сети давно
+    online_long_ago_female: была в сети давно
+    online_not_show:

@@ -1,5 +1,5 @@
-import { PhotosPhoto } from '@vkontakte/api-schema-typescript'
+import { BaseImage } from '@vkontakte/api-schema-typescript'
 
-export const getBiggestSize = (photo: PhotosPhoto) => {
-  return photo.sizes!.sort((a, b) => b.height * b.width - a.height * a.width)[0]
+export const getBiggestSize = (sizes: BaseImage[]) => {
+  return sizes.sort((a, b) => b.height * b.width - a.height * a.width)[0]
 }

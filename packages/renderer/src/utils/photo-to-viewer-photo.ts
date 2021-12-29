@@ -12,7 +12,7 @@ export const photoToViewerPhoto = (
 ): ViewerPhoto => {
   return {
     date: photo.date,
-    url: getBiggestSize(photo).url,
+    url: getBiggestSize(photo.sizes!).url,
     owner: {
       name: getName(owner),
       photo: owner?.photo_50,

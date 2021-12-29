@@ -3,12 +3,13 @@ import _ from 'lodash'
 import * as punycode from 'punycode/'
 import tlds from 'tlds'
 import { v4 as uuidv4 } from 'uuid'
-import { WithColumnStack } from '@/components/column-container'
-import { WallPostColumn } from '@/components/columns/wall-post-column'
-import { defaultImageGridSettings } from '@/components/side-panels/add-column-side-panel'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { BaseColumn, ColumnType } from '@/store/settings-store'
+import { WithColumnStack } from './column-container'
+import { WallPostColumn } from './columns/wall-post-column'
+import { PagePreviewModal } from './modals/page-preview-modal'
+import { defaultImageGridSettings } from './side-panels/add-column-side-panel'
 
 interface TextProcessorProps {
   content: string
@@ -31,9 +32,10 @@ const isWallPostLink = (link: string) => /^(?:https?:\/\/)?vk\.com\/wall(-?\d+_\
 
 export const TextProcessor: FC<TextProcessorProps> = memo(({ content, parseInternalLinks }) => {
   const children: ReactNode[] = []
-  const { settingsStore } = useStore()
+  const { settingsStore, uiStore } = useStore()
   const { columnStack } = useColumn<WithColumnStack>()
   const { id } = useColumn<BaseColumn>()
+
   const comboRegex = parseInternalLinks
     ? new RegExp(
         `(?:${internalLinkRegex})|(?:${linkRegex})|(?:${mentionRegex})|(?:${hashtagRegex})`,
@@ -48,6 +50,7 @@ export const TextProcessor: FC<TextProcessorProps> = memo(({ content, parseInter
 
   for (const [index, part] of content.split(comboRegex).entries()) {
     let element
+    // TODO: ссылки, открывающие модалку предпросмотра страницы
 
     if (parseInternalLinks && new RegExp(internalLinkRegex).test(part)) {
       const [, path, text] = /\[(?:https?:\/\/)?vk\.com(\/.*)\|(.+?)]/i.exec(part)!
@@ -97,9 +100,20 @@ export const TextProcessor: FC<TextProcessorProps> = memo(({ content, parseInter
     } else if (new RegExp(mentionRegex).test(part)) {
       const [, type, id, text] = /\[(club|public|id)(\d+)\|(.+?)]/gi.exec(part)!
 
+      const globalId = type === 'id' ? id : -id
+
       element = (
         <div className="link-highlight" key={index}>
-          <a target="_blank" href={`https://vk.com/${type}${id}`}>
+          <a
+            target="_blank"
+            href={`https://vk.com/${type}${id}`}
+            onClick={(e) => {
+              e.preventDefault()
+              uiStore.showModal(
+                <PagePreviewModal pageId={Number(globalId)} {...uiStore.modalProps} />,
+              )
+            }}
+          >
             {text}
           </a>
         </div>

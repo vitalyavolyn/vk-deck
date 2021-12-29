@@ -10,6 +10,7 @@ body {
   --link-background: hsl(0deg 0% 90% / 70%);
   --link-hover-background: hsl(0deg 0% 0%);
   --link-hover-color: white;
+  --transparent-tint: rgb(41 41 41 / 75%);
 
   background-color: var(--background_page);
   overflow-y: hidden;
