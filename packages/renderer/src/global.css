@@ -4,7 +4,7 @@
 /* Global overrides */
 
 body {
-  --modal-width: 270px;
+  --side-panel-width: 270px;
   --column-width: 310px;
   --dropdown-background: rgb(255 255 255 / 90%);
   --link-background: hsl(0deg 0% 90% / 70%);

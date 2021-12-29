@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { Button, FormItem, FormLayout, Input } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
-import { SetupProps } from '@/components/modals/add-column-modal'
+import { SetupProps } from '@/components/side-panels/add-column-side-panel'
 import { ColumnType } from '@/store/settings-store'
 
 export const NewsfeedSearchColumnSetup: FC<SetupProps> = ({ addColumn }) => {

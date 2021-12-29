@@ -9,8 +9,8 @@ import {
 } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { Columns } from '@/components/columns'
-import { ModalContainer, ModalName } from '@/components/modal-container'
 import { Navbar } from '@/components/navbar'
+import { SidePanelContainer, SidePanelName } from '@/components/side-panel-container'
 import { useStore } from '@/hooks/use-store'
 
 import './dashboard.css'
@@ -22,19 +22,19 @@ const scrollToColumn = (id: string) => {
 export const Dashboard: FC = observer(() => {
   const { viewWidth } = useAdaptivity()
   const { snackbarStore, settingsStore } = useStore()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [activeModal, setActiveModal] = useState<ModalName | undefined>()
+  const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+  const [activeSidePanel, setActiveSidePanel] = useState<SidePanelName | undefined>()
 
   if (!viewWidth) return <PanelSpinner />
 
-  const openModal = (name: ModalName) => {
-    setActiveModal(name)
-    setIsModalOpen(true)
+  const openSidePanel = (name: SidePanelName) => {
+    setActiveSidePanel(name)
+    setIsSidePanelOpen(true)
   }
 
-  const closeModal = () => {
-    setIsModalOpen(false)
-    setTimeout(() => setActiveModal(undefined), 200)
+  const closeSidePanel = () => {
+    setIsSidePanelOpen(false)
+    setTimeout(() => setActiveSidePanel(undefined), 200)
   }
 
   // глобальный шорткат для создания записи
@@ -46,8 +46,8 @@ export const Dashboard: FC = observer(() => {
           e.code === 'KeyN' &&
           !/textarea|input|select/i.test(document.activeElement?.nodeName || '')
         ) {
-          setActiveModal('compose')
-          setIsModalOpen(true)
+          setActiveSidePanel('compose')
+          setIsSidePanelOpen(true)
         } else if (/^(Digit)|(Numpad)/.test(e.code)) {
           const index = Number(e.key) - 1
           const id = settingsStore.columns[index]?.id
@@ -67,27 +67,29 @@ export const Dashboard: FC = observer(() => {
           onColumnClick={scrollToColumn}
           // TODO: функции ниже надо привести в порядок и объединить
           onComposeButtonClick={() =>
-            !isModalOpen || activeModal !== 'compose' ? openModal('compose') : setIsModalOpen(false)
+            !isSidePanelOpen || activeSidePanel !== 'compose'
+              ? openSidePanel('compose')
+              : setIsSidePanelOpen(false)
           }
-          isComposerOpened={isModalOpen && activeModal === 'compose'}
+          isComposerOpened={isSidePanelOpen && activeSidePanel === 'compose'}
           onSettingsClick={() =>
-            !isModalOpen || activeModal !== 'settings'
-              ? openModal('settings')
-              : setIsModalOpen(false)
+            !isSidePanelOpen || activeSidePanel !== 'settings'
+              ? openSidePanel('settings')
+              : setIsSidePanelOpen(false)
           }
           onAddColumnClick={() =>
-            !isModalOpen || activeModal !== 'add-column'
-              ? openModal('add-column')
-              : setIsModalOpen(false)
+            !isSidePanelOpen || activeSidePanel !== 'add-column'
+              ? openSidePanel('add-column')
+              : setIsSidePanelOpen(false)
           }
         />
       </SplitCol>
 
       <SplitCol
         spaced={isDesktop}
-        className={classNames({ 'modal-open': isModalOpen }, 'columns-container')}
+        className={classNames({ 'side-panel-open': isSidePanelOpen }, 'columns-container')}
       >
-        <ModalContainer modal={activeModal} closeModal={closeModal} />
+        <SidePanelContainer sidePanel={activeSidePanel} closeSidePanel={closeSidePanel} />
         <Columns />
       </SplitCol>
       {snackbarStore.element}

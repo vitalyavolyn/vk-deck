@@ -2,19 +2,19 @@ import { ChangeEvent, FC } from 'react'
 import { Button, Checkbox, FormItem, FormLayout, Select } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
-import { ModalProps } from '@/components/modal-container'
+import { SidePanelProps } from '@/components/side-panel-container'
 import { useStore } from '@/hooks/use-store'
 import { ColorScheme, ColumnSize, Settings } from '@/store/settings-store'
-import { ModalHeader } from './modal-header'
+import { SidePanelHeader } from './side-panel-header'
 
-import './settings-modal.css'
+import './settings-side-panel.css'
 
 const logout = () => {
   localStorage.clear()
   location.reload()
 }
 
-export const SettingsModal: FC<ModalProps> = observer(() => {
+export const SettingsSidePanel: FC<SidePanelProps> = observer(() => {
   const { t } = useTranslation()
   const { settingsStore } = useStore()
 
@@ -31,8 +31,8 @@ export const SettingsModal: FC<ModalProps> = observer(() => {
   }
 
   return (
-    <div className="modal settings-modal">
-      <ModalHeader>{t`settings.title`}</ModalHeader>
+    <div className="side-panel settings-side-panel">
+      <SidePanelHeader>{t`settings.title`}</SidePanelHeader>
       <FormLayout>
         <FormItem top={t`settings.colorScheme.title`}>
           <Select

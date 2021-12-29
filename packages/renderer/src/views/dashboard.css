@@ -6,11 +6,11 @@
     transition: margin-right 0.2s;
   }
 
-  &.modal-open {
-    transform: translateX(var(--modal-width));
+  &.side-panel-open {
+    transform: translateX(var(--side-panel-width));
 
     .columns {
-      margin-right: var(--modal-width);
+      margin-right: var(--side-panel-width);
     }
   }
 }

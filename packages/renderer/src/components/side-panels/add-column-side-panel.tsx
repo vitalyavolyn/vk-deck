@@ -7,13 +7,13 @@ import { NewsfeedSearchColumnSetup } from '@/components/column-setup/newsfeed-se
 import { WallColumnSetup } from '@/components/column-setup/wall-column-setup'
 import { NewsfeedSearchColumnSettings } from '@/components/columns/newsfeed-search-column'
 import { WallColumnSettings } from '@/components/columns/wall-column'
-import { ModalProps } from '@/components/modal-container'
 import { columnIcons } from '@/components/navbar'
+import { SidePanelProps } from '@/components/side-panel-container'
 import { useStore } from '@/hooks/use-store'
 import { ColumnImageGridSettings, ColumnType, ImageGridSize } from '@/store/settings-store'
-import { ModalHeader } from './modal-header'
+import { SidePanelHeader } from './side-panel-header'
 
-import './add-column-modal.css'
+import './add-column-side-panel.css'
 
 // [
 //   тип колонки,
@@ -50,7 +50,7 @@ export const defaultImageGridSettings: ColumnImageGridSettings = {
   imageGridSize: ImageGridSize.medium,
 }
 
-export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
+export const AddColumnSidePanel: FC<SidePanelProps> = ({ closeSidePanel }) => {
   const { t } = useTranslation()
   const { settingsStore } = useStore()
   const [selectedColumn, setSelectedColumn] = useState<ColumnType | null>(null)
@@ -63,7 +63,7 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
   }, [selectedColumn])
 
   const addColumn: AddColumn = (type: ColumnType, settings?: any) => {
-    closeModal()
+    closeSidePanel()
 
     switch (type) {
       case ColumnType.newsfeed:
@@ -106,11 +106,11 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
   return (
     <>
       <div
-        className={classNames('modal add-column-modal', {
+        className={classNames('side-panel add-column-side-panel', {
           'second-screen-active': !!selectedColumn,
         })}
       >
-        <ModalHeader>{t`addColumn.title`}</ModalHeader>
+        <SidePanelHeader>{t`addColumn.title`}</SidePanelHeader>
         <List className="column-type-selector">
           {columns.map(([type, needsConfiguration, caption]) => {
             const Icon = columnIcons[type]
@@ -131,7 +131,7 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
                     setTimeout(() => setSelectedColumn(type), 0)
                   } else {
                     addColumn(type)
-                    closeModal()
+                    closeSidePanel()
                   }
                 }}
                 key={type}
@@ -144,25 +144,25 @@ export const AddColumnModal: FC<ModalProps> = ({ closeModal }) => {
       </div>
       {(selectedColumn === 'wall' || animatingColumn === 'wall') && (
         <div
-          className={classNames('modal add-column-modal', {
+          className={classNames('side-panel add-column-side-panel', {
             'second-screen-active': !!selectedColumn,
           })}
         >
-          <ModalHeader
+          <SidePanelHeader
             onBackButtonClick={() => setSelectedColumn(null)}
-          >{t`columns.wall`}</ModalHeader>
+          >{t`columns.wall`}</SidePanelHeader>
           <WallColumnSetup addColumn={addColumn} />
         </div>
       )}
       {(selectedColumn === 'newsfeedSearch' || animatingColumn === 'newsfeedSearch') && (
         <div
-          className={classNames('modal add-column-modal', {
+          className={classNames('side-panel add-column-side-panel', {
             'second-screen-active': !!selectedColumn,
           })}
         >
-          <ModalHeader
+          <SidePanelHeader
             onBackButtonClick={() => setSelectedColumn(null)}
-          >{t`columns.newsfeedSearch`}</ModalHeader>
+          >{t`columns.newsfeedSearch`}</SidePanelHeader>
           <NewsfeedSearchColumnSetup addColumn={addColumn} />
         </div>
       )}

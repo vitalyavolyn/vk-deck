@@ -4,13 +4,13 @@ import { Icon20ArticleOutline, Icon20CheckBoxOff, Icon20Square4Outline } from '@
 import { Button, classNames, FormStatus, Textarea } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { AccountPicker, AccountPickerMode } from '@/components/account-picker'
-import { ModalProps } from '@/components/modal-container'
+import { SidePanelProps } from '@/components/side-panel-container'
 import { useStore } from '@/hooks/use-store'
-import { ModalHeader } from './modal-header'
+import { SidePanelHeader } from './side-panel-header'
 
-import './compose-modal.css'
+import './compose-side-panel.css'
 
-export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
+export const ComposeSidePanel: FC<SidePanelProps> = ({ closeSidePanel }) => {
   const { apiStore } = useStore()
   const { id } = apiStore.initData.user
 
@@ -42,12 +42,12 @@ export const ComposeModal: FC<ModalProps> = ({ closeModal }) => {
 
     setIsLoading(false)
     setIsDone(true)
-    closeModal()
+    closeSidePanel()
   }
 
   return (
-    <div className="modal compose-modal">
-      <ModalHeader>{t`composer.title`}</ModalHeader>
+    <div className="side-panel compose-side-panel">
+      <SidePanelHeader>{t`composer.title`}</SidePanelHeader>
       <div className="mode-selector">
         <span>{t`composer.from`}</span>
         <div className="picker">

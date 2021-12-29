@@ -1,9 +1,9 @@
-.add-column-modal {
+.add-column-side-panel {
   width: 100%;
   transition: transform 0.2s;
 
   &.second-screen-active {
-    transform: translateX(calc(var(--modal-width) * -1));
+    transform: translateX(calc(var(--side-panel-width) * -1));
   }
 
   .column-type-selector {

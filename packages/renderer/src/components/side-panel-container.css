@@ -1,15 +1,15 @@
-.modal-container {
+.side-panel-container {
   position: absolute;
   z-index: -1;
   display: flex;
   overflow: hidden;
-  width: var(--modal-width);
+  width: var(--side-panel-width);
   height: 100%;
   flex-flow: column wrap;
   border-right: 1px solid var(--image_border);
-  transform: translateX(calc(var(--modal-width) * -1));
+  transform: translateX(calc(var(--side-panel-width) * -1));
 
-  .modal {
+  .side-panel {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
