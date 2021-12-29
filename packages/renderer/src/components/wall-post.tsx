@@ -134,7 +134,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     const hasRepost = data.copy_history?.length
 
     const getAttachments = (
-      type: WallWallpostAttachmentType | WallCommentAttachmentType | 'podcast',
+      type: WallWallpostAttachmentType | WallCommentAttachmentType | 'podcast' | 'textpost_publish',
     ) => _.filter(data.attachments, { type }) as (WallWallpostAttachment & WallCommentAttachment)[]
 
     const link = getAttachments('link')[0]?.link
@@ -145,7 +145,9 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     const donutLink = getAttachments('donut_link')[0]?.donut_link
     // структура у них почти одна
     const textlive =
-      getAttachments('textlive')[0]?.textlive || getAttachments('textpost')[0]?.textpost
+      getAttachments('textlive')[0]?.textlive ||
+      getAttachments('textpost')[0]?.textpost ||
+      getAttachments('textpost_publish')[0]?.textpost_publish
     const sticker = getAttachments('sticker')[0]?.sticker as BaseStickerNew
     const graffiti = getAttachments('graffiti')[0]?.graffiti
 
@@ -179,6 +181,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             'donut_link',
             'textlive',
             'textpost',
+            'textpost_publish',
             'sticker',
             'graffiti',
           ].includes(e.type),

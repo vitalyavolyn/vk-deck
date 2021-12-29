@@ -10,13 +10,13 @@ interface TextliveBase {
   attach_url: string
   is_live: 1 | 0
   online: number
-  text: string
+  text?: string
   textlive_id: number
-  textlive_owner_id: number
-  textpost_author_id: number
-  textpost_date: number
+  textlive_owner_id?: number
+  textpost_author_id?: number
+  textpost_date?: number
   title: string
-  type: 'textlive' | 'textpost'
+  type: 'textlive' | 'textpost' | 'textpost_publish'
   url: string
 }
 
@@ -150,6 +150,7 @@ declare module '@vkontakte/api-schema-typescript' {
     }
     textlive?: TextliveBase & { is_live: 0 | 1; type: 'textlive' }
     textpost?: TextliveBase & { type: 'textpost' }
+    textpost_publish?: TextliveBase & { type: 'textpost_publish' }
   }
 
   interface WallGraffiti {
