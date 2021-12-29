@@ -2,7 +2,7 @@ import { CSSProperties, FC, ReactNode, useState } from 'react'
 import { classNames } from '@vkontakte/vkjs'
 import { createColumnContext } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
-import { ColumnType } from '@/store/settings-store'
+import { BaseColumn, ColumnType } from '@/store/settings-store'
 import { BookmarksColumn } from './columns/bookmarks-column'
 import { LikedPostsColumn } from './columns/liked-posts-column'
 import { NewsfeedColumn } from './columns/newsfeed-column'
@@ -24,7 +24,8 @@ const columnComponents = {
 }
 
 interface ColumnContainerProps {
-  columnId: string
+  columnId?: string
+  columnData?: BaseColumn & { [key: string]: unknown }
 }
 
 export type ColumnStackActions = { push(el: ReactNode): void; pop(): void }
@@ -32,12 +33,12 @@ export type ColumnStackActions = { push(el: ReactNode): void; pop(): void }
 // TODO: rename?
 export type WithColumnStack<T = unknown> = T & { columnStack: ColumnStackActions }
 
-export const ColumnContainer: FC<ColumnContainerProps> = ({ columnId }) => {
+export const ColumnContainer: FC<ColumnContainerProps> = ({ columnId, columnData }) => {
   const { settingsStore } = useStore()
   const [columnStack, setColumnStack] = useState<ReactNode[]>([])
   const [animationDirection, setAnimationDirection] = useState<-1 | 0 | 1>(0)
 
-  const column = settingsStore.getColumn(columnId)
+  const column = columnData ?? settingsStore.getColumn(columnId!)
   const Component = column ? columnComponents[column.type] : undefined
 
   const columnStackActions: ColumnStackActions = {

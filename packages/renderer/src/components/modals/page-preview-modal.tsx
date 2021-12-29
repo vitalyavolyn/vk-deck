@@ -14,11 +14,13 @@ import {
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import {
+  Button,
   Gradient,
   Group,
   Headline,
   Link,
   ModalPage,
+  ModalPageHeader,
   ModalRoot,
   ModalRootProps,
   PanelSpinner,
@@ -26,7 +28,9 @@ import {
 } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from '@/components/async-avatar'
+import { ColumnContainer } from '@/components/column-container'
 import { useStore } from '@/hooks/use-store'
+import { ColumnType } from '@/store/settings-store'
 import { getBiggestSize } from '@/utils/get-biggest-size'
 import { getInitials } from '@/utils/get-initials'
 import { getName } from '@/utils/get-name'
@@ -44,6 +48,7 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
 
   const [pageData, setPageData] = useState<UsersUserFull | GroupsGroupFull | null>(null)
   const [postsCount, setPostsCount] = useState<number | null>(null)
+  const [activeModal, setActiveModal] = useState('page-preview')
 
   const fetchData = async () => {
     setPageData(apiStore.getOwner(pageId))
@@ -102,7 +107,7 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
   const showCover = (pageData as GroupsGroupFull | null)?.cover?.enabled
 
   return (
-    <ModalRoot activeModal="page-preview" {...restProps}>
+    <ModalRoot activeModal={activeModal} {...restProps}>
       <ModalPage dynamicContentHeight id="page-preview">
         <Gradient
           style={{
@@ -174,7 +179,26 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
             </>
           )}
         </Gradient>
-        <Group>wallpost count {postsCount}</Group>
+        {pageData && (
+          <Group>
+            wallpost count {postsCount}
+            <Button
+              disabled={'can_access_closed' in pageData ? !pageData.can_access_closed : false}
+              onClick={() => setActiveModal('wall-preview')}
+            >
+              dont click me
+            </Button>
+          </Group>
+        )}
+      </ModalPage>
+      <ModalPage
+        dynamicContentHeight
+        id="wall-preview"
+        header={<ModalPageHeader>oh wow</ModalPageHeader>}
+      >
+        <ColumnContainer
+          columnData={{ id: 'a', type: ColumnType.wall, settings: { ownerId: pageId } }}
+        />
       </ModalPage>
     </ModalRoot>
   )
