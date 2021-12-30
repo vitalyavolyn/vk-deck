@@ -47,7 +47,9 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
   const [activeModal, setActiveModal] = useState('page-preview')
 
   const fetchData = async () => {
-    setPageData({ ...apiStore.getOwner(pageId), wallCount: 0 })
+    if (apiStore.getOwner(pageId)) {
+      setPageData({ ...apiStore.getOwner(pageId), wallCount: 0 })
+    }
 
     const page = await apiStore.api.call<Page, { id: number }>('execute.getPage', { id: pageId })
 

@@ -28,7 +28,8 @@ const mentionRegex = '(\\[(?:club|public|id)(?:\\d+)\\|(?:.+?)\\])'
 const internalLinkRegex = '(\\[(?:https?:\\/\\/)?vk\\.com(?:\\/.*)\\|(?:.+?)\\])'
 const hashtagRegex = '(#[^\\s!#$%&()*:^[\\]]+)'
 
-const isWallPostLink = (link: string) => /^(?:https?:\/\/)?vk\.com\/wall(-?\d+_\d+)/.test(link)
+const isWallPostLink = (link: string) =>
+  /^(?:https?:\/\/)?vk\.com\/(?:.*\?w=)?wall(-?\d+_\d+)/.test(link)
 
 export const TextProcessor: FC<TextProcessorProps> = memo(({ content, parseInternalLinks }) => {
   const children: ReactNode[] = []

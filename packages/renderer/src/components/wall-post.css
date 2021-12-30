@@ -162,6 +162,7 @@
 
       .wall-post-signer {
         display: flex;
+        width: fit-content;
         align-items: center;
         margin-top: 3px;
         margin-bottom: 2px;
