@@ -1,6 +1,6 @@
 import { FC, useCallback } from 'react'
 import { BaseStickerNew } from '@vkontakte/api-schema-typescript'
-import lottie from 'lottie-web'
+import lottie from 'lottie-web/build/player/lottie_light'
 
 interface AnimatedStickerProps {
   sticker: BaseStickerNew
