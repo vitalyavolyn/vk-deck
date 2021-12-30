@@ -1,11 +1,5 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
-import {
-  GroupsGetByIdParams,
-  GroupsGroupFull,
-  UsersGetParams,
-  UsersGetResponse,
-  UsersUserFull,
-} from '@vkontakte/api-schema-typescript'
+import { GroupsGroupFull, UsersUserFull } from '@vkontakte/api-schema-typescript'
 import {
   Icon12Lock,
   Icon20CakeOutline,
@@ -43,40 +37,21 @@ interface PagePreviewModalProps extends ModalRootProps {
   pageId: number
 }
 
+type Page = (UsersUserFull | GroupsGroupFull) & { wallCount: number | '???' }
+
 export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restProps }) => {
   const { apiStore } = useStore()
   const { t } = useTranslation()
 
-  const [pageData, setPageData] = useState<UsersUserFull | GroupsGroupFull | null>(null)
-  const [postsCount, setPostsCount] = useState<number | null>(null)
+  const [pageData, setPageData] = useState<Page | null>(null)
   const [activeModal, setActiveModal] = useState('page-preview')
 
   const fetchData = async () => {
-    setPageData(apiStore.getOwner(pageId))
+    setPageData({ ...apiStore.getOwner(pageId), wallCount: 0 })
 
-    if (pageId > 0) {
-      const [user] = await apiStore.api.call<UsersGetResponse, UsersGetParams>('users.get', {
-        user_ids: pageId.toString(),
-        fields: 'screen_name,photo_100,city,bdate,counters,online_info,sex', // career,education?
-      })
+    const page = await apiStore.api.call<Page, { id: number }>('execute.getPage', { id: pageId })
 
-      setPageData(user)
-      // TODO: приходит только у закрытых профилей, надо делать новую хранимку
-      setPostsCount(user.counters?.posts ?? null)
-    } else {
-      // в новых версиях обновленный незадокументированный формат, типов нет
-      const {
-        groups: [group],
-      } = await apiStore.api.call<{ groups: GroupsGroupFull[] }, GroupsGetByIdParams>(
-        'groups.getById',
-        {
-          group_id: (-pageId).toString(),
-          fields: 'screen_name,photo_100,counters,cover,members_count',
-        },
-      )
-
-      setPageData(group)
-    }
+    setPageData(page)
   }
 
   useEffect(() => {
@@ -182,7 +157,7 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
         </Gradient>
         {pageData && (
           <Group>
-            wallpost count {postsCount}
+            wallpost count {pageData.wallCount}
             <Button
               disabled={'can_access_closed' in pageData ? !pageData.can_access_closed : false}
               onClick={() => setActiveModal('wall-preview')}
