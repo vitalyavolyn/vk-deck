@@ -1,9 +1,10 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { RootStore } from './root-store'
 
 // TODO: сунуть сюда SnackbarStore
 export class UIStore {
   public modal?: JSX.Element
+  public photoPopup?: JSX.Element
 
   public modalProps = {
     onClose: () => {
@@ -12,7 +13,10 @@ export class UIStore {
   }
 
   constructor(public root: RootStore) {
-    makeAutoObservable(this)
+    makeAutoObservable(this, {
+      photoPopup: observable.shallow,
+      modal: observable.shallow,
+    })
   }
 
   public showModal(modal: JSX.Element): void {

@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useState } from 'react'
+import { FC, MouseEventHandler, useEffect, useState } from 'react'
 import { PhotosPhoto, PhotosPhotoSizes } from '@vkontakte/api-schema-typescript'
 import { classNames } from '@vkontakte/vkjs'
 import { Spinner } from '@vkontakte/vkui'
@@ -25,7 +25,7 @@ export const MediaGrid: FC<MediaGridProps> = observer(({ photos }) => {
     settings: { imageGridSize },
   } = useColumn<HasImageGridSettings>()
   const { openViewer } = useElectron()
-  const { apiStore, settingsStore } = useStore()
+  const { apiStore, settingsStore, uiStore } = useStore()
 
   const [popupPhoto, setPopupPhoto] = useState<PhotosPhotoSizes | null>(null)
   const [popupCoordinates, setPopupCoordinates] = useState<Point | null>(null)
@@ -76,9 +76,9 @@ export const MediaGrid: FC<MediaGridProps> = observer(({ photos }) => {
     })
   }
 
-  return (
-    <>
-      {popupCoordinates && popupPhoto && settingsStore.mediaQuickPreview && (
+  useEffect(() => {
+    uiStore.photoPopup =
+      popupCoordinates && popupPhoto && settingsStore.mediaQuickPreview ? (
         <div className="photo-popup" style={{ top: popupCoordinates.y, left: popupCoordinates.x }}>
           <div className="spinner-wrap">
             {/* TODO: первые полсекунды находится у курсора */}
@@ -88,7 +88,11 @@ export const MediaGrid: FC<MediaGridProps> = observer(({ photos }) => {
             <img src={popupPhoto.url} />
           </div>
         </div>
-      )}
+      ) : undefined
+  }, [popupCoordinates, popupPhoto, settingsStore.mediaQuickPreview])
+
+  return (
+    <>
       <div
         className={`media-grid media-grid-${Math.min(
           photos.length,

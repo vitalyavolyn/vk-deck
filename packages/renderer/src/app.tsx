@@ -17,7 +17,7 @@ import { Dashboard } from '@/views/dashboard'
 import { Login } from '@/views/login'
 
 export const App: FC = observer(() => {
-  const { apiStore, snackbarStore } = useStore()
+  const { apiStore, snackbarStore, uiStore } = useStore()
   const { isAuthorized } = apiStore
   const { t } = useTranslation()
 
@@ -51,7 +51,10 @@ export const App: FC = observer(() => {
   return (
     <ConfigProvider scheme={scheme} platform={Platform.VKCOM}>
       <AdaptivityProvider>
-        <AppRoot noLegacyClasses>{isAuthorized ? <Dashboard /> : <Login />}</AppRoot>
+        <AppRoot noLegacyClasses>
+          {isAuthorized ? <Dashboard /> : <Login />}
+          {uiStore.photoPopup}
+        </AppRoot>
       </AdaptivityProvider>
     </ConfigProvider>
   )
