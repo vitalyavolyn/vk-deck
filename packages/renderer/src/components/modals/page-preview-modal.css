@@ -4,6 +4,10 @@
     border-radius: 8px;
   }
 
+  .vkuiAvatar.clickable {
+    cursor: pointer;
+  }
+
   .profile-link {
     color: var(--text_primary);
 

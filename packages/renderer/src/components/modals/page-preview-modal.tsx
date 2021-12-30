@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
-import { GroupsGroupFull, UsersUserFull } from '@vkontakte/api-schema-typescript'
+import { GroupsGroupFull, PhotosPhoto, UsersUserFull } from '@vkontakte/api-schema-typescript'
 import {
   Icon12Lock,
   Icon20CakeOutline,
@@ -24,6 +24,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from '@/components/async-avatar'
 import { ColumnContainer } from '@/components/column-container'
+import { useElectron } from '@/hooks/use-electron'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType } from '@/store/settings-store'
 import { getBiggestSize } from '@/utils/get-biggest-size'
@@ -37,11 +38,15 @@ interface PagePreviewModalProps extends ModalRootProps {
   pageId: number
 }
 
-type Page = (UsersUserFull | GroupsGroupFull) & { wallCount: number | '???' }
+type Page = (UsersUserFull | GroupsGroupFull) & {
+  wallCount: number | '???'
+  mainPhoto?: PhotosPhoto
+}
 
 export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restProps }) => {
   const { apiStore } = useStore()
   const { t } = useTranslation()
+  const { openViewer } = useElectron()
 
   const [pageData, setPageData] = useState<Page | null>(null)
   const [activeModal, setActiveModal] = useState('page-preview')
@@ -87,6 +92,7 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
   return (
     <ModalRoot activeModal={activeModal} {...restProps}>
       <ModalPage dynamicContentHeight id="page-preview">
+        {/* TODO: AppearanceProvider вместо игр со стилями */}
         <Gradient
           style={{
             display: 'flex',
@@ -109,12 +115,27 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
             <PanelSpinner />
           ) : (
             <>
-              {/* TODO: открывать фото в просмотрщике (fields: photo_id) */}
               <AsyncAvatar
                 gradientColor={calcInitialsAvatarColor(pageData.id)}
                 initials={getInitials(pageData)}
                 src={pageData.photo_100}
                 size={96}
+                className={classNames({ clickable: !pageData.is_closed })}
+                onClick={() => {
+                  if (!pageData.mainPhoto) return
+                  const { mainPhoto, photo_100: smallPhoto } = pageData
+
+                  openViewer({
+                    photos: [
+                      {
+                        url: getBiggestSize(mainPhoto.sizes!).url,
+                        date: mainPhoto.date,
+                        owner: { name: getName(pageData), photo: smallPhoto },
+                      },
+                    ],
+                    index: 0,
+                  })
+                }}
               />
               <Link
                 href={`https://vk.com/${pageData.screen_name}`}
