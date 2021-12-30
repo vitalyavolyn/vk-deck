@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import { Icon20CheckCircleFillGreen, Icon24ChevronUp } from '@vkontakte/icons'
-import { Avatar, classNames, RichCell } from '@vkontakte/vkui'
+import { Avatar, calcInitialsAvatarColor, classNames, RichCell } from '@vkontakte/vkui'
 import { TextTooltip } from '@vkontakte/vkui/unstable'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
@@ -43,7 +43,7 @@ const Account: FC<AccountProps> = ({ name, id, screenName, photo, isSelected, mo
         <TextTooltip text={name}>
           <div className={classNames('account-avatar', { selected: isSelected })} onClick={onClick}>
             <AsyncAvatar
-              gradientColor={(id % 6) + 1}
+              gradientColor={calcInitialsAvatarColor(id)}
               initials={getInitials(name)}
               size={imageSize}
               src={photo}
@@ -60,7 +60,7 @@ const Account: FC<AccountProps> = ({ name, id, screenName, photo, isSelected, mo
       before={
         <div className={classNames('account-avatar', { selected: isSelected })}>
           <AsyncAvatar
-            gradientColor={(id % 6) + 1}
+            gradientColor={calcInitialsAvatarColor(id)}
             initials={getInitials(name)}
             size={32}
             src={photo}

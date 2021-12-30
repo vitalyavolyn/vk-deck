@@ -11,7 +11,14 @@ import {
   WallWallpostFull,
 } from '@vkontakte/api-schema-typescript'
 import { Icon28ArrowLeftOutline, Icon28ChevronDownOutline } from '@vkontakte/icons'
-import { CellButton, PanelSpinner, Spinner, WriteBar, WriteBarIcon } from '@vkontakte/vkui'
+import {
+  calcInitialsAvatarColor,
+  CellButton,
+  PanelSpinner,
+  Spinner,
+  WriteBar,
+  WriteBarIcon,
+} from '@vkontakte/vkui'
 import _ from 'lodash/fp'
 import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from '@/components/async-avatar'
@@ -269,7 +276,7 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
                 <WriteBarIcon aria-label="send as">
                   <AsyncAvatar
                     initials={getInitials(user)}
-                    gradientColor={(user.id % 6) + 1}
+                    gradientColor={calcInitialsAvatarColor(user.id)}
                     size={32}
                     src={user.photo_50}
                     title={getName(user)}

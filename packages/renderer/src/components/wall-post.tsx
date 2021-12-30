@@ -50,7 +50,7 @@ import {
   Icon28LogoVkOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
-import { Avatar, Div } from '@vkontakte/vkui'
+import { Avatar, calcInitialsAvatarColor, Div } from '@vkontakte/vkui'
 import { RichTooltip } from '@vkontakte/vkui/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
@@ -277,7 +277,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             <div className="left">
               <div className="wall-post-avatar">
                 <AsyncAvatar
-                  gradientColor={(owner.id % 6) + 1}
+                  gradientColor={calcInitialsAvatarColor(owner.id)}
                   size={threadItem ? 24 : 36}
                   src={owner.photo_50}
                   initials={getInitials(owner)}

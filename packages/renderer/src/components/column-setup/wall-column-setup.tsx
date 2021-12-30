@@ -2,6 +2,7 @@ import { FC, useState } from 'react'
 import { SearchGetHintsParams, SearchGetHintsResponse } from '@vkontakte/api-schema-typescript'
 import {
   Button,
+  calcInitialsAvatarColor,
   CustomSelect,
   CustomSelectOption,
   FormItem,
@@ -84,7 +85,7 @@ export const WallColumnSetup: FC<SetupProps> = ({ addColumn }) => {
                     size={24}
                     src={option.avatar}
                     initials={getInitials(option.label)}
-                    gradientColor={(option.value % 6) + 1}
+                    gradientColor={calcInitialsAvatarColor(option.value)}
                   />
                 }
                 description={'@' + option.description}

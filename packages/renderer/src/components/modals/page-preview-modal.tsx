@@ -15,6 +15,7 @@ import {
 import { classNames } from '@vkontakte/vkjs'
 import {
   Button,
+  calcInitialsAvatarColor,
   Gradient,
   Group,
   Headline,
@@ -133,7 +134,7 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
             <>
               {/* TODO: открывать фото в просмотрщике (fields: photo_id) */}
               <AsyncAvatar
-                gradientColor={(pageData.id % 6) + 1}
+                gradientColor={calcInitialsAvatarColor(pageData.id)}
                 initials={getInitials(pageData)}
                 src={pageData.photo_100}
                 size={96}

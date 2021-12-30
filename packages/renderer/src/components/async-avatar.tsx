@@ -1,9 +1,10 @@
 import { FC, ImgHTMLAttributes, useCallback, useEffect, useState } from 'react'
 import { Avatar, InitialsAvatar } from '@vkontakte/vkui'
+import { InitialsAvatarNumberGradients } from '@vkontakte/vkui/dist/components/InitialsAvatar/InitialsAvatar'
 import { isDefaultAvatar } from '@/utils/is-default-avatar'
 
 interface AsyncAvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
-  gradientColor: number
+  gradientColor: InitialsAvatarNumberGradients
   initials: string
   src?: string
   size: number
@@ -37,7 +38,6 @@ export const AsyncAvatar: FC<AsyncAvatarProps> = ({
   return imgSrc && !isDefaultAvatar(imgSrc) ? (
     <Avatar size={size} {...props} src={imgSrc} />
   ) : (
-    // @ts-ignore: :(((((((
     <InitialsAvatar size={size} gradientColor={gradientColor}>
       {initials}
     </InitialsAvatar>

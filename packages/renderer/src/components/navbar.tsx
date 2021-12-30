@@ -13,7 +13,7 @@ import {
   Icon28CommentOutline,
 } from '@vkontakte/icons'
 import { Icon28NewsfeedOutlineProps } from '@vkontakte/icons/dist/28/newsfeed_outline'
-import { Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
+import { calcInitialsAvatarColor, Cell, classNames, Panel, Tappable } from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
 import { ColumnType } from '@/store/settings-store'
@@ -96,7 +96,7 @@ export const Navbar: FC<NavbarProps> = observer(
             </Cell>
             <AsyncAvatar
               initials={getInitials(user)}
-              gradientColor={(user.id % 6) + 1}
+              gradientColor={calcInitialsAvatarColor(user.id)}
               size={40}
               src={user.photo_50}
               title={getName(user)}
