@@ -1,6 +1,6 @@
 import { StorageSetParams, StorageSetResponse } from '@vkontakte/api-schema-typescript'
 import _ from 'lodash'
-import { autorun, makeAutoObservable } from 'mobx'
+import { autorun, get, makeAutoObservable } from 'mobx'
 import { v4 as uuidv4 } from 'uuid'
 import { BookmarksColumnSettings } from '@/components/columns/bookmarks-column'
 import { NewsfeedColumnSettings } from '@/components/columns/newsfeed-column'
@@ -144,8 +144,8 @@ export class SettingsStore implements Settings {
           value: JSON.stringify(this.columns),
         })
       } else {
-        // так надо
-        console.log(this.columns.toString())
+        // https://mobx.js.org/reactions.html#autorun
+        get(this, 'columns')
       }
 
       columnSaveSkip = false
