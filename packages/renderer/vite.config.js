@@ -4,7 +4,7 @@ import { builtinModules } from 'module'
 import path from 'path'
 import yaml from '@rollup/plugin-yaml'
 import svgr from '@svgr/rollup'
-import reactRefresh from '@vitejs/plugin-react-refresh'
+import react from '@vitejs/plugin-react'
 
 /**
  * @type {import('vite').UserConfig}
@@ -13,7 +13,7 @@ import reactRefresh from '@vitejs/plugin-react-refresh'
 const config = {
   mode: process.env.MODE,
   root: __dirname,
-  plugins: [reactRefresh(), yaml(), svgr()],
+  plugins: [react(), yaml(), svgr()],
   base: '',
   server: {
     fs: {
@@ -26,9 +26,9 @@ const config = {
       '@assets': path.resolve(__dirname, './assets'),
     },
   },
-  esbuild: {
-    jsxInject: "import React from 'react'",
-  },
+  // esbuild: {
+  //   jsxInject: "import React from 'react'",
+  // },
   build: {
     sourcemap: true,
     target: 'chrome93',
