@@ -1,6 +1,6 @@
 .photo-popup {
   position: fixed;
-  z-index: 1;
+  z-index: 99; /* Над модалками VKUI */
   display: flex;
   align-items: center;
   justify-content: center;
