@@ -12,7 +12,7 @@ import {
 } from '@vkontakte/api-schema-typescript'
 import { Icon28ArrowLeftOutline, Icon28ChevronDownOutline } from '@vkontakte/icons'
 import { CellButton, PanelSpinner, Spinner, WriteBar, WriteBarIcon } from '@vkontakte/vkui'
-import _ from 'lodash'
+import _ from 'lodash/fp'
 import { useTranslation } from 'react-i18next'
 import { AsyncAvatar } from '@/components/async-avatar'
 import { WithColumnStack } from '@/components/column-container'
@@ -181,9 +181,7 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
                     fullSize
                     comment
                     updateData={(data) => {
-                      // TODO: так низя
-                      comments[commentIndex] = _.merge({}, comments[commentIndex], data)
-                      setComments(comments)
+                      setComments(_.set(`[${commentIndex}]`, data, comments))
                     }}
                   />
                   {thread?.items?.map(commentToWallPost).map((fakePost, threadIndex) => (
@@ -194,8 +192,9 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
                       comment
                       threadItem
                       updateData={(data) => {
-                        _.set(comments, `[${commentIndex}].thread.items[${threadIndex}]`, data)
-                        setComments(comments)
+                        setComments(
+                          _.set(`[${commentIndex}].thread.items[${threadIndex}]`, data, comments),
+                        )
                       }}
                     />
                   ))}
@@ -227,7 +226,7 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
                           comments!.map((e) =>
                             e.id !== fakePost.id
                               ? e
-                              : _.merge({}, e, {
+                              : _.merge(e, {
                                   thread: { items: [...e.thread!.items!, ...items] },
                                 }),
                           ),
