@@ -6,7 +6,8 @@ import { WallPostColumn } from '@/components/columns/wall-post-column'
 import { useColumn } from '@/hooks/use-column'
 import { WallPost, WallPostProps } from './wall-post'
 
-interface VirtualScrollWallProps extends Pick<HTMLAttributes<HTMLDivElement>, 'className'> {
+interface VirtualScrollWallProps
+  extends Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'style'> {
   items: WallWallpostFull[]
   scrollToRef?: MutableRefObject<ScrollTo | null>
   onScroll?: OnScroll

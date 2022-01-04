@@ -50,6 +50,13 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
 
   const [pageData, setPageData] = useState<Page | null>(null)
   const [activeModal, setActiveModal] = useState('page-preview')
+  const [columnHeight, setColumnHeight] = useState(0)
+
+  const modalContentRefCallback = (node: HTMLDivElement | null) => {
+    if (node) {
+      setColumnHeight(node.closest('.vkuiModalPage')!.clientHeight)
+    }
+  }
 
   const fetchData = async () => {
     if (apiStore.getOwner(pageId)) {
@@ -194,9 +201,15 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
         dynamicContentHeight
         id="wall-preview"
         header={<ModalPageHeader>oh wow</ModalPageHeader>}
+        getModalContentRef={modalContentRefCallback}
       >
         <ColumnContainer
-          columnData={{ id: 'a', type: ColumnType.wall, settings: { ownerId: pageId } }}
+          columnData={{
+            id: 'preview',
+            type: ColumnType.wall,
+            // modal max-height - column header - modal header
+            settings: { ownerId: pageId, height: Math.min(columnHeight, 640 - 57 - 48) },
+          }}
         />
       </ModalPage>
     </ModalRoot>

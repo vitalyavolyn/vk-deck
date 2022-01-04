@@ -19,6 +19,8 @@ import { ColumnHeader } from './common/column-header'
 export interface WallColumnSettings extends ColumnImageGridSettings {
   ownerId: number
   hidePinnedPost: boolean
+  // для модалок, не существует у обычных колонок
+  height?: number
   // TODO: filter: suggests,postponed,owner,others
   //  donut???
   //  возможно, сделать для suggests/postponed отдельный вид колонок???
@@ -29,7 +31,7 @@ const Icon = columnIcons[ColumnType.wall]
 
 export const WallColumn: FC = observer(() => {
   const { settings, id } = useColumn<IWallColumn>()
-  const { ownerId, hidePinnedPost } = settings
+  const { ownerId, hidePinnedPost, height } = settings
 
   const { apiStore, snackbarStore, settingsStore } = useStore()
   const { t } = useTranslation()
@@ -83,7 +85,9 @@ export const WallColumn: FC = observer(() => {
 
   useEffect(() => {
     getPosts()
-    settingsStore.columnRefreshFns[id] = getPosts
+    if (id !== 'preview') {
+      settingsStore.columnRefreshFns[id] = getPosts
+    }
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
@@ -135,6 +139,9 @@ export const WallColumn: FC = observer(() => {
             updateData: (post: WallWallpostFull) => {
               setPosts(updatePostInArray(posts, post))
             },
+          }}
+          style={{
+            height,
           }}
         />
       ) : (
