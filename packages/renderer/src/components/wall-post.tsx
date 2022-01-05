@@ -247,7 +247,14 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     const isAd = !!data.marked_as_ads || data.header?.type === 'ads'
 
     const _onClick = (e: MouseEvent<HTMLElement>) => {
-      const clickable = ['.wall-post-actions', '.media-grid', 'a', '.poll', '.dropdown-menu']
+      const clickable = [
+        '.wall-post-actions',
+        '.media-grid',
+        'a',
+        '.poll',
+        '.dropdown-menu',
+        '.wall-post-avatar',
+      ]
       for (const clickableSelector of clickable) {
         if ((e.target as HTMLElement).closest(clickableSelector)) return
       }
@@ -275,7 +282,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
         <div className="wall-post">
           {!small && (
             <div className="left">
-              <div className="wall-post-avatar">
+              <div className="wall-post-avatar" onClick={openOwnerModal}>
                 <AsyncAvatar
                   gradientColor={calcInitialsAvatarColor(owner.id)}
                   size={threadItem ? 24 : 36}

@@ -16,6 +16,7 @@
 
     .wall-post-avatar {
       position: relative;
+      cursor: pointer;
 
       .badge {
         position: absolute;
