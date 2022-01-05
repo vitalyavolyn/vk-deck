@@ -20,6 +20,10 @@
 #wall-preview {
   .column-container {
     border: none;
+
+    .column {
+      width: 100%;
+    }
   }
 }
 
