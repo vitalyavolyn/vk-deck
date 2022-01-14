@@ -42,6 +42,7 @@ import {
   Icon20ShareOutline,
   Icon20VideoOutline,
   Icon20View,
+  Icon24NarrativeOutline,
   Icon24PhotosStackOutline,
   Icon24Podcast,
   Icon24TextLiveOutline,
@@ -134,7 +135,12 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
     const hasRepost = data.copy_history?.length
 
     const getAttachments = (
-      type: WallWallpostAttachmentType | WallCommentAttachmentType | 'podcast' | 'textpost_publish',
+      type:
+        | WallWallpostAttachmentType
+        | WallCommentAttachmentType
+        | 'podcast'
+        | 'textpost_publish'
+        | 'narrative',
     ) => _.filter(data.attachments, { type }) as (WallWallpostAttachment & WallCommentAttachment)[]
 
     const link = getAttachments('link')[0]?.link
@@ -148,6 +154,8 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
       getAttachments('textlive')[0]?.textlive ||
       getAttachments('textpost')[0]?.textpost ||
       getAttachments('textpost_publish')[0]?.textpost_publish
+    const narrative = getAttachments('narrative')[0]?.narrative
+    // следующие два для комментариев
     const sticker = getAttachments('sticker')[0]?.sticker as BaseStickerNew
     const graffiti = getAttachments('graffiti')[0]?.graffiti
 
@@ -184,6 +192,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             'textpost_publish',
             'sticker',
             'graffiti',
+            'narrative',
           ].includes(e.type),
       )
       .map((e) => e.type)
@@ -486,6 +495,13 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                       type={t`wallPost.mediaBadge.textlive`}
                       subject={textlive.title}
                       href={textlive.attach_url}
+                    />
+                  )}
+                  {!!narrative && (
+                    <MediaBadge
+                      icon={<Icon24NarrativeOutline width={16} height={16} />}
+                      type={t`wallPost.mediaBadge.narrative`}
+                      subject={narrative.title}
                     />
                   )}
                 </div>

@@ -151,6 +151,19 @@ declare module '@vkontakte/api-schema-typescript' {
     textlive?: TextliveBase & { is_live: 0 | 1; type: 'textlive' }
     textpost?: TextliveBase & { type: 'textpost' }
     textpost_publish?: TextliveBase & { type: 'textpost_publish' }
+    narrative?: {
+      can_delete: boolean
+      can_see: boolean
+      cover: unknown
+      id: number
+      is_delete: boolean
+      is_favorite: boolean
+      owner_id: number
+      seen: boolean
+      story_ids: number[]
+      title: string
+      views: number
+    }
   }
 
   interface WallGraffiti {
