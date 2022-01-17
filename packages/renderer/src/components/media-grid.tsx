@@ -35,7 +35,9 @@ export const MediaGrid: FC<MediaGridProps> = observer(({ photos }) => {
       photos: photos.map((photo) =>
         photoToViewerPhoto(
           photo,
-          apiStore.getOwner(photo.user_id === 100 ? photo.owner_id : photo.user_id!),
+          apiStore.getOwner(
+            photo.user_id === 100 ? photo.owner_id : photo.user_id || photo.owner_id,
+          ),
         ),
       ),
       index,
