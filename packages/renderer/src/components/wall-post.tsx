@@ -269,7 +269,6 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
         '.link-card',
       ]
       for (const clickableSelector of clickable) {
-        console.log(clickableSelector, (e.target as HTMLElement).closest(clickableSelector))
         if ((e.target as HTMLElement).closest(clickableSelector)) return
       }
 
@@ -423,20 +422,6 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                       })}
                     />
                   )}
-                  {link &&
-                    (!showMediaGrid ? (
-                      <LinkCard link={link} />
-                    ) : (
-                      <MediaBadge
-                        icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
-                        type={
-                          hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`
-                        }
-                        subject={hasArticle ? link.title : new URL(link.url).hostname}
-                        title={hasArticle ? link.title : link.url}
-                        href={link.url}
-                      />
-                    ))}
                   {!!podcast && (
                     <MediaBadge
                       icon={<Icon24Podcast width={16} height={16} />}
@@ -512,6 +497,20 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                       subject={narrative.title}
                     />
                   )}
+                  {link &&
+                    (!showMediaGrid ? (
+                      <LinkCard link={link} />
+                    ) : (
+                      <MediaBadge
+                        icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
+                        type={
+                          hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`
+                        }
+                        subject={hasArticle ? link.title : new URL(link.url).hostname}
+                        title={hasArticle ? link.title : link.url}
+                        href={link.url}
+                      />
+                    ))}
                 </div>
                 {data.signer_id && (
                   <a

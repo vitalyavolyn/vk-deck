@@ -1,9 +1,20 @@
 .link-card {
   margin: 6px 0 2px;
 
+  .vkuiContentCard__body {
+    padding: 8px 12px;
+  }
+
   .vkuiCaption {
+    display: flex;
+    align-items: center;
     font-size: 0.7em;
+    gap: 4px;
     opacity: 0.8;
+
+    .vkuiIcon {
+      opacity: 0.6;
+    }
   }
 
   .vkuiTitle {
