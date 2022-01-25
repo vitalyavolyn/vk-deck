@@ -67,6 +67,7 @@ import { AsyncAvatar } from './async-avatar'
 import { HasImageGridSettings } from './columns/common/column-image-grid-settings-form'
 import { DropdownMenu } from './dropdown-menu'
 import { DropdownMenuItem } from './dropdown-menu-item'
+import { LinkCard } from './link-card'
 import { MediaBadge } from './media-badge'
 import { MediaGrid } from './media-grid'
 import { PagePreviewModal } from './modals/page-preview-modal'
@@ -168,6 +169,8 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
 
     const hasMap = !!data?.geo
     const hasArticle = isArticleLink(link?.url)
+    const hasPhotos = photos.length > 0
+    const showMediaGrid = hasPhotos && mediaSize !== ImageGridSize.badges
 
     const eventGroup = event && (apiStore.getOwner(-event.id) as GroupsGroupFull)
 
@@ -263,8 +266,10 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
         '.poll',
         '.dropdown-menu',
         '.wall-post-avatar',
+        '.link-card',
       ]
       for (const clickableSelector of clickable) {
+        console.log(clickableSelector, (e.target as HTMLElement).closest(clickableSelector))
         if ((e.target as HTMLElement).closest(clickableSelector)) return
       }
 
@@ -364,14 +369,14 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             </div>
             {sticker && <Sticker sticker={sticker} />}
             {graffiti && <img src={graffiti.url} style={{ width: '60%' }} />}
-            {!!photos.length && mediaSize === ImageGridSize.medium && (
+            {showMediaGrid && mediaSize === ImageGridSize.medium && (
               <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
             )}
             {!small && (
               <>
                 {hasRepost && <SmallWallPost data={data.copy_history![0]} />}
                 <div className="wall-post-badges">
-                  {!!photos.length && mediaSize === ImageGridSize.badges && (
+                  {hasPhotos && !showMediaGrid && (
                     <MediaBadge
                       icon={<Icon20PictureOutline width={16} height={16} />}
                       type={t('wallPost.mediaBadge.photo', {
@@ -418,17 +423,20 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                       })}
                     />
                   )}
-                  {link && (
-                    <MediaBadge
-                      icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
-                      type={
-                        hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`
-                      }
-                      subject={hasArticle ? link.title : new URL(link.url).hostname}
-                      title={hasArticle ? link.title : link.url}
-                      href={link.url}
-                    />
-                  )}
+                  {link &&
+                    (!showMediaGrid ? (
+                      <LinkCard link={link} />
+                    ) : (
+                      <MediaBadge
+                        icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
+                        type={
+                          hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`
+                        }
+                        subject={hasArticle ? link.title : new URL(link.url).hostname}
+                        title={hasArticle ? link.title : link.url}
+                        href={link.url}
+                      />
+                    ))}
                   {!!podcast && (
                     <MediaBadge
                       icon={<Icon24Podcast width={16} height={16} />}

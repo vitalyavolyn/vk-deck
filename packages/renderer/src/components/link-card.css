@@ -1,0 +1,26 @@
+.link-card {
+  margin: 6px 0 2px;
+
+  .vkuiCaption {
+    font-size: 0.7em;
+    opacity: 0.8;
+  }
+
+  .vkuiTitle {
+    font-size: 1em;
+  }
+
+  .vkuiText {
+    font-size: 0.9em;
+  }
+
+  .vkuiText,
+  .vkuiTitle {
+    /* stylelint-disable-next-line value-no-vendor-prefix */
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-height: normal;
+  }
+}
