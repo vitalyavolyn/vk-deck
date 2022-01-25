@@ -1,3 +1,4 @@
+import { decode } from '@msgpack/msgpack'
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
 import i18next from 'i18next'
@@ -23,6 +24,7 @@ type VKApiData<T> = VKApiResponse<T> | VKApiError
 
 export class Api {
   private token = ''
+  useMsgpack = false
   v = '5.173'
   lang = i18next.language.split('-')[0]
 
@@ -38,7 +40,7 @@ export class Api {
     method: string,
     params?: R,
   ): Promise<T> {
-    const { v, lang, token } = this
+    const { v, lang, token, useMsgpack } = this
 
     console.log('CALL', method, params)
 
@@ -49,10 +51,15 @@ export class Api {
       ..._.pickBy(params, (v) => v !== undefined),
     }
 
-    const { data } = await instance.post<VKApiData<T>>(
-      `/method/${method}`,
+    let { data } = await instance.post<VKApiData<T> | ArrayBuffer>(
+      `/method/${method}` + (useMsgpack ? '.msgpack' : ''),
       new URLSearchParams(completeParams).toString(),
+      { responseType: useMsgpack ? 'arraybuffer' : 'json' },
     )
+
+    if (data instanceof ArrayBuffer) {
+      data = decode(data) as VKApiData<T>
+    }
 
     console.log(method, data)
 

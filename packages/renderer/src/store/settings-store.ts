@@ -106,6 +106,9 @@ export class SettingsStore implements Settings {
   blurAds = false
   mediaQuickPreview = true
 
+  // экспериментальная поддержка msgpack
+  useMsgpack = true
+
   // функции для обновления колонок, ключ - id колонки
   columnRefreshFns: Record<string, ColumnRefreshFn> = {}
 
@@ -154,6 +157,10 @@ export class SettingsStore implements Settings {
     autorun(() => {
       const cols = _.filter(this.columns, { type: 'wall' }) as IWallColumn[]
       this.wallColumns = Object.fromEntries(cols.map((val) => [val.settings.ownerId, val.id]))
+    })
+
+    autorun(() => {
+      this.root.apiStore.api.useMsgpack = this.useMsgpack
     })
   }
 
