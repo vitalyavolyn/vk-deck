@@ -1,5 +1,10 @@
 .link-card {
+  width: fit-content;
   margin: 6px 0 2px;
+
+  &.vkuiCard--md-outline::before {
+    border: var(--thin-border) solid var(--field_border);
+  }
 
   .vkuiContentCard__body {
     padding: 8px 12px;

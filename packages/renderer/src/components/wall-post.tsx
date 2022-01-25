@@ -497,21 +497,19 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                       subject={narrative.title}
                     />
                   )}
-                  {link &&
-                    (!showMediaGrid ? (
-                      <LinkCard link={link} />
-                    ) : (
-                      <MediaBadge
-                        icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
-                        type={
-                          hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`
-                        }
-                        subject={hasArticle ? link.title : new URL(link.url).hostname}
-                        title={hasArticle ? link.title : link.url}
-                        href={link.url}
-                      />
-                    ))}
+                  {link && showMediaGrid && (
+                    <MediaBadge
+                      icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
+                      type={
+                        hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`
+                      }
+                      subject={hasArticle ? link.title : new URL(link.url).hostname}
+                      title={hasArticle ? link.title : link.url}
+                      href={link.url}
+                    />
+                  )}
                 </div>
+                {link && !showMediaGrid && <LinkCard link={link} />}
                 {data.signer_id && (
                   <a
                     className="wall-post-signer"

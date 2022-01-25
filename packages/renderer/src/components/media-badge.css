@@ -5,8 +5,9 @@
   padding: 4px 10px;
   border: 1px solid var(--field_border);
   margin: 7px 0 2px;
-  border-radius: 14px;
-  color: var(--text_secondary);
+  background: var(--modal_card_background);
+  border-radius: 8px;
+  color: var(--text_primary);
   cursor: pointer;
   font-size: 13px;
   gap: 5px;
@@ -19,5 +20,9 @@
 
   &:hover {
     background: var(--background_hover);
+  }
+
+  & > * {
+    opacity: 0.8;
   }
 }
