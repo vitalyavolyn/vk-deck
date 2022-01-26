@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { BaseLink } from '@vkontakte/api-schema-typescript'
 import { Icon16LinkOutline } from '@vkontakte/icons'
+import { classNames } from '@vkontakte/vkjs'
 import { ContentCard } from '@vkontakte/vkui'
 import { getBiggestSize } from '@/utils/get-biggest-size'
 
@@ -15,7 +16,7 @@ export const LinkCard: FC<LinkCardProps> = ({ link }) => {
 
   return (
     <ContentCard
-      className="link-card"
+      className={classNames('link-card', { 'no-text': !link.title && !link.photo })}
       onClick={() => {
         // TODO: открытие ссылок как в тексте
         window.open(link.url)
@@ -30,7 +31,7 @@ export const LinkCard: FC<LinkCardProps> = ({ link }) => {
       }
       header={link.title}
       // text={link.description}
-      maxHeight={300}
+      maxHeight={150}
       mode="outline"
     />
   )
