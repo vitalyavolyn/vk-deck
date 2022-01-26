@@ -43,6 +43,7 @@ import {
   Icon20VideoOutline,
   Icon20View,
   Icon24NarrativeOutline,
+  Icon24NewsfeedMusicNoteOutline,
   Icon24PhotosStackOutline,
   Icon24Podcast,
   Icon24TextLiveOutline,
@@ -141,7 +142,8 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
         | WallCommentAttachmentType
         | 'podcast'
         | 'textpost_publish'
-        | 'narrative',
+        | 'narrative'
+        | 'curator',
     ) => _.filter(data.attachments, { type }) as (WallWallpostAttachment & WallCommentAttachment)[]
 
     const link = getAttachments('link')[0]?.link
@@ -156,6 +158,9 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
       getAttachments('textpost')[0]?.textpost ||
       getAttachments('textpost_publish')[0]?.textpost_publish
     const narrative = getAttachments('narrative')[0]?.narrative
+    // их может быть несколько, но кому до этого есть дело?
+    const curator = getAttachments('curator')[0]?.curator
+
     // следующие два для комментариев
     const sticker = getAttachments('sticker')[0]?.sticker as BaseStickerNew
     const graffiti = getAttachments('graffiti')[0]?.graffiti
@@ -196,6 +201,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             'sticker',
             'graffiti',
             'narrative',
+            'curator',
           ].includes(e.type),
       )
       .map((e) => e.type)
@@ -495,6 +501,14 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                       icon={<Icon24NarrativeOutline width={16} height={16} />}
                       type={t`wallPost.mediaBadge.narrative`}
                       subject={narrative.title}
+                    />
+                  )}
+                  {!!curator && (
+                    <MediaBadge
+                      icon={<Icon24NewsfeedMusicNoteOutline width={16} height={16} />}
+                      type={t`wallPost.mediaBadge.curator`}
+                      subject={curator.name}
+                      href={curator.url}
                     />
                   )}
                   {link && showMediaGrid && (

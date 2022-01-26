@@ -164,6 +164,13 @@ declare module '@vkontakte/api-schema-typescript' {
       title: string
       views: number
     }
+    curator?: {
+      description: string
+      id: number
+      name: string
+      photo: [] // TODO
+      url: string
+    }
   }
 
   interface WallGraffiti {

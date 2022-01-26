@@ -112,6 +112,7 @@ translation:
       donutLink: Ссылка
       textlive: Репортаж
       narrative: Сюжет
+      curator: Куратор
 
   newsfeed:
     sources:
