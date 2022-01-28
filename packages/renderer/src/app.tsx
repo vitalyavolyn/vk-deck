@@ -49,7 +49,7 @@ export const App: FC = observer(() => {
   }, [setUpdateAvailableHandler, snackbarStore, t])
 
   return (
-    <ConfigProvider scheme={scheme} platform={Platform.VKCOM}>
+    <ConfigProvider appearance={scheme} platform={Platform.VKCOM}>
       <AdaptivityProvider>
         <AppRoot noLegacyClasses>
           {isAuthorized ? <Dashboard /> : <Login />}

@@ -52,7 +52,7 @@ import {
   Icon28LogoVkOutline,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
-import { Avatar, calcInitialsAvatarColor, Div } from '@vkontakte/vkui'
+import { AppearanceProvider, Avatar, calcInitialsAvatarColor, Div } from '@vkontakte/vkui'
 import { RichTooltip } from '@vkontakte/vkui/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
@@ -444,28 +444,30 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
                     />
                   )}
                   {poll && (
-                    <RichTooltip
-                      content={
-                        <Poll
-                          data={poll}
-                          updateData={(poll: PollsPoll) => {
-                            const pollIndex = _.findIndex(data.attachments, { type: 'poll' })
-                            updateData?.(
-                              _.set({ ...data }, `attachments.${pollIndex}`, {
-                                type: 'poll',
-                                poll,
-                              }),
-                            )
-                          }}
+                    <AppearanceProvider appearance="dark">
+                      <RichTooltip
+                        content={
+                          <Poll
+                            data={poll}
+                            updateData={(poll: PollsPoll) => {
+                              const pollIndex = _.findIndex(data.attachments, { type: 'poll' })
+                              updateData?.(
+                                _.set({ ...data }, `attachments.${pollIndex}`, {
+                                  type: 'poll',
+                                  poll,
+                                }),
+                              )
+                            }}
+                          />
+                        }
+                      >
+                        <MediaBadge
+                          icon={<Icon16Poll />}
+                          type={t`wallPost.mediaBadge.poll`}
+                          subject={poll.question}
                         />
-                      }
-                    >
-                      <MediaBadge
-                        icon={<Icon16Poll />}
-                        type={t`wallPost.mediaBadge.poll`}
-                        subject={poll.question}
-                      />
-                    </RichTooltip>
+                      </RichTooltip>
+                    </AppearanceProvider>
                   )}
                   {hasMap && (
                     <MediaBadge

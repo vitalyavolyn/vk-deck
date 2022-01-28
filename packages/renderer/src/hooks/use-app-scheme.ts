@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react'
-import { Scheme } from '@vkontakte/vkui'
+import { Appearance } from '@vkontakte/vkui'
 import { useStore } from '@/hooks/use-store'
 
-export const useAppScheme = (): Scheme => {
+export const useAppScheme = (): Appearance => {
   const { settingsStore } = useStore()
 
   const darkThemeMatch = window.matchMedia('(prefers-color-scheme: light)')
 
-  const getThemeByMediaQuery = (mq: MediaQueryList): Scheme =>
-    mq.matches ? Scheme.VKCOM_LIGHT : Scheme.VKCOM_DARK
+  const getThemeByMediaQuery = (mq: MediaQueryList): Appearance =>
+    mq.matches ? Appearance.LIGHT : Appearance.DARK
 
   const [scheme, setScheme] = useState(getThemeByMediaQuery(darkThemeMatch))
 
   useEffect(() => {
     if (settingsStore.colorScheme !== 'auto') {
-      setScheme(settingsStore.colorScheme === 'light' ? Scheme.VKCOM_LIGHT : Scheme.VKCOM_DARK)
+      setScheme(settingsStore.colorScheme === 'light' ? Appearance.LIGHT : Appearance.DARK)
     } else {
       setScheme(getThemeByMediaQuery(darkThemeMatch))
     }

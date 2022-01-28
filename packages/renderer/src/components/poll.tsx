@@ -49,7 +49,7 @@ export const Poll: FC<PollProps> = ({ data, updateData }) => {
 
   return (
     <div
-      className={classNames('poll', {
+      className={classNames('poll ', {
         gradient: !!data.background,
       })}
       style={

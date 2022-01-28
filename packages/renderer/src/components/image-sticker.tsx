@@ -14,7 +14,7 @@ export const ImageSticker: FC<ImageStickerProps> = observer(({ sticker }) => {
 
   return (
     <img
-      src={sticker[scheme === 'vkcom_dark' ? 'images_with_background' : 'images']![1].url}
+      src={sticker[scheme === 'dark' ? 'images_with_background' : 'images']![1].url}
       className="sticker"
     />
   )
