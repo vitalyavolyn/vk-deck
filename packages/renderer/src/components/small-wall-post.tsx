@@ -22,6 +22,9 @@ export const SmallWallPost: FC<SmallWallPostProps> = ({ data, ...restProps }) =>
         small
         onClick={(e) => {
           e.stopPropagation()
+
+          if (data.post_type !== 'reply' && data.post_type !== 'post') return
+
           columnStack?.push(<WallPostColumn post={data} />)
         }}
       />

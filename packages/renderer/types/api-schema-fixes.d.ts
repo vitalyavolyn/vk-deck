@@ -78,6 +78,7 @@ declare module '@vkontakte/api-schema-typescript' {
     // есть, когда пост создан удалением страницы
     final_post?: 0 | 1
     header?: WallPostHeader
+    reply_post_id?: number
   }
 
   interface WallWallpost {

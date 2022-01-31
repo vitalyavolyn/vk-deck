@@ -79,7 +79,11 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
         WallGetByIdParams
       >('wall.getById', {
         extended: 1,
-        posts: postId ?? `${post?.owner_id}_${post?.id}`,
+        posts:
+          postId ??
+          (post?.post_type !== 'reply'
+            ? `${post?.owner_id}_${post?.id}`
+            : `${post?.owner_id}_${post?.reply_post_id}`),
         fields,
       })
 
