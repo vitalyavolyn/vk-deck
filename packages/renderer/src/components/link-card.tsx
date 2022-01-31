@@ -12,8 +12,6 @@ interface LinkCardProps {
 }
 
 export const LinkCard: FC<LinkCardProps> = ({ link }) => {
-  const domain = new URL(link.url).hostname
-
   return (
     <ContentCard
       className={classNames('link-card', { 'no-text': !link.title && !link.photo })}
@@ -26,7 +24,7 @@ export const LinkCard: FC<LinkCardProps> = ({ link }) => {
       }
       subtitle={
         <>
-          <Icon16LinkOutline /> {domain}
+          <Icon16LinkOutline /> {link.caption}
         </>
       }
       header={link.title}

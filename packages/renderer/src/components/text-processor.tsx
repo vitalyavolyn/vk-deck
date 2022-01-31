@@ -26,7 +26,7 @@ const tldsRegexPart = _.uniq(tlds.flatMap((e) => [e, punycode.toUnicode(e)]))
 const linkRegex = `((?:https?:\\/\\/)?[\\w\\p{Alpha}#%+.:=@~-]{1,256}\\.(?:${tldsRegexPart})(?:\\/[\\w\\p{Alpha}#%&+./:=?@~-]*)*)(?!\\p{Alpha})`
 const mentionRegex = '(\\[(?:club|public|id)(?:\\d+)\\|(?:.+?)\\])'
 const internalLinkRegex = '(\\[(?:https?:\\/\\/)?vk\\.com(?:\\/.*)\\|(?:.+?)\\])'
-const hashtagRegex = '(#[^\\s!#$%&()*:^[\\]]+)'
+const hashtagRegex = '(#[^\\s!#$%&()"\'*:^[\\]]+)'
 
 const isWallPostLink = (link: string) =>
   /^(?:https?:\/\/)?vk\.com\/(?:.*\?w=)?wall(-?\d+_\d+)/.test(link)
