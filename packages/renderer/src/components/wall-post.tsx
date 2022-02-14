@@ -377,155 +377,153 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             {showMediaGrid && mediaSize === ImageGridSize.medium && (
               <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
             )}
+            {hasRepost && !small && <SmallWallPost data={data.copy_history![0]} />}
+            <div className="wall-post-badges">
+              {hasPhotos && !showMediaGrid && (
+                <MediaBadge
+                  icon={<Icon20PictureOutline width={16} height={16} />}
+                  type={t('wallPost.mediaBadge.photo', {
+                    count: photos.length,
+                  })}
+                  // TODO: get it back
+                  // onClick={() => {
+                  //   openPhotosInViewer()
+                  // }}
+                />
+              )}
+              {!!videos.length && (
+                <MediaBadge
+                  icon={<Icon20VideoOutline width={16} height={16} />}
+                  type={t('wallPost.mediaBadge.video', {
+                    count: videos.length,
+                  })}
+                  subject={videos.length === 1 ? videos[0].video!.title : undefined}
+                />
+              )}
+              {!!audiosCount && (
+                <MediaBadge
+                  icon={<Icon20MusicOutline width={16} height={16} />}
+                  type={t('wallPost.mediaBadge.audio', { count: audiosCount })}
+                />
+              )}
+              {!!docsCount && (
+                <MediaBadge
+                  icon={<Icon20DocumentOutline width={16} height={16} />}
+                  type={t('wallPost.mediaBadge.doc', { count: docsCount })}
+                />
+              )}
+              {!!albumsCount && (
+                <MediaBadge
+                  icon={<Icon24PhotosStackOutline width={16} height={16} />}
+                  type={t('wallPost.mediaBadge.album', { count: albumsCount })}
+                />
+              )}
+              {!!productsCount && (
+                <MediaBadge
+                  icon={<Icon16MarketOutline />}
+                  type={t('wallPost.mediaBadge.product', {
+                    count: productsCount,
+                  })}
+                />
+              )}
+              {!!podcast && (
+                <MediaBadge
+                  icon={<Icon24Podcast width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.podcast`}
+                  subject={podcast.title}
+                />
+              )}
+              {!!donutLink && (
+                <MediaBadge
+                  icon={<Icon28DonateOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.donutLink`}
+                  subject={donutLink.button.title}
+                  href={donutLink.button.action.url}
+                />
+              )}
+              {poll && (
+                <AppearanceProvider appearance="dark">
+                  <RichTooltip
+                    content={
+                      <Poll
+                        data={poll}
+                        updateData={(poll: PollsPoll) => {
+                          const pollIndex = _.findIndex(data.attachments, { type: 'poll' })
+                          updateData?.(
+                            _.set({ ...data }, `attachments.${pollIndex}`, {
+                              type: 'poll',
+                              poll,
+                            }),
+                          )
+                        }}
+                      />
+                    }
+                  >
+                    <MediaBadge
+                      icon={<Icon16Poll />}
+                      type={t`wallPost.mediaBadge.poll`}
+                      subject={poll.question}
+                    />
+                  </RichTooltip>
+                </AppearanceProvider>
+              )}
+              {hasMap && (
+                <MediaBadge
+                  icon={<Icon28LocationMapOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.map`}
+                />
+              )}
+              {!!eventGroup && (
+                <MediaBadge
+                  icon={<Icon20CalendarOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.event`}
+                  subject={eventGroup.name}
+                />
+              )}
+              {!!situationalTheme && (
+                <MediaBadge
+                  icon={<Icon20LightbulbStarOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.situationalTheme`}
+                  subject={situationalTheme.title}
+                  href={situationalTheme.link}
+                />
+              )}
+              {!!textlive && (
+                <MediaBadge
+                  icon={<Icon24TextLiveOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.textlive`}
+                  subject={textlive.title}
+                  href={textlive.attach_url}
+                />
+              )}
+              {!!narrative && (
+                <MediaBadge
+                  icon={<Icon24NarrativeOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.narrative`}
+                  subject={narrative.title}
+                />
+              )}
+              {!!curator && (
+                <MediaBadge
+                  icon={<Icon24NewsfeedMusicNoteOutline width={16} height={16} />}
+                  type={t`wallPost.mediaBadge.curator`}
+                  subject={curator.name}
+                  href={curator.url}
+                />
+              )}
+              {link && (showMediaGrid || small) && (
+                <MediaBadge
+                  icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
+                  type={hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`}
+                  subject={hasArticle ? link.title : new URL(link.url).hostname}
+                  title={hasArticle ? link.title : link.url}
+                  href={link.url}
+                />
+              )}
+            </div>
+            {link && !showMediaGrid && !small && <LinkCard link={link} />}
             {!small && (
               <>
-                {hasRepost && <SmallWallPost data={data.copy_history![0]} />}
-                <div className="wall-post-badges">
-                  {hasPhotos && !showMediaGrid && (
-                    <MediaBadge
-                      icon={<Icon20PictureOutline width={16} height={16} />}
-                      type={t('wallPost.mediaBadge.photo', {
-                        count: photos.length,
-                      })}
-                      // TODO: get it back
-                      // onClick={() => {
-                      //   openPhotosInViewer()
-                      // }}
-                    />
-                  )}
-                  {!!videos.length && (
-                    <MediaBadge
-                      icon={<Icon20VideoOutline width={16} height={16} />}
-                      type={t('wallPost.mediaBadge.video', {
-                        count: videos.length,
-                      })}
-                      subject={videos.length === 1 ? videos[0].video!.title : undefined}
-                    />
-                  )}
-                  {!!audiosCount && (
-                    <MediaBadge
-                      icon={<Icon20MusicOutline width={16} height={16} />}
-                      type={t('wallPost.mediaBadge.audio', { count: audiosCount })}
-                    />
-                  )}
-                  {!!docsCount && (
-                    <MediaBadge
-                      icon={<Icon20DocumentOutline width={16} height={16} />}
-                      type={t('wallPost.mediaBadge.doc', { count: docsCount })}
-                    />
-                  )}
-                  {!!albumsCount && (
-                    <MediaBadge
-                      icon={<Icon24PhotosStackOutline width={16} height={16} />}
-                      type={t('wallPost.mediaBadge.album', { count: albumsCount })}
-                    />
-                  )}
-                  {!!productsCount && (
-                    <MediaBadge
-                      icon={<Icon16MarketOutline />}
-                      type={t('wallPost.mediaBadge.product', {
-                        count: productsCount,
-                      })}
-                    />
-                  )}
-                  {!!podcast && (
-                    <MediaBadge
-                      icon={<Icon24Podcast width={16} height={16} />}
-                      type={t`wallPost.mediaBadge.podcast`}
-                      subject={podcast.title}
-                    />
-                  )}
-                  {!!donutLink && (
-                    <MediaBadge
-                      icon={<Icon28DonateOutline width={16} height={16} />}
-                      type={t`wallPost.mediaBadge.donutLink`}
-                      subject={donutLink.button.title}
-                      href={donutLink.button.action.url}
-                    />
-                  )}
-                  {poll && (
-                    <AppearanceProvider appearance="dark">
-                      <RichTooltip
-                        content={
-                          <Poll
-                            data={poll}
-                            updateData={(poll: PollsPoll) => {
-                              const pollIndex = _.findIndex(data.attachments, { type: 'poll' })
-                              updateData?.(
-                                _.set({ ...data }, `attachments.${pollIndex}`, {
-                                  type: 'poll',
-                                  poll,
-                                }),
-                              )
-                            }}
-                          />
-                        }
-                      >
-                        <MediaBadge
-                          icon={<Icon16Poll />}
-                          type={t`wallPost.mediaBadge.poll`}
-                          subject={poll.question}
-                        />
-                      </RichTooltip>
-                    </AppearanceProvider>
-                  )}
-                  {hasMap && (
-                    <MediaBadge
-                      icon={<Icon28LocationMapOutline width={16} height={16} />}
-                      type={t`wallPost.mediaBadge.map`}
-                    />
-                  )}
-                  {!!eventGroup && (
-                    <MediaBadge
-                      icon={<Icon20CalendarOutline width={16} height={16} />}
-                      type={t`wallPost.mediaBadge.event`}
-                      subject={eventGroup.name}
-                    />
-                  )}
-                  {!!situationalTheme && (
-                    <MediaBadge
-                      icon={<Icon20LightbulbStarOutline width={16} height={16} />}
-                      type={t`wallPost.mediaBadge.situationalTheme`}
-                      subject={situationalTheme.title}
-                      href={situationalTheme.link}
-                    />
-                  )}
-                  {!!textlive && (
-                    <MediaBadge
-                      icon={<Icon24TextLiveOutline width={16} height={16} />}
-                      type={t`wallPost.mediaBadge.textlive`}
-                      subject={textlive.title}
-                      href={textlive.attach_url}
-                    />
-                  )}
-                  {!!narrative && (
-                    <MediaBadge
-                      icon={<Icon24NarrativeOutline width={16} height={16} />}
-                      type={t`wallPost.mediaBadge.narrative`}
-                      subject={narrative.title}
-                    />
-                  )}
-                  {!!curator && (
-                    <MediaBadge
-                      icon={<Icon24NewsfeedMusicNoteOutline width={16} height={16} />}
-                      type={t`wallPost.mediaBadge.curator`}
-                      subject={curator.name}
-                      href={curator.url}
-                    />
-                  )}
-                  {link && showMediaGrid && (
-                    <MediaBadge
-                      icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
-                      type={
-                        hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`
-                      }
-                      subject={hasArticle ? link.title : new URL(link.url).hostname}
-                      title={hasArticle ? link.title : link.url}
-                      href={link.url}
-                    />
-                  )}
-                </div>
-                {link && !showMediaGrid && <LinkCard link={link} />}
                 {data.signer_id && (
                   <a
                     className="wall-post-signer"

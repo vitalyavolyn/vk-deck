@@ -14,6 +14,7 @@ interface SmallWallPostProps extends HTMLAttributes<HTMLElement> {
 // TODO: rename to `Repost`?
 export const SmallWallPost: FC<SmallWallPostProps> = ({ data, ...restProps }) => {
   const { columnStack } = useColumn<WithColumnStack>()
+  const isPost = data.post_type === 'post' || data.post_type === 'reply'
 
   return (
     <div className="small-wall-post" {...restProps}>
@@ -22,8 +23,7 @@ export const SmallWallPost: FC<SmallWallPostProps> = ({ data, ...restProps }) =>
         small
         onClick={(e) => {
           e.stopPropagation()
-
-          if (data.post_type !== 'reply' && data.post_type !== 'post') return
+          if (!isPost) return
 
           columnStack?.push(<WallPostColumn post={data} />)
         }}
