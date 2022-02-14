@@ -192,7 +192,13 @@ export const WallPostColumn: FC<WallPostColumnProps> = ({ post, postId }) => {
                     fullSize
                     comment
                     updateData={(data) => {
-                      setComments(_.set(`[${commentIndex}]`, data, comments))
+                      setComments(
+                        _.set(
+                          `[${commentIndex}]`,
+                          { ...comments[commentIndex], ...data },
+                          comments,
+                        ),
+                      )
                     }}
                   />
                   {thread?.items?.map(commentToWallPost).map((fakePost, threadIndex) => (
