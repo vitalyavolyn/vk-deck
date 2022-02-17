@@ -73,7 +73,7 @@ import { MediaBadge } from './media-badge'
 import { MediaGrid } from './media-grid'
 import { PagePreviewModal } from './modals/page-preview-modal'
 import { Poll } from './poll'
-import { SmallWallPost } from './small-wall-post'
+import { Repost } from './repost'
 import { Sticker } from './sticker'
 import { TextProcessor } from './text-processor'
 
@@ -377,7 +377,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = o
             {showMediaGrid && mediaSize === ImageGridSize.medium && (
               <MediaGrid photos={_.map(photos, 'photo') as PhotosPhoto[]} />
             )}
-            {hasRepost && !small && <SmallWallPost data={data.copy_history![0]} />}
+            {hasRepost && !small && <Repost data={data.copy_history![0]} />}
             <div className="wall-post-badges">
               {hasPhotos && !showMediaGrid && (
                 <MediaBadge

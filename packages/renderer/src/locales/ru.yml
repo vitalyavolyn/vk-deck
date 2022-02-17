@@ -114,6 +114,11 @@ translation:
       narrative: Сюжет
       curator: Куратор
 
+  repost:
+    photo: фотография
+    video: видео
+    reply: комментарий
+
   newsfeed:
     sources:
       feed: Новости
