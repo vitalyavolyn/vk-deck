@@ -151,7 +151,7 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
                   'cover-foreground': !!showCover,
                 })}
               >
-                <Title style={{ marginBottom: 4, marginTop: 12 }} level="2" weight="bold">
+                <Title style={{ marginBottom: 4, marginTop: 12 }} level="2" weight="1">
                   {getName(pageData)}
                   {!!pageData.is_closed && <Icon12Lock />}
                 </Title>
