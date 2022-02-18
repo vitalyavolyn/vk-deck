@@ -1,5 +1,12 @@
-import { ChangeEvent, FC } from 'react'
-import { Button, Checkbox, FormItem, FormLayout, Select } from '@vkontakte/vkui'
+import { FC } from 'react'
+import {
+  Button,
+  Checkbox,
+  FormItem,
+  FormLayout,
+  SegmentedControl,
+  SegmentedControlValue,
+} from '@vkontakte/vkui'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { SidePanelProps } from '@/components/side-panel-container'
@@ -18,12 +25,12 @@ export const SettingsSidePanel: FC<SidePanelProps> = observer(() => {
   const { t } = useTranslation()
   const { settingsStore } = useStore()
 
-  const onColorThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    settingsStore.colorScheme = e.target.value as ColorScheme
+  const onColorThemeChange = (e: SegmentedControlValue) => {
+    settingsStore.colorScheme = e as ColorScheme
   }
 
-  const onColumnSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    settingsStore.columnSize = Number(e.target.value) as ColumnSize
+  const onColumnSizeChange = (e: SegmentedControlValue) => {
+    settingsStore.columnSize = e as ColumnSize
   }
 
   const toggleBooleanSetting = (name: keyof Settings, value: boolean) => {
@@ -35,31 +42,31 @@ export const SettingsSidePanel: FC<SidePanelProps> = observer(() => {
       <SidePanelHeader>{t`settings.title`}</SidePanelHeader>
       <FormLayout>
         <FormItem top={t`settings.colorScheme.title`}>
-          <Select
+          <SegmentedControl
             onChange={onColorThemeChange}
             value={settingsStore.colorScheme}
             options={[
-              { value: 'auto', label: t`settings.colorScheme.auto` },
-              { value: 'light', label: t`settings.colorScheme.light` },
-              { value: 'dark', label: t`settings.colorScheme.dark` },
+              { value: 'auto', label: t`settings.colorScheme.auto` as string },
+              { value: 'light', label: t`settings.colorScheme.light` as string },
+              { value: 'dark', label: t`settings.colorScheme.dark` as string },
             ]}
           />
         </FormItem>
 
         <FormItem top={t`settings.columnSize.title`}>
-          <Select
+          <SegmentedControl
             onChange={onColumnSizeChange}
             value={settingsStore.columnSize}
             options={[
               {
                 value: ColumnSize.narrow,
-                label: t`settings.columnSize.narrow`,
+                label: t`settings.columnSize.narrow` as string,
               },
               {
                 value: ColumnSize.medium,
-                label: t`settings.columnSize.medium`,
+                label: t`settings.columnSize.medium` as string,
               },
-              { value: ColumnSize.wide, label: t`settings.columnSize.wide` },
+              { value: ColumnSize.wide, label: t`settings.columnSize.wide` as string },
             ]}
           />
         </FormItem>

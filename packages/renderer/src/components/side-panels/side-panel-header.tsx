@@ -15,7 +15,7 @@ export const SidePanelHeader: FC<SidePanelHeaderProps> = ({ children, onBackButt
         {onBackButtonClick && (
           <PanelHeaderBack onClick={onBackButtonClick} className="back-button" />
         )}
-        <Title level="2" weight="semibold">
+        <Title level="2" weight="1">
           {children}
         </Title>
       </div>

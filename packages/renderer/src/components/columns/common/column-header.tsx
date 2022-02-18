@@ -49,7 +49,7 @@ export const ColumnHeader: FC<ColumnHeaderProps> = ({
         style={{ cursor: onIconClick ? 'pointer' : undefined }}
       />
       <div className="column-title">
-        <Title level="3" weight="semibold">
+        <Title level="3" weight="2">
           {children}
         </Title>
         <Subhead weight="medium">{subtitle}</Subhead>
