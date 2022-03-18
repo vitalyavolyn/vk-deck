@@ -53,6 +53,7 @@ translation:
     bookmarks: Закладки
     newsfeedSearch: Глобальный поиск
     wallPost: Пост
+    notifications: Уведомления
 
   time:
     relativeDays: '{{d}}д'

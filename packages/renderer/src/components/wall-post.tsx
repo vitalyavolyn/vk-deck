@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, Ref, MouseEvent, useEffect, useRef } from 'react'
+import { FC, HTMLAttributes, MouseEvent, useEffect, useRef } from 'react'
 import {
   FaveAddPostParams,
   FaveAddPostResponse,
@@ -56,6 +56,7 @@ import { AppearanceProvider, Avatar, calcInitialsAvatarColor, Div } from '@vkont
 import { RichTooltip } from '@vkontakte/vkui/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
+import { MeasureRef } from 'react-cool-virtual'
 import { useTranslation } from 'react-i18next'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
@@ -93,7 +94,7 @@ const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
 /**
  * Показывает запись по объекту записи на стене
  */
-export const WallPost: FC<WallPostProps & { measureRef?: Ref<HTMLElement> }> = observer(
+export const WallPost: FC<WallPostProps & { measureRef?: MeasureRef }> = observer(
   ({
     data,
     measureRef,

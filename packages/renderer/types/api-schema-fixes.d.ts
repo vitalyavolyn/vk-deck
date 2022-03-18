@@ -177,4 +177,10 @@ declare module '@vkontakte/api-schema-typescript' {
   interface WallGraffiti {
     url: string
   }
+
+  interface NotificationsFeedback {
+    post_id?: number
+    owner_id?: number
+    items?: { from_id: number }[]
+  }
 }

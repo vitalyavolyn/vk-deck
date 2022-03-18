@@ -1,0 +1,15 @@
+.notification-card {
+  .before {
+    display: flex;
+    margin-bottom: 4px;
+    color: var(--text_secondary);
+    font-size: 0.8em;
+    gap: 4px;
+  }
+
+  .left {
+    display: flex;
+    width: 36px;
+    justify-content: flex-end;
+  }
+}

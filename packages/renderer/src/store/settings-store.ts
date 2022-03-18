@@ -18,6 +18,7 @@ export enum ColumnType {
   bookmarks = 'bookmarks',
   newsfeedSearch = 'newsfeedSearch',
   wallPost = 'wallPost',
+  notifications = 'notifications',
 }
 
 export interface Settings {
@@ -74,6 +75,10 @@ export interface INewsfeedSearchColumn extends BaseColumn {
   settings: NewsfeedSearchColumnSettings
 }
 
+export interface INotificationsColumn extends BaseColumn {
+  type: ColumnType.notifications
+}
+
 export interface IWallPostColumn extends BaseColumn {
   type: ColumnType.wallPost
 }
@@ -85,6 +90,7 @@ export type Column =
   | ILikedPostsColumn
   | IBookmarksColumn
   | INewsfeedSearchColumn
+  | INotificationsColumn
   | IWallPostColumn
 
 export enum ColumnSize {

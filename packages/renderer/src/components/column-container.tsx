@@ -1,5 +1,6 @@
 import { CSSProperties, FC, ReactNode, useState } from 'react'
 import { classNames } from '@vkontakte/vkjs'
+import { NotificationsColumn } from '@/components/columns/notifications-column'
 import { createColumnContext } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
 import { BaseColumn, ColumnType } from '@/store/settings-store'
@@ -21,6 +22,7 @@ const columnComponents = {
   [ColumnType.bookmarks]: BookmarksColumn,
   [ColumnType.newsfeedSearch]: NewsfeedSearchColumn,
   [ColumnType.wallPost]: WallPostColumn,
+  [ColumnType.notifications]: NotificationsColumn,
 }
 
 interface ColumnContainerProps {

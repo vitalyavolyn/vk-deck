@@ -30,7 +30,7 @@ export const initIpc = (win: BrowserWindow): void => {
       client_id: '7446716',
       redirect_uri: redirectURL,
       response_type: 'token',
-      scope: 'offline,wall,friends,groups',
+      scope: 'offline,wall,friends,groups,notifications',
       revoke: '1',
       display: 'mobile',
     }

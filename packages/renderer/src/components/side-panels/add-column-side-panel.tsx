@@ -26,6 +26,7 @@ const columns: [ColumnType, boolean, string?][] = [
   [ColumnType.likedPosts, false],
   [ColumnType.bookmarks, false, 'addColumn.caption.bookmarks'],
   [ColumnType.newsfeedSearch, true],
+  [ColumnType.notifications, false],
 
   // оставлять в конце
   [ColumnType.rick, false],
@@ -76,6 +77,7 @@ export const AddColumnSidePanel: FC<SidePanelProps> = ({ closeSidePanel }) => {
           },
         })
 
+      case ColumnType.notifications:
       case ColumnType.rick:
         return settingsStore.columns.push({
           id: uuidv4(),
