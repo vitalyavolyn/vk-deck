@@ -22,6 +22,12 @@ const config = {
   linux: {
     target: 'AppImage',
   },
+  mac: {
+    target: {
+      target: 'default',
+      arch: ['x64', 'arm64'],
+    },
+  },
 }
 
 module.exports = config
