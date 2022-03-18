@@ -53,7 +53,7 @@ jobs:
           include-abbreviated-commit: true
 
       - name: Set VITE_APP_VERSION
-        run: echo "VITE_APP_VERSION=$(git tag --points-at HEAD | cut -c2-)" >> $GITHUB_ENV
+        run: echo "VITE_APP_VERSION=$(git tag --points-at HEAD)" >> $GITHUB_ENV
 
       - name: Get next prelelease version
         id: version
