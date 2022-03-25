@@ -9,7 +9,7 @@
 
   .left {
     display: flex;
-    width: 36px;
+    min-width: 36px;
     justify-content: flex-end;
   }
 }

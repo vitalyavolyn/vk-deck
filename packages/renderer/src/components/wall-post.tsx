@@ -38,6 +38,7 @@ import {
   Icon20MusicOutline,
   Icon20PictureOutline,
   Icon20PinOutline,
+  Icon20ReplyCircleFillGreen,
   Icon20RoubleCircleFillBlue,
   Icon20ShareOutline,
   Icon20VideoOutline,
@@ -87,6 +88,8 @@ export interface WallPostProps extends HTMLAttributes<HTMLElement> {
   fullSize?: boolean
   threadItem?: boolean
   comment?: boolean
+  // для отображения ответов в уведомлениях
+  reply?: boolean
 }
 
 const isArticleLink = (url?: string) => /\/\/(?:m\.)?vk\.com\/@/.test(url || '')
@@ -104,6 +107,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: MeasureRef }> = observe
     className,
     threadItem,
     comment,
+    reply,
     ...restProps
   }) => {
     const { settings } = useColumn<Partial<HasImageGridSettings>>()
@@ -286,6 +290,21 @@ export const WallPost: FC<WallPostProps & { measureRef?: MeasureRef }> = observe
       uiStore.showModal(<PagePreviewModal pageId={data.from_id!} {...uiStore.modalProps} />)
     }
 
+    const badge = reply ? (
+      <Icon20ReplyCircleFillGreen width={16} height={16} />
+    ) : isAd ? (
+      <Icon20RoubleCircleFillBlue
+        width={16}
+        height={16}
+        className="ad-icon"
+        title={t`wallPost.ad`}
+      />
+    ) : owner.verified ? (
+      <Avatar title={t`wallPost.verified`} size={16} className="verified-badge">
+        <Icon16Done width={12} height={12} className="verified-icon" />
+      </Avatar>
+    ) : undefined
+
     return (
       <article
         className={classNames('wall-post-wrap', className, {
@@ -308,21 +327,8 @@ export const WallPost: FC<WallPostProps & { measureRef?: MeasureRef }> = observe
                   size={threadItem ? 24 : 36}
                   src={owner.photo_50}
                   initials={getInitials(owner)}
+                  badge={badge}
                 />
-                {/* TODO: попробовать новый `badge` в Avatar */}
-                {isAd && (
-                  <Icon20RoubleCircleFillBlue
-                    width={16}
-                    height={16}
-                    className="ad-icon badge"
-                    title={t`wallPost.ad`}
-                  />
-                )}
-                {!!owner.verified && (
-                  <Avatar title={t`wallPost.verified`} size={16} className="badge verified-badge">
-                    <Icon16Done width={12} height={12} className="verified-icon" />
-                  </Avatar>
-                )}
               </div>
             </div>
           )}

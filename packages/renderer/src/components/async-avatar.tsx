@@ -1,9 +1,9 @@
-import { FC, ImgHTMLAttributes, useCallback, useEffect, useState } from 'react'
-import { Avatar, InitialsAvatar } from '@vkontakte/vkui'
+import { FC, useCallback, useEffect, useState } from 'react'
+import { Avatar, AvatarProps, InitialsAvatar } from '@vkontakte/vkui'
 import { InitialsAvatarNumberGradients } from '@vkontakte/vkui/dist/components/InitialsAvatar/InitialsAvatar'
 import { isDefaultAvatar } from '@/utils/is-default-avatar'
 
-interface AsyncAvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
+interface AsyncAvatarProps extends AvatarProps {
   gradientColor: InitialsAvatarNumberGradients
   initials: string
   src?: string

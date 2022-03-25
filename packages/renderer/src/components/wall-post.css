@@ -18,22 +18,16 @@
       position: relative;
       cursor: pointer;
 
-      .badge {
-        position: absolute;
-        right: -2px;
-        bottom: -2px;
+      .ad-icon {
+        filter: grayscale(1);
+      }
 
-        &.ad-icon {
-          filter: grayscale(1);
-        }
+      .verified-badge {
+        background-color: white;
+        box-shadow: 0 1px 8px 1px #0000001c;
 
-        &.verified-badge {
-          background-color: white;
-          box-shadow: 0 1px 8px 1px #0000001c;
-
-          .verified-icon {
-            color: var(--accent);
-          }
+        .verified-icon {
+          color: var(--accent);
         }
       }
     }
