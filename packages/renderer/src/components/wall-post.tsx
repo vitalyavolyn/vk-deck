@@ -53,7 +53,7 @@ import {
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import { AppearanceProvider, Avatar, calcInitialsAvatarColor, Div } from '@vkontakte/vkui'
-import { RichTooltip } from '@vkontakte/vkui/unstable'
+import { RichTooltip } from '@vkontakte/vkui/dist/unstable'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { MeasureRef } from 'react-cool-virtual'

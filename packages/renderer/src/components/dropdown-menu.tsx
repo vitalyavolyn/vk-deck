@@ -1,5 +1,5 @@
 import { FC, ReactElement, useState } from 'react'
-import { Dropdown } from '@vkontakte/vkui/unstable'
+import { Dropdown } from '@vkontakte/vkui/dist/unstable'
 
 import './dropdown-menu.css'
 

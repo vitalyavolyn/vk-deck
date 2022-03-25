@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { Icon20CheckCircleFillGreen, Icon24ChevronUp } from '@vkontakte/icons'
 import { Avatar, calcInitialsAvatarColor, classNames, RichCell } from '@vkontakte/vkui'
-import { TextTooltip } from '@vkontakte/vkui/unstable'
+import { TextTooltip } from '@vkontakte/vkui/dist/unstable'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@/hooks/use-store'
 import { getInitials } from '@/utils/get-initials'
