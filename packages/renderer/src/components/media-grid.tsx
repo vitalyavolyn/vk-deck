@@ -21,11 +21,8 @@ interface Point {
 }
 
 export const MediaGrid: FC<MediaGridProps> = observer(({ photos }) => {
-  // TODO: падение если у колонки нет таких настроек
-  //  например, сейчас нельзя открыть из уведомлений пост с аттачами
-  const {
-    settings: { imageGridSize },
-  } = useColumn<HasImageGridSettings>()
+  const { settings } = useColumn<HasImageGridSettings>()
+  const imageGridSize = settings?.imageGridSize ?? 'medium'
   const { openViewer } = useElectron()
   const { apiStore, settingsStore, uiStore } = useStore()
 
