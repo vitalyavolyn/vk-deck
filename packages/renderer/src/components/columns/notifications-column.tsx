@@ -36,7 +36,7 @@ export const NotificationsColumn: FC = observer(() => {
   const [, /* canLoadMore */ setCanLoadMore] = useState(true)
   const nextFromRef = useRef('')
 
-  const { canScroll, onScroll, triggerScroll /* scrollToRef */ } = useScrollToTop()
+  const { canScroll, onScroll, triggerScroll, scrollToRef } = useScrollToTop()
 
   const update = async (withOffset = false) => {
     if (withOffset) setCanLoadMore(false)
@@ -105,7 +105,7 @@ export const NotificationsColumn: FC = observer(() => {
     outerRef,
     innerRef,
     items: scrollItems,
-    // scrollTo,
+    scrollTo,
   } = useVirtual<HTMLDivElement>({
     itemCount: items.length,
     itemSize: 50,
@@ -113,6 +113,8 @@ export const NotificationsColumn: FC = observer(() => {
     onScroll,
     // loadMore,
   })
+
+  scrollToRef.current = scrollTo
 
   return (
     <>
