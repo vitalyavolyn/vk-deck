@@ -518,7 +518,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: MeasureRef }> = observe
                   href={curator.url}
                 />
               )}
-              {link && (showMediaGrid || small) && (
+              {link && (showMediaGrid || small || hasArticle) && (
                 <MediaBadge
                   icon={hasArticle ? <Icon16ArticleOutline /> : <Icon16LinkOutline />}
                   type={hasArticle ? t`wallPost.mediaBadge.article` : t`wallPost.mediaBadge.link`}
@@ -528,7 +528,7 @@ export const WallPost: FC<WallPostProps & { measureRef?: MeasureRef }> = observe
                 />
               )}
             </div>
-            {link && !showMediaGrid && !small && <LinkCard link={link} />}
+            {link && !showMediaGrid && !small && !hasArticle && <LinkCard link={link} />}
             {!small && (
               <>
                 {data.signer_id && (
