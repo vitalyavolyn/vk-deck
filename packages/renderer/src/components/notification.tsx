@@ -9,6 +9,7 @@ import { WallPostColumn } from '@/components/columns/wall-post-column'
 import { WallPost } from '@/components/wall-post'
 import { useColumn } from '@/hooks/use-column'
 import { useStore } from '@/hooks/use-store'
+import { getBiggestSize } from '@/utils/get-biggest-size'
 import { getInitials } from '@/utils/get-initials'
 import { getName } from '@/utils/get-name'
 
@@ -22,6 +23,7 @@ interface NotificationProps {
 interface CardProps {
   avatar: ReactChild
   before?: ReactChild
+  after?: ReactChild
   content?: ReactChild
   measureRef?: MeasureRef
 }
@@ -29,7 +31,7 @@ interface CardProps {
 /*
  * Напоминает пост, использует его стили, но отображает уведомление
  */
-const Card: VFC<CardProps> = ({ avatar, before, content, measureRef }) => {
+const Card: VFC<CardProps> = ({ avatar, before, content, measureRef, after }) => {
   return (
     <article className="wall-post-wrap notification-card" ref={measureRef}>
       {before}
@@ -42,6 +44,7 @@ const Card: VFC<CardProps> = ({ avatar, before, content, measureRef }) => {
           </div>
           <div className="wall-post-content">{content}</div>
         </div>
+        {after && <div className="right">{after}</div>}
       </div>
     </article>
   )
@@ -66,7 +69,8 @@ export const Notification: VFC<NotificationProps> = ({ data, measureRef }) => {
         reply
       />
     )
-  } else if (['like_photo', 'like_comment'].includes(data.type!)) {
+  } else if (data.type! === 'like_photo') {
+    // 'like_comment'
     const firstPersonId = data.feedback!.items![0].from_id
     const profile = apiStore.getOwner(firstPersonId)
 
@@ -87,6 +91,11 @@ export const Notification: VFC<NotificationProps> = ({ data, measureRef }) => {
         content={
           data.feedback!.items!.map(({ from_id: id }) => getName(apiStore.getOwner(id))).join(',') +
           `\n\n${data.type}`
+        }
+        after={
+          data.parent?.sizes ? (
+            <img src={getBiggestSize(data.parent.sizes!.filter((e) => e.width <= 150)).url} />
+          ) : undefined
         }
         // TODO onClick
       />
