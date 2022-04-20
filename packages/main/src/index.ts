@@ -1,6 +1,6 @@
 import path from 'path'
 import { URL, fileURLToPath } from 'url'
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, shell, Tray, Menu } from 'electron'
 import contextMenu from 'electron-context-menu'
 import windowStateKeeper from 'electron-window-state'
 import i18next from 'i18next'
@@ -44,10 +44,34 @@ if (import.meta.env.MODE === 'development') {
 }
 
 let mainWindow: BrowserWindow | undefined
+let tray: Tray | undefined
+let isQuiting = false
 
 const createWindow = async () => {
   // сохраняет позицию и размер окна
   const windowState = windowStateKeeper({})
+
+  tray = new Tray(
+    path.join(path.dirname(fileURLToPath(import.meta.url)), '../../../build-resources/icon.png'),
+  )
+
+  tray.setContextMenu(
+    Menu.buildFromTemplate([
+      {
+        label: t`tray.show`,
+        click() {
+          mainWindow?.show()
+        },
+      },
+      {
+        label: t`tray.quit`,
+        click() {
+          isQuiting = true
+          app.quit()
+        },
+      },
+    ]),
+  )
 
   mainWindow = new BrowserWindow({
     minWidth: 400,
@@ -89,6 +113,14 @@ const createWindow = async () => {
     }
   })
 
+  mainWindow.on('close', (event) => {
+    if (!isQuiting) {
+      event.preventDefault()
+      mainWindow?.hide()
+      event.returnValue = false
+    }
+  })
+
   const pageUrl =
     import.meta.env.MODE === 'development' && import.meta.env.VITE_DEV_SERVER_URL !== undefined
       ? import.meta.env.VITE_DEV_SERVER_URL
@@ -113,10 +145,8 @@ app.on('second-instance', () => {
   }
 })
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+app.on('before-quit', function () {
+  isQuiting = true
 })
 
 app
