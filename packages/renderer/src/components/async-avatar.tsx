@@ -38,7 +38,7 @@ export const AsyncAvatar: FC<AsyncAvatarProps> = ({
   return imgSrc && !isDefaultAvatar(imgSrc) ? (
     <Avatar size={size} {...props} src={imgSrc} />
   ) : (
-    <InitialsAvatar size={size} gradientColor={gradientColor}>
+    <InitialsAvatar size={size} gradientColor={gradientColor} {...props}>
       {initials}
     </InitialsAvatar>
   )

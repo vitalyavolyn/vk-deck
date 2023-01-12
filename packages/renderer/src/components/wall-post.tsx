@@ -290,20 +290,25 @@ export const WallPost: FC<WallPostProps & { measureRef?: MeasureRef }> = observe
       uiStore.showModal(<PagePreviewModal pageId={data.from_id!} {...uiStore.modalProps} />)
     }
 
-    const badge = reply ? (
-      <Icon20ReplyCircleFillGreen width={16} height={16} />
-    ) : isAd ? (
-      <Icon20RoubleCircleFillBlue
-        width={16}
-        height={16}
-        className="ad-icon"
-        title={t`wallPost.ad`}
-      />
-    ) : owner.verified ? (
-      <Avatar title={t`wallPost.verified`} size={16} className="verified-badge">
-        <Icon16Done width={12} height={12} className="verified-icon" />
-      </Avatar>
-    ) : undefined
+    let badge
+    if (reply) {
+      badge = <Icon20ReplyCircleFillGreen width={16} height={16} />
+    } else if (isAd) {
+      badge = (
+        <Icon20RoubleCircleFillBlue
+          width={16}
+          height={16}
+          className="ad-icon"
+          title={t`wallPost.ad`}
+        />
+      )
+    } else if (owner.verified) {
+      badge = (
+        <Avatar title={t`wallPost.verified`} size={16} className="verified-badge">
+          <Icon16Done width={12} height={12} className="verified-icon" />
+        </Avatar>
+      )
+    }
 
     return (
       <article
