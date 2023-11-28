@@ -37,7 +37,9 @@ export const Dashboard: FC = observer(() => {
     setTimeout(() => setActiveSidePanel(undefined), 200)
   }
 
-  // глобальный шорткат для создания записи
+  // глобальный шорткат для
+  //  - создания записи
+  //  - скролла к определенной колонке
   useEffect(() => {
     window.addEventListener(
       'keypress',
@@ -60,28 +62,19 @@ export const Dashboard: FC = observer(() => {
 
   const isDesktop = viewWidth >= ViewWidth.SMALL_TABLET
 
+  const toggleSidePanel = (name: SidePanelName) => {
+    !isSidePanelOpen || activeSidePanel !== name ? openSidePanel(name) : setIsSidePanelOpen(false)
+  }
+
   return (
     <SplitLayout modal={uiStore.modal}>
       <SplitCol fixed width="64px" maxWidth="64px" style={{ zIndex: 1 }}>
         <Navbar
           onColumnClick={scrollToColumn}
-          // TODO: функции ниже надо привести в порядок и объединить
-          onComposeButtonClick={() =>
-            !isSidePanelOpen || activeSidePanel !== 'compose'
-              ? openSidePanel('compose')
-              : setIsSidePanelOpen(false)
-          }
           isComposerOpened={isSidePanelOpen && activeSidePanel === 'compose'}
-          onSettingsClick={() =>
-            !isSidePanelOpen || activeSidePanel !== 'settings'
-              ? openSidePanel('settings')
-              : setIsSidePanelOpen(false)
-          }
-          onAddColumnClick={() =>
-            !isSidePanelOpen || activeSidePanel !== 'add-column'
-              ? openSidePanel('add-column')
-              : setIsSidePanelOpen(false)
-          }
+          onComposeButtonClick={() => toggleSidePanel('compose')}
+          onSettingsClick={() => toggleSidePanel('settings')}
+          onAddColumnClick={() => toggleSidePanel('add-column')}
         />
       </SplitCol>
 

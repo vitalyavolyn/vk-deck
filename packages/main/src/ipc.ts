@@ -71,7 +71,6 @@ export const initIpc = (win: BrowserWindow): void => {
     const { bounds } = screen.getDisplayNearestPoint({ x, y })
 
     viewerWindow = new BrowserWindow({
-      // TODO: убрать лишнее
       //  все это выдрано из vk messenger,
       //  причем, там их еще больше
       x: bounds.x,
