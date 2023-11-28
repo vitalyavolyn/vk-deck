@@ -1,6 +1,10 @@
 import { ReactChild, VFC } from 'react'
 import { NotificationsNotification, WallWallpostFull } from '@vkontakte/api-schema-typescript'
-import { Icon20AddCircleFillBlue, Icon20LikeCircleFillRed } from '@vkontakte/icons'
+import {
+  Icon20AddCircleFillBlue,
+  Icon20CheckCircleFillGreen,
+  Icon20LikeCircleFillRed,
+} from '@vkontakte/icons'
 import { calcInitialsAvatarColor } from '@vkontakte/vkui'
 import { MeasureRef } from 'react-cool-virtual'
 import { AsyncAvatar } from '@/components/async-avatar'
@@ -114,6 +118,31 @@ export const Notification: VFC<NotificationProps> = ({ data, measureRef }) => {
               src={profile.photo_50}
               initials={getInitials(profile)}
               badge={<Icon20AddCircleFillBlue width={16} height={16} />}
+            />
+          </div>
+        }
+        measureRef={measureRef}
+        content={
+          data.feedback!.items!.map(({ from_id: id }) => getName(apiStore.getOwner(id))).join(',') +
+          `\n\n${data.type}`
+        }
+        // TODO onClick
+      />
+    )
+  } else if (data.type! === 'friend_accepted') {
+    const firstPersonId = data.feedback!.items![0].from_id
+    const profile = apiStore.getOwner(firstPersonId)
+
+    return (
+      <Card
+        avatar={
+          <div className="wall-post-avatar" /* onClick={openOwnerModal} */>
+            <AsyncAvatar
+              gradientColor={calcInitialsAvatarColor(profile.id)}
+              size={36}
+              src={profile.photo_50}
+              initials={getInitials(profile)}
+              badge={<Icon20CheckCircleFillGreen width={16} height={16} />}
             />
           </div>
         }
