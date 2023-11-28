@@ -106,6 +106,7 @@
       .wall-post-content {
         position: relative;
         overflow: hidden;
+        line-height: 1.2em;
         overflow-wrap: break-word;
         white-space: pre-wrap;
 

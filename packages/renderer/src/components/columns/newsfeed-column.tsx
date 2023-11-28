@@ -90,6 +90,14 @@ export const NewsfeedColumn: FC = observer(() => {
 
       const { items, groups, profiles, next_from: nextFrom } = response
 
+      if (items) {
+        for (const item of items) {
+          if (item.type !== 'post') {
+            console.warn(item)
+          }
+        }
+      }
+
       const newItems: WallWallpostFull[] = (
         items?.filter((e) => e.date !== startTimeRef.current) || []
       ).map((post) => newsfeedPostToWallPost(post as NewsfeedItemWallpost))

@@ -5,6 +5,8 @@ import {
   Icon20CakeOutline,
   Icon20PlaceOutline,
   Icon20UsersOutline,
+  Icon24Add,
+  Icon24BrowserBack,
 } from '@vkontakte/icons'
 import { classNames } from '@vkontakte/vkjs'
 import {
@@ -18,15 +20,17 @@ import {
   ModalPageHeader,
   ModalRoot,
   ModalRootProps,
+  PanelHeaderButton,
   PanelSpinner,
   Title,
 } from '@vkontakte/vkui'
 import { useTranslation } from 'react-i18next'
+import { v4 as uuidv4 } from 'uuid'
 import { AsyncAvatar } from '@/components/async-avatar'
 import { ColumnContainer } from '@/components/column-container'
 import { useElectron } from '@/hooks/use-electron'
 import { useStore } from '@/hooks/use-store'
-import { ColumnType } from '@/store/settings-store'
+import { ColumnType, ImageGridSize } from '@/store/settings-store'
 import { getBiggestSize } from '@/utils/get-biggest-size'
 import { getInitials } from '@/utils/get-initials'
 import { getName } from '@/utils/get-name'
@@ -44,12 +48,12 @@ type Page = (UsersUserFull | GroupsGroupFull) & {
 }
 
 export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restProps }) => {
-  const { apiStore } = useStore()
+  const { apiStore, uiStore, settingsStore } = useStore()
   const { t } = useTranslation()
   const { openViewer } = useElectron()
 
   const [pageData, setPageData] = useState<Page | null>(null)
-  const [activeModal, setActiveModal] = useState('page-preview')
+  const [activeModal, setActiveModal] = useState<string | null>('page-preview')
   const [columnHeight, setColumnHeight] = useState(0)
 
   const modalContentRefCallback = (node: HTMLDivElement | null) => {
@@ -95,6 +99,20 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
   }
 
   const showCover = (pageData as GroupsGroupFull | null)?.cover?.enabled
+
+  const addColumn = () => {
+    uiStore.closeModal()
+    settingsStore.columns.push({
+      id: uuidv4(),
+      type: ColumnType.wall,
+      settings: {
+        imageGridSize: ImageGridSize.medium,
+        hidePinnedPost: false,
+        ownerId: pageId,
+      },
+    })
+    console.log('add')
+  }
 
   return (
     <ModalRoot activeModal={activeModal} {...restProps}>
@@ -200,7 +218,20 @@ export const PagePreviewModal: FC<PagePreviewModalProps> = ({ pageId, ...restPro
       <ModalPage
         dynamicContentHeight
         id="wall-preview"
-        header={<ModalPageHeader>oh wow</ModalPageHeader>}
+        header={
+          <ModalPageHeader
+            left={
+              <PanelHeaderButton onClick={() => setActiveModal('page-preview')}>
+                <Icon24BrowserBack />
+              </PanelHeaderButton>
+            }
+            right={
+              <PanelHeaderButton onClick={addColumn}>
+                <Icon24Add />
+              </PanelHeaderButton>
+            }
+          >{t`columns.wall`}</ModalPageHeader>
+        }
         getModalContentRef={modalContentRefCallback}
       >
         <ColumnContainer

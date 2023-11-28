@@ -27,6 +27,7 @@ export const LikedPostsColumn: FC = () => {
   const { apiStore, snackbarStore, settingsStore } = useStore()
 
   const [showSettings, setShowSettings] = useState(false)
+  // TODO: если fave.getPosts позвращает пустой массив, висит вечная загрузка
   const [posts, setPosts] = useState<WallWallpostFull[]>([])
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
